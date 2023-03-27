@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+//카드등록 페이지
 class MainPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -13,7 +14,9 @@ class MainPage extends StatelessWidget {
           },
         ),
         backgroundColor: Color.fromARGB(255, 82, 81, 81),
-        title: Text("카드 등록"),
+        title: Text(
+          "카드 등록",
+        ),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -119,6 +122,4 @@ class MainPage extends StatelessWidget {
       ),
     );
   }
-
-  RaisedButton({required Null Function() onPressed, required Text child}) {}
 }
