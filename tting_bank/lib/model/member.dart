@@ -6,6 +6,7 @@ class Member {
   int? idFile;
   int? idMemberType;
 
+  // 생성자
   Member(this.id, this.name, this.idFile, this.idMemberType);
 
   // 초기화.
