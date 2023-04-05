@@ -42,10 +42,12 @@ class _storeListPage extends State<StoreListPage>
         child: Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
-            leading: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
+            leading: ElevatedButton(
+                onPressed: () => {Navigator.pop(context)},
+                child: Icon(
+                  Icons.arrow_back,
+                  color: Colors.black,
+                )),
             title: Text('Category', style: TextStyle(color: Colors.black)),
             bottom: TabBar(
                 indicatorColor: Colors.black,
