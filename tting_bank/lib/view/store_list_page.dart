@@ -97,7 +97,7 @@ class _storeListPage extends State<StoreListPage>
                   ),
                 ]),
           ),
-          body: TabBarView(children: [
+          body: TabBarView(controller: _tabController, children: [
             Container(color: Colors.grey[300], child: StoreListScreen()),
             Container(
                 color: Colors.grey[300],
