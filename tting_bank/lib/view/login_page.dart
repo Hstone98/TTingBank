@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/login_page_controller.dart';
+import 'package:tting_bank/view/main_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -13,7 +14,37 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => LoginKakao(),
+              onPressed: () => {
+                if (btnLogin())
+                  {
+                    debugPrint('넘어가'),
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => MainPage()),
+                    )
+                  }
+                else
+                  {
+                    debugPrint('씨발'),
+                    showDialog<String>(
+                      context: context,
+                      builder: (BuildContext context) => AlertDialog(
+                        title: const Text('로그인 실패!!'),
+                        content: const Text('로그인 정보를 확인해주세요.'),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'Cancel'),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, 'OK'),
+                            child: const Text('OK'),
+                          ),
+                        ],
+                      ),
+                    ),
+                  }
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
                 shape: RoundedRectangleBorder(
