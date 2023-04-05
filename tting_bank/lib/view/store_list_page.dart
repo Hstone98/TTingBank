@@ -55,6 +55,8 @@ class _storeListPage extends State<StoreListPage>
                 isScrollable: true,
                 controller: _tabController,
                 tabs: [
+                  //TODO: 배열 생성해서 동적으로 만들어지도록 구현.
+                  //TODO: 카테고리 내용은 데이터베이스에서 가져오도록 구현.
                   Tab(
                     child: Text('패스트푸드', style: TextStyle(color: Colors.black)),
                   ),
@@ -118,121 +120,151 @@ class _storeListPage extends State<StoreListPage>
 
 class StoreListScreen extends StatelessWidget {
   Widget build(BuildContext context) {
-    return Column(children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
+    return CustomScrollView(
+      primary: false,
+      slivers: <Widget>[
+        SliverPadding(
+          padding: const EdgeInsets.all(20),
+          sliver: SliverGrid.count(
+            crossAxisSpacing: 10,
+            mainAxisSpacing: 10,
+            crossAxisCount: 2,
+            children: <Widget>[
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[100],
+                child: const Text("He'd have you all unravel at the"),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[200],
+                child: const Text('Heed not the rabble'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[300],
+                child: const Text('Sound of screams but the'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[400],
+                child: const Text('Who scream'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[500],
+                child: const Text('Revolution is coming...'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[600],
+                child: const Text('Revolution, they...'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[100],
+                child: const Text("He'd have you all unravel at the"),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[200],
+                child: const Text('Heed not the rabble'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[300],
+                child: const Text('Sound of screams but the'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[400],
+                child: const Text('Who scream'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[500],
+                child: const Text('Revolution is coming...'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[600],
+                child: const Text('Revolution, they...'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[100],
+                child: const Text("He'd have you all unravel at the"),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[200],
+                child: const Text('Heed not the rabble'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[300],
+                child: const Text('Sound of screams but the'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[400],
+                child: const Text('Who scream'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[500],
+                child: const Text('Revolution is coming...'),
+              ),
+              Container(
+                padding: const EdgeInsets.all(8),
+                color: Colors.green[600],
+                child: const Text('Revolution, they...'),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-        ],
-      ),
-      Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
-            child: Container(
-              width: 90.0,
-              height: 90.0,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10) //모서리를 둥글게
-                  ),
-            ),
-          ),
-        ],
-      )
-    ]);
+        ),
+      ],
+    );
   }
+}
+
+Row createStoreRow() {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
+        child: Container(
+          width: 90.0,
+          height: 90.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10), //모서리를 둥글게
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
+        child: Container(
+          width: 90.0,
+          height: 90.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10), //모서리를 둥글게
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsetsDirectional.fromSTEB(0, 25, 0, 20),
+        child: Container(
+          width: 90.0,
+          height: 90.0,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10), //모서리를 둥글게
+          ),
+        ),
+      ),
+    ],
+  );
 }
