@@ -17,7 +17,6 @@ void main() {
   KakaoInit();
   runApp(
     MaterialApp(
-      home: CashbackThisMonthTting(),
       home: AssetmanagementPage(),
     ),
   );
