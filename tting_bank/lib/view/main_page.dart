@@ -89,86 +89,259 @@ class MainPage extends StatelessWidget {
           ),
         ]),
       ),
-      body: Padding(
-        padding: EdgeInsetsDirectional.fromSTEB(30, 50, 0, 20),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 50,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => (StoreListPage(
-                                  categoryType: CategoryType.movie,
-                                ))),
-                      )
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-                      shape: RoundedRectangleBorder(
-                        // 라운드 코너 제거
-                        borderRadius: BorderRadius.circular(0),
+      body: Column(
+        children: [
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(30, 50, 0, 20),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: Row(
+
+                children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.cafe,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg1.png',
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                      elevation: 0, // 물방울 효과 제거
                     ),
-                    child: Image.asset(
-                      'assets/images/kakao_login.png',
-                      fit: BoxFit.cover,
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.movie,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg2.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                  
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.cafe,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg1.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
                     ),
-                  ),
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.movie,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg2.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                  
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 0, 7, 0),
-                  child: Image.asset('bankTting/img/testimg1.png',
-                      width: 70, height: 70),
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.cafe,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg1.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.movie,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg2.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                  
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 0, 7, 0),
-                  child: Image.asset('bankTting/img/testimg2.png',
-                      width: 70, height: 70),
+                Column(
+                  children: [
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.cafe,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg1.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 110,
+                      height: 110,
+                      child: ElevatedButton(
+                        onPressed: () => {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => (StoreListPage(
+                                      categoryType: CategoryType.movie,
+                                    ))),
+                          )
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        child: Image.asset(
+                          'bankTting/img/testimg2.png',
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    )
+                  ],
+                  
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 0, 7, 0),
-                  child: Image.asset('bankTting/img/testimg3.png',
-                      width: 70, height: 70),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 0, 0, 0),
-                  child: Image.asset('bankTting/img/testimg4.png',
-                      width: 70, height: 70),
-                ),
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 20, 7, 40),
-                  child: Image.asset('bankTting/img/testimg5.png',
-                      width: 70, height: 70),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 20, 7, 40),
-                  child: Image.asset('bankTting/img/testimg6.png',
-                      width: 70, height: 70),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 20, 7, 40),
-                  child: Image.asset('bankTting/img/testimg7.png',
-                      width: 70, height: 70),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(7, 20, 0, 40),
-                  child: Image.asset('bankTting/img/testimg8.png',
-                      width: 70, height: 70),
-                ),
-              ],
-            ),
-            Row(
+              ]
+              )
+              
+            )
+
+
+          ),
+          Row(
               children: [
                 Container(
                   height: 1.0,
@@ -186,9 +359,117 @@ class MainPage extends StatelessWidget {
                 )
               ],
             )
-          ],
-        ),
+        ],
+
+
       ),
+
+
+
     );
   }
 }
+
+
+
+// Row(
+//               children: [
+//                 SizedBox(
+//                   width: 50,
+//                   height: 50,
+//                   child: ElevatedButton(
+//                     onPressed: () => {
+//                       Navigator.push(
+//                         context,
+//                         MaterialPageRoute(
+//                             builder: (context) => (StoreListPage(
+//                                   categoryType: CategoryType.movie,
+//                                 ))),
+//                       )
+//                     },
+//                     style: ElevatedButton.styleFrom(
+//                       backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+//                       shape: RoundedRectangleBorder(
+//                         // 라운드 코너 제거
+//                         borderRadius: BorderRadius.circular(0),
+//                       ),
+//                       elevation: 0, // 물방울 효과 제거
+//                     ),
+//                     child: Image.asset(
+//                       'assets/images/kakao_login.png',
+//                       fit: BoxFit.cover,
+//                     ),
+//                   ),
+//                 ),
+                
+//               ],
+//             ),
+
+
+// Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(0, 0, 7, 0),
+//                   child: Image.asset('bankTting/img/testimg1.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 0, 7, 0),
+//                   child: Image.asset('bankTting/img/testimg2.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 0, 7, 0),
+//                   child: Image.asset('bankTting/img/testimg3.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 0, 0, 0),
+//                   child: Image.asset('bankTting/img/testimg4.png',
+//                       width: 70, height: 70),
+//                 ),
+
+
+
+
+
+// Row(
+//               children: [
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(0, 20, 7, 40),
+//                   child: Image.asset('bankTting/img/testimg5.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 20, 7, 40),
+//                   child: Image.asset('bankTting/img/testimg6.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 20, 7, 40),
+//                   child: Image.asset('bankTting/img/testimg7.png',
+//                       width: 70, height: 70),
+//                 ),
+//                 Padding(
+//                   padding: EdgeInsetsDirectional.fromSTEB(7, 20, 0, 40),
+//                   child: Image.asset('bankTting/img/testimg8.png',
+//                       width: 70, height: 70),
+//                 ),
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     Container(
+            //       height: 1.0,
+            //       width: 500.0,
+            //       color: Colors.black,
+            //     )
+            //   ],
+            // ),
+            // Row(
+            //   children: [
+            //     Padding(
+            //       padding: EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
+            //       child: Image.asset('bankTting/img/testcard.png',
+            //           width: 300, height: 220),
+            //     )
+            //   ],
+            // )
