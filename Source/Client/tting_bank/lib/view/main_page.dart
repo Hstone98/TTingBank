@@ -1,13 +1,16 @@
+import 'assetmanagement_page.dart';
+import 'cardInfo_page.dart';
+import 'cashback_this_month_tting.dart';
+
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
 import 'package:tting_bank/view/recommend_page.dart';
 import 'package:tting_bank/view/setting_page.dart';
-import 'assetmanagement_page.dart';
-import 'cardInfo_page.dart';
-import 'cashback_this_month_tting.dart';
 import 'package:tting_bank/conttoller/main_page_controller.dart';
 import 'package:tting_bank/view/store_list_page.dart';
 import 'package:tting_bank/data/category.dart';
+import 'package:tting_bank/data/image_category.dart';
+
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -97,92 +100,79 @@ class MainPage extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                Column(
-                  children: [
-                    getsizebox(),getsizebox()
-                  ]
-                ),
-                Column(
-                  children: [
-                    getsizebox(),getsizebox()
-                  ]
-                ),
-                Column(
-                  children: [
-                    getsizebox(),getsizebox()
-                  ]
-                ),
-                  Column(
-                  children: [
-                    getsizebox(),getsizebox()
-                  ]
-                ),
-                
-              ]
-              )
-              
-            )
+                  for (int i = 0; i < (ImageCategory.listAsset.length + 1) ~/ 2; i++)
+                    Row(
+                      children: [
+                        Column(
+                          children: [
+                            if (2 * i < ImageCategory.listAsset.length)
+                              setSizeBox(ImageCategory.listAsset[2 * i], CategoryType.values[2 * i], context),
+                            if (2 * i + 1 < ImageCategory.listAsset.length)
+                              setSizeBox(ImageCategory.listAsset[2 * i + 1], CategoryType.values[2*i+1], context),
+                          ],
+                        ),
+                        SizedBox(width: 20),
+                      ],
+                    ),
+                ],
+              ),
+            ),
           ),
           Row(
-              children: [
-                Container(
-                  height: 1.0,
-                  width: 500.0,
-                  color: Colors.black,
-                )
-              ],
-            ),
-            Row(
-              children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
-                  child: Image.asset('bankTting/img/testcard.png',
-                      width: 300, height: 220),
-                )
-              ],
-            )
+            children: [
+              Container(
+                height: 1.0,
+                width: 500.0,
+                color: Colors.black,
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
+                child: Image.asset(
+                  'bankTting/img/testcard.png',
+                  width: 300,
+                  height: 220,
+                ),
+              ),
+            ],
+          ),
         ],
-
-
       ),
-
-
-
     );
   }
 }
-Widget getsizebox(){
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+Widget setSizeBox(String strImgPath, CategoryType type, BuildContext context) {
   return SizedBox(
-                      width: 110,
-                      height: 110,
-                      child: ElevatedButton(
-                        onPressed: Clickme,
-                        // () => {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => (StoreListPage(
-                          //             categoryType: CategoryType.cafe,
-                          //           ))),
-                          // )
-                        // },     //아이콘 누르면 카테고리에 해당 카테고리 탭뷰로 가는 버튼 구현 해야댐
-
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-                          shape: RoundedRectangleBorder(
-                            // 라운드 코너 제거
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                          elevation: 0, // 물방울 효과 제거
-                        ),
-                        child: Image.asset(
-                          'bankTting/img/testimg1.png',
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
+    width: 110,
+    height: 110,
+    child: ElevatedButton(
+      onPressed: () => {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => StoreListPage(
+              categoryType: type,
+            ),
+          ),
+        )
+      },
+      style: ElevatedButton.styleFrom(
+        primary: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        elevation: 0,
+      ),
+      child: Image.asset(
+        strImgPath,
+        fit: BoxFit.fill,
+      ),
+    ),
+  );
 }
-
-void Clickme(){
-  print('클릭됨');
-}//네이게이션 버튼 작동 구현 못해서 일단 클릭 확인하려고 만든 함수 

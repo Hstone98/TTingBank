@@ -50,56 +50,45 @@ class _storeListPage extends State<StoreListPage>
                 )),
             title: Text('Category', style: TextStyle(color: Colors.black)),
             bottom: TabBar(
-                indicatorColor: Colors.black,
-                indicatorWeight: 2.0,
-                isScrollable: true,
-                controller: _tabController,
-                tabs: [
-                  //TODO: 배열 생성해서 동적으로 만들어지도록 구현.
-                  //TODO: 카테고리 내용은 데이터베이스에서 가져오도록 구현.
-                  Tab(
-                    child: Text('패스트푸드', style: TextStyle(color: Colors.black)),
-                  ),
-                  Tab(
-                    child: Text('카페', style: TextStyle(color: Colors.black)),
-                  ),
-                  Tab(
-                    child: Text(
-                      '음식점',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      '영화',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      '빵집',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      '한식',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      '중식',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                  Tab(
-                    child: Text(
-                      '일식',
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ),
-                ]),
+            indicatorColor: Colors.black,
+            indicatorWeight: 2.0,
+            isScrollable: true,
+            controller: _tabController,
+            tabs: [
+              //TODO: 배열 생성해서 동적으로 만들어지도록 구현.
+              //TODO: 카테고리 내용은 데이터베이스에서 가져오도록 구현.
+              Tab(
+                child: Text('카페', style: TextStyle(color: Colors.black)),
+              ),
+              Tab(
+                child: Text(
+                  '영화',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+                Tab(
+                child: Text('편의점', style: TextStyle(color: Colors.black)),
+              ),
+              Tab(
+                child: Text(
+                  '음식점',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              
+              Tab(
+                child: Text(
+                  '빵집',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+              Tab(
+                child: Text(
+                  '한식',
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
+            ]),
           ),
           body: TabBarView(controller: _tabController, children: [
             Container(color: Colors.grey[300], child: StoreListScreen()),
@@ -128,7 +117,7 @@ class StoreListScreen extends StatelessWidget {
           sliver: SliverGrid.count(
             crossAxisSpacing: 10,
             mainAxisSpacing: 10,
-            crossAxisCount: 2,
+            crossAxisCount: 4,
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.all(8),

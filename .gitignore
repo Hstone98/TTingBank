@@ -2,3 +2,14 @@
 tting_bank/ios/Flutter/Debug.xcconfig
 tting_bank/ios/Flutter/Release.xcconfig
 .vscode/settings.json
+Source/Client/tting_bank/linux/flutter/generated_plugin_registrant.cc
+Source/Client/tting_bank/linux/flutter/generated_plugin_registrant.h
+Source/Client/tting_bank/linux/flutter/generated_plugins.cmake
+Source/Client/tting_bank/macos/Flutter/GeneratedPluginRegistrant.swift
+Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.cc
+Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.h
+Source/Client/tting_bank/windows/flutter/generated_plugins.cmake
+tting_bank/.idea/modules.xml
+tting_bank/.idea/tting_bank.iml
+tting_bank/.idea/vcs.xml
+tting_bank/.idea/workspace.xml
