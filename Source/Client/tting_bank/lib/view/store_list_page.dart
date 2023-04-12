@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
+import 'package:tting_bank/view/recommend_page.dart';
 
 class StoreListPage extends StatefulWidget {
   CategoryType? categoryType;
@@ -74,22 +75,6 @@ class _storeListPage extends State<StoreListPage>
                   style: TextStyle(color: Colors.black)
                 ),
               ),
-              // Tab(
-              //   child: Text('음식점',
-              //     style: TextStyle(color: Colors.black),
-              //   ),
-              // ),
-              
-              // Tab(
-              //   child: Text('빵집',
-              //     style: TextStyle(color: Colors.black),
-              //   ),
-              // ),
-              // Tab(
-              //   child: Text('한식',
-              //     style: TextStyle(color: Colors.black),
-              //   ),
-              // ),
             ]),
           ),
           body: TabBarView(controller: _tabController, children: [
@@ -121,7 +106,7 @@ class StoreListScreen extends StatelessWidget {
             crossAxisCount: 4,
             children: <Widget>[
               for(int i = 0; i < listStore!.length; i++)
-                createColumn(listStore!, i),
+                createColumn(listStore!, i, context),
             ],
           ),
         ),
@@ -130,20 +115,18 @@ class StoreListScreen extends StatelessWidget {
   }
 }
 
-Widget createColumn(List listStore, int index) {
+Widget createColumn(List listStore, int index, BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(1),
     color: Colors.white,
     child: ElevatedButton(
       onPressed: () => {
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => StoreListPage(
-        //       categoryType: type,
-        //     ),
-        //   ),
-        // )
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => RecommendPage(),
+          ),
+        )
       },
       child: Image.asset(
         listStore[index].toString(),

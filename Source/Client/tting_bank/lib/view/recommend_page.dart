@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tting_bank/data/img_card.dart';
 
 //카드추천 페이지
 class RecommendPage extends StatelessWidget {
@@ -36,31 +37,31 @@ class RecommendPage extends StatelessWidget {
                       'Partnership Recommended',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('kb 나라사랑카드'),
+                    subtitle: Text('NH 올바른 FLEX'),
                   ),
-                  // Image.asset(
-                  //이미지 넣을 코드
-                  // ),
+                  Image.asset(
+                    ImgCard.listCard[0],
+                  ),
                   ListTile(
                     title: Text(
                       'Cashback Recommended',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('ibk 나라사랑카드'),
+                    subtitle: Text('Samsung taptap DIGITAL'),
                   ),
-                  // Image.asset(
-                  //이미지 넣을 코드
-                  // ),
+                  Image.asset(
+                    ImgCard.listCard[1],
+                  ),
                   ListTile(
                     title: Text(
                       'AI Recommended',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
-                    subtitle: Text('카카오 체크카드'),
+                    subtitle: Text('Shinhan B.Big'),
                   ),
-                  // Image.asset(
-                  //이미지 넣을 코드
-                  // ),
+                  Image.asset(
+                    ImgCard.listCard[2],
+                  ),
                 ],
               ),
             ),

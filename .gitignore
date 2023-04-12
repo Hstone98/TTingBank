@@ -20,3 +20,10 @@ Source/Client/tting_bank/macos/Flutter/GeneratedPluginRegistrant.swift
 Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.cc
 Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.h
 Source/Client/tting_bank/windows/flutter/generated_plugins.cmake
+Source/Client/tting_bank/linux/flutter/generated_plugin_registrant.cc
+Source/Client/tting_bank/linux/flutter/generated_plugin_registrant.h
+Source/Client/tting_bank/linux/flutter/generated_plugins.cmake
+Source/Client/tting_bank/macos/Flutter/GeneratedPluginRegistrant.swift
+Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.cc
+Source/Client/tting_bank/windows/flutter/generated_plugin_registrant.h
+Source/Client/tting_bank/windows/flutter/generated_plugins.cmake
