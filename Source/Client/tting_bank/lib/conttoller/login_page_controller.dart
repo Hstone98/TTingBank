@@ -54,8 +54,26 @@ Future<void> Kakao_Withdrawal() async {
   }
 }
 
-bool btnLogin() {
-  if (LoginKakao() == null) {
+Future<bool> TokenCheck() async {
+  if (await AuthApi.instance.hasToken()) {
+    try {
+      AccessTokenInfo tokenInfo = await UserApi.instance.accessTokenInfo();
+      print('토큰 유효성 체크 성공 ${tokenInfo.id} ${tokenInfo.expiresIn}');
+      return true;
+    } catch (error) {
+      if (error is KakaoException && error.isInvalidTokenError()) {
+        print('토큰 만료 $error');
+      } else {
+        print('토큰 정보 조회 실패 $error');
+      }
+      return false;
+    }
+  }
+  return false;
+}
+
+Future<bool> btnLogin() async{
+  if (await LoginKakao() == null) {
     debugPrint('실패야3');
     return false;
   } else {

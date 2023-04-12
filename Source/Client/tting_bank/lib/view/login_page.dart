@@ -2,9 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/login_page_controller.dart';
 import 'package:tting_bank/view/main_page.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+    TokenCheck().then((isValid) {
+      if (isValid) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MainPage()),
+        );
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -14,8 +31,8 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => {
-                if (btnLogin())
+              onPressed: () async => {
+                if (await btnLogin())
                   {
                     debugPrint('넘어가'),
                     Navigator.push(
