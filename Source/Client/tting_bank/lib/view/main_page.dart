@@ -10,6 +10,7 @@ import 'package:tting_bank/conttoller/main_page_controller.dart';
 import 'package:tting_bank/view/store_list_page.dart';
 import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
+import 'package:tting_bank/view/registercard_page.dart';
 
 
 class MainPage extends StatelessWidget {
@@ -42,6 +43,17 @@ class MainPage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => AssetmanagementPage()),
+              );
+            },
+          ),
+          ListTile(
+            title: Text('카드사 로그인'),
+            leading: FlutterLogo(),
+            selected: true,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => RegisterCardPage()),
               );
             },
           ),

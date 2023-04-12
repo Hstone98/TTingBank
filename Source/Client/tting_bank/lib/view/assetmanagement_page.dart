@@ -10,17 +10,13 @@ class AssetmanagementPage extends StatelessWidget {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
-        leading: Builder(
-          builder: (BuildContext context) {
-            return IconButton(
-              icon: Icon(
-                Icons.menu,
-                color: Colors.black,
-              ),
-              onPressed: () {
-                _scaffoldKey.currentState!.openDrawer();
-              },
-            );
+       leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
           },
         ),
         backgroundColor: Colors.white,
@@ -31,30 +27,6 @@ class AssetmanagementPage extends StatelessWidget {
           ),
         ),
         centerTitle: true,
-      ),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            ListTile(
-              title: Text('Menu 1'),
-              onTap: () {
-                // 갈곳 지정
-              },
-            ),
-            ListTile(
-              title: Text('Menu 2'),
-              onTap: () {
-                // 갈곳 지정
-              },
-            ),
-            ListTile(
-              title: Text('Menu 3'),
-              onTap: () {
-                // 갈곳 지정
-              },
-            ),
-          ],
-        ),
       ),
       body: SingleChildScrollView(
         //오버플로우 나는거 해결

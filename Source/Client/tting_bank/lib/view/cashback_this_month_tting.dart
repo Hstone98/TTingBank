@@ -12,7 +12,15 @@ class CashbackThisMonthTting extends StatelessWidget {
             color: Colors.black,//색변경
           ),
         backgroundColor: Colors.white,
-        leading: Icon(Icons.menu),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
+          ),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
         title: Text('소비 내역',style: TextStyle(color: Colors.black)),
       ),
       body: Column( 

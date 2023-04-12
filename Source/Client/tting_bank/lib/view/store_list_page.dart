@@ -44,13 +44,13 @@ class _storeListPage extends State<StoreListPage>
         length: 8,
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
             leading: ElevatedButton(
                 onPressed: () => {Navigator.pop(context)},
                 child: Icon(
                   Icons.arrow_back,
                   color: Colors.black,
                 )),
+            backgroundColor: Colors.white,
             title: Text(title, style: TextStyle(color: Colors.black)),
             bottom: TabBar(
             indicatorColor: Colors.black,
