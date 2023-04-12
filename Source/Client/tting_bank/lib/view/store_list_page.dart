@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:tting_bank/data/category.dart';
+import 'package:tting_bank/data/image_category.dart';
 
 class StoreListPage extends StatefulWidget {
   CategoryType? categoryType;
@@ -16,6 +17,7 @@ class _storeListPage extends State<StoreListPage>
   late TabController _tabController;
 
   CategoryType? categoryType;
+  String title = '가맹점';
 
   _storeListPage(this.categoryType);
 
@@ -48,7 +50,7 @@ class _storeListPage extends State<StoreListPage>
                   Icons.arrow_back,
                   color: Colors.black,
                 )),
-            title: Text('Category', style: TextStyle(color: Colors.black)),
+            title: Text(title, style: TextStyle(color: Colors.black)),
             bottom: TabBar(
             indicatorColor: Colors.black,
             indicatorWeight: 2.0,
@@ -58,56 +60,55 @@ class _storeListPage extends State<StoreListPage>
               //TODO: 배열 생성해서 동적으로 만들어지도록 구현.
               //TODO: 카테고리 내용은 데이터베이스에서 가져오도록 구현.
               Tab(
-                child: Text('카페', style: TextStyle(color: Colors.black)),
+                child: Text('카페', 
+                  style: TextStyle(color: Colors.black)
+                ),
               ),
               Tab(
-                child: Text(
-                  '영화',
+                child: Text('영화', 
                   style: TextStyle(color: Colors.black),
                 ),
               ),
                 Tab(
-                child: Text('편의점', style: TextStyle(color: Colors.black)),
-              ),
-              Tab(
-                child: Text(
-                  '음식점',
-                  style: TextStyle(color: Colors.black),
+                child: Text('편의점', 
+                  style: TextStyle(color: Colors.black)
                 ),
               ),
+              // Tab(
+              //   child: Text('음식점',
+              //     style: TextStyle(color: Colors.black),
+              //   ),
+              // ),
               
-              Tab(
-                child: Text(
-                  '빵집',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              Tab(
-                child: Text(
-                  '한식',
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
+              // Tab(
+              //   child: Text('빵집',
+              //     style: TextStyle(color: Colors.black),
+              //   ),
+              // ),
+              // Tab(
+              //   child: Text('한식',
+              //     style: TextStyle(color: Colors.black),
+              //   ),
+              // ),
             ]),
           ),
           body: TabBarView(controller: _tabController, children: [
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(
-                color: Colors.grey[300],
-                child: StoreListScreen() //메소드로 추가한 가맹점리스트
-                ),
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(color: Colors.grey[300], child: StoreListScreen()),
-            Container(color: Colors.grey[300], child: StoreListScreen())
+            Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
+            Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreMovie)),
+            Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreConvenience))
+            // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
+            // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
+            // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe))
           ]),
         ));
   }
 }
 
 class StoreListScreen extends StatelessWidget {
+  List? listStore;
+
+  StoreListScreen(this.listStore);
+
   Widget build(BuildContext context) {
     return CustomScrollView(
       primary: false,
@@ -119,102 +120,37 @@ class StoreListScreen extends StatelessWidget {
             mainAxisSpacing: 10,
             crossAxisCount: 4,
             children: <Widget>[
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[100],
-                child: const Text("He'd have you all unravel at the"),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[200],
-                child: const Text('Heed not the rabble'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[300],
-                child: const Text('Sound of screams but the'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[400],
-                child: const Text('Who scream'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[500],
-                child: const Text('Revolution is coming...'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[600],
-                child: const Text('Revolution, they...'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[100],
-                child: const Text("He'd have you all unravel at the"),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[200],
-                child: const Text('Heed not the rabble'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[300],
-                child: const Text('Sound of screams but the'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[400],
-                child: const Text('Who scream'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[500],
-                child: const Text('Revolution is coming...'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[600],
-                child: const Text('Revolution, they...'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[100],
-                child: const Text("He'd have you all unravel at the"),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[200],
-                child: const Text('Heed not the rabble'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[300],
-                child: const Text('Sound of screams but the'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[400],
-                child: const Text('Who scream'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[500],
-                child: const Text('Revolution is coming...'),
-              ),
-              Container(
-                padding: const EdgeInsets.all(8),
-                color: Colors.green[600],
-                child: const Text('Revolution, they...'),
-              ),
+              for(int i = 0; i < listStore!.length; i++)
+                createColumn(listStore!, i),
             ],
           ),
         ),
       ],
     );
   }
+}
+
+Widget createColumn(List listStore, int index) {
+  return Container(
+    padding: const EdgeInsets.all(1),
+    color: Colors.white,
+    child: ElevatedButton(
+      onPressed: () => {
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => StoreListPage(
+        //       categoryType: type,
+        //     ),
+        //   ),
+        // )
+      },
+      child: Image.asset(
+        listStore[index].toString(),
+        fit: BoxFit.cover,
+      ),
+    ),
+  );
 }
 
 Row createStoreRow() {
