@@ -118,7 +118,6 @@ class StoreListScreen extends StatelessWidget {
 Widget createColumn(List listStore, int index, BuildContext context) {
   return Container(
     padding: const EdgeInsets.all(1),
-    color: Colors.white,
     child: ElevatedButton(
       onPressed: () => {
         Navigator.push(
@@ -128,6 +127,9 @@ Widget createColumn(List listStore, int index, BuildContext context) {
           ),
         )
       },
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white, // Background color
+      ),
       child: Image.asset(
         listStore[index].toString(),
         fit: BoxFit.cover,
