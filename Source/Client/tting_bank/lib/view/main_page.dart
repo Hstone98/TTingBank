@@ -14,7 +14,6 @@ import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
 import 'package:tting_bank/view/registercard_page.dart';
 
-
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
 
@@ -30,16 +29,13 @@ class MainPage extends StatelessWidget {
           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
           child: Row(
             children: [
-
               IconButton(
-                onPressed: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (BuildContext context)=>SearchScreen(),
-                      )
-                  );
-                }
-              , icon: Icon(Icons.search))
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => SearchScreen(),
+                    ));
+                  },
+                  icon: Icon(Icons.search))
             ],
           ),
         ),
@@ -118,23 +114,27 @@ class MainPage extends StatelessWidget {
       body: Column(
         children: [
           Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(30, 50, 0, 20),
+            padding: EdgeInsetsDirectional.fromSTEB(10, 20, 0, 20),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: Row(
                 children: [
-                  for (int i = 0; i < (ImageCategory.listAsset.length + 1) ~/ 2; i++)
+                  for (int i = 0;
+                      i < (ImageCategory.listAsset.length + 1) ~/ 2;
+                      i++)
                     Row(
                       children: [
                         Column(
                           children: [
                             if (2 * i < ImageCategory.listAsset.length)
-                              setSizeBox(ImageCategory.listAsset[2 * i], CategoryType.values[2 * i], context),
+                              setSizeBox(ImageCategory.listAsset[2 * i],
+                                  CategoryType.values[2 * i], context),
                             if (2 * i + 1 < ImageCategory.listAsset.length)
-                              setSizeBox(ImageCategory.listAsset[2 * i + 1], CategoryType.values[2*i+1], context),
+                              setSizeBox(ImageCategory.listAsset[2 * i + 1],
+                                  CategoryType.values[2 * i + 1], context),
                           ],
                         ),
-                        SizedBox(width: 20),
+                        SizedBox(width: 4),
                       ],
                     ),
                 ],
@@ -143,21 +143,84 @@ class MainPage extends StatelessWidget {
           ),
           Row(
             children: [
-              Container(
-                height: 1.0,
-                width: 500.0,
-                color: Colors.black,
+              Expanded(
+                child: Container(
+                  height: 1.0,
+                  color: Colors.black,
+                ),
+              ),
+            ],
+          ),
+          const Row(
+            children: [
+              Padding(
+                padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
+                child: Text(
+                  "My Card",
+                  style: TextStyle(
+                    fontSize: 23,
+                    color: Colors.black87,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ],
           ),
           Row(
             children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 50, 0, 0),
-                child: Image.asset(
-                  'bankTting/img/testcard.png',
-                  width: 300,
-                  height: 220,
+              Expanded(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                        child: Image.asset(
+                          'bankTting/img/testcard1.png',
+                          width: 300,
+                          height: 220,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                        child: Image.asset(
+                          'bankTting/img/testcard2.png',
+                          width: 300,
+                          height: 220,
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                        child: Image.asset(
+                          'bankTting/img/testcard3.png',
+                          width: 300,
+                          height: 220,
+                        ),
+                      ),
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
+                          shape: RoundedRectangleBorder(
+                            // 라운드 코너 제거
+                            borderRadius: BorderRadius.circular(0),
+                          ),
+                          elevation: 0, // 물방울 효과 제거
+                        ),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CardInfoPage()),
+                          );
+                        },
+                        child: Image.asset(
+                          'bankTting/img/cardplus.PNG',
+                          width: 300,
+                          height: 220,
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
@@ -167,13 +230,14 @@ class MainPage extends StatelessWidget {
     );
   }
 }
+
 //------------------------------------------------------------------------------------------------//
 //
 //------------------------------------------------------------------------------------------------//
 Widget setSizeBox(String strImgPath, CategoryType type, BuildContext context) {
   return SizedBox(
-    width: 110,
-    height: 110,
+    width: 90,
+    height: 90,
     child: ElevatedButton(
       onPressed: () => {
         Navigator.push(
