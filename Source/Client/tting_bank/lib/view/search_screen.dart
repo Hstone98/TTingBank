@@ -12,6 +12,14 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
+  final TextEditingController _filter = TextEditingController();
+    FocusNode focusNode = FocusNode();
+    String _searchtext = "";
+      _SearchScreenState(){
+        _filter.addListener(() {
+          _searchtext = _filter.text;
+        });
+      }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,6 +40,7 @@ class _SearchScreenState extends State<SearchScreen> {
             decoration:
               InputDecoration(fillColor: Colors.grey.withOpacity(0.2), 
               filled: true,
+              hintText: '검색',
               enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.transparent), 
               borderRadius: BorderRadius.circular(10)))

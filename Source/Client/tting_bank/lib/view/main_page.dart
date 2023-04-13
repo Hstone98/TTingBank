@@ -151,7 +151,7 @@ class MainPage extends StatelessWidget {
               ),
             ],
           ),
-          const Row(
+           Row(
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
