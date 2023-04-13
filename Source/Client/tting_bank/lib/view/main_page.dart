@@ -1,3 +1,5 @@
+import 'package:tting_bank/view/search_screen.dart';
+
 import 'assetmanagement_page.dart';
 import 'cardInfo_page.dart';
 import 'cashback_this_month_tting.dart';
@@ -28,7 +30,16 @@ class MainPage extends StatelessWidget {
           padding: EdgeInsetsDirectional.fromSTEB(0, 0, 0, 0),
           child: Row(
             children: [
-              Icon(Icons.search),
+
+              IconButton(
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (BuildContext context)=>SearchScreen(),
+                      )
+                  );
+                }
+              , icon: Icon(Icons.search))
             ],
           ),
         ),
