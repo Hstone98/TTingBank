@@ -13,6 +13,7 @@ import 'package:tting_bank/view/store_list_page.dart';
 import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
 import 'package:tting_bank/view/registercard_page.dart';
+import 'package:tting_bank/conttoller/profile_controller.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -41,75 +42,189 @@ class MainPage extends StatelessWidget {
         ),
       ),
       drawer: Drawer(
-        child: ListView(children: <Widget>[
-          ListTile(
-            title: Text('소비 및 캐시백 총액'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AssetmanagementPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('카드사 로그인'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RegisterCardPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('카드등록'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => CardInfoPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('나의 소비 내역'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => CashbackThisMonthTting()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('카드 추천'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => RecommendPage()),
-              );
-            },
-          ),
-          ListTile(
-            title: Text('설정'),
-            leading: FlutterLogo(),
-            selected: true,
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SettingPage()),
-              );
-            },
-          ),
-        ]),
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            FutureBuilder<String?>(
+              future: KakaoName(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<String?> nameSnapshot) {
+                return FutureBuilder<String>(
+                  future: KakaoEmail(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<String> emailSnapshot) {
+                    String? kakaoName = nameSnapshot.data;
+                    String? kakaoEmail = emailSnapshot.data;
+                    return FutureBuilder<String?>(
+                      future: KakaoImage(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<String?> imageSnapshot) {
+                        String? kakaoImage = imageSnapshot.data;
+                        return UserAccountsDrawerHeader(
+                          currentAccountPicture: CircleAvatar(
+                            backgroundImage: kakaoImage != null
+                                ? NetworkImage(kakaoImage)
+                                : AssetImage('assets/images/im_white.png')
+                                    as ImageProvider,
+                          ),
+                          accountName: Text(
+                            kakaoName ?? '이름 없음',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          accountEmail: Text(
+                            kakaoEmail ?? '이메일 없음',
+                            style: TextStyle(
+                              color: Colors.black,
+                            ),
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.grey[300],
+                            borderRadius: BorderRadius.only(
+                              bottomLeft: Radius.circular(40.0),
+                              bottomRight: Radius.circular(40.0),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                );
+              },
+            ),
+            ListTile(
+              title: Text(
+                '소비 및 캐시백 총액',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.attach_money,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => AssetmanagementPage()),
+                );
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '카드사 로그인',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.login,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterCardPage()),
+                );
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '카드 등록',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.add_card,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CardInfoPage()),
+                );
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '나의 소비 내역',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.settings_accessibility,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => CashbackThisMonthTting()),
+                );
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '카드 추천',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.card_giftcard,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => RecommendPage()));
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+            ListTile(
+              title: Text(
+                '설정',
+                style: TextStyle(color: Colors.black),
+              ),
+              leading: Icon(
+                // leading은 맨 처음을 기준으로 붙여줌
+                Icons.settings,
+                color: Colors.grey[850],
+              ),
+              selected: true,
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SettingPage()));
+              },
+              trailing: Icon(
+                Icons.add,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
       ),
       body: Column(
         children: [
@@ -151,7 +266,7 @@ class MainPage extends StatelessWidget {
               ),
             ],
           ),
-           Row(
+          Row(
             children: [
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
