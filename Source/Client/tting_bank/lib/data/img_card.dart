@@ -3,3 +3,4 @@ class ImgCard{
                                 , 'assets/images/im_card_samsung_taptap_digital.png'
                                 , 'assets/images/im_card_sinhan_bbig.png'];
 }
+
