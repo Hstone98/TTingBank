@@ -4,8 +4,8 @@ class ImageCategory {
     'assets/images/im_mmovie.png',
     'assets/images/im_mmarket.png',
     'assets/images/im_ttravel.png',
-    'assets/images/im_white.png',
-    'assets/images/im_white.png'
+    'assets/images/im_ggasstation.png',
+    'assets/images/im_hhotel.png'
   ];
 
   static String imWhite = 'assets/images/im_white.png';

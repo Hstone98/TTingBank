@@ -336,6 +336,8 @@ class _MainPageState extends State<MainPage> {
               ),
               SizedBox(height: 30),
               Container(
+                width: double.infinity,
+                margin: EdgeInsets.fromLTRB(30, 0, 30, 0),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(8),
@@ -349,7 +351,7 @@ class _MainPageState extends State<MainPage> {
                   ],
                 ),
                 child: Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(10, 20, 0, 20),
+                  padding: EdgeInsetsDirectional.fromSTEB(30, 20, 0, 20),
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
                     child: Row(
@@ -364,13 +366,27 @@ class _MainPageState extends State<MainPage> {
                                   ImageCategory.listAsset[2 * i],
                                   CategoryType.values[2 * i],
                                   context,
+                                  
                                 ),
+                                if(i==0)
+                                  Text("카페",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  if(i==1)
+                                  Text("편의점",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  if(i==2)
+                                  Text("주유소",style: TextStyle(fontWeight: FontWeight.bold),),
+                                
                               if (2 * i + 1 < ImageCategory.listAsset.length)
                                 setSizeBox(
                                   ImageCategory.listAsset[2 * i + 1],
                                   CategoryType.values[2 * i + 1],
                                   context,
                                 ),
+                                if(i==0)
+                                  Text("영화관",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  if(i==1)
+                                  Text("여행",style: TextStyle(fontWeight: FontWeight.bold),),
+                                  if(i==2)
+                                  Text("호텔/리조트",style: TextStyle(fontWeight: FontWeight.bold),),
                             ],
                           ),
                       ],
