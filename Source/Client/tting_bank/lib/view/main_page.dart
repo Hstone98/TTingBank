@@ -228,117 +228,146 @@ class MainPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(10, 20, 0, 20),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: [
-                  for (int i = 0;
-                      i < (ImageCategory.listAsset.length + 1) ~/ 2;
-                      i++)
-                    Row(
-                      children: [
-                        Column(
-                          children: [
-                            if (2 * i < ImageCategory.listAsset.length)
-                              setSizeBox(ImageCategory.listAsset[2 * i],
-                                  CategoryType.values[2 * i], context),
-                            if (2 * i + 1 < ImageCategory.listAsset.length)
-                              setSizeBox(ImageCategory.listAsset[2 * i + 1],
-                                  CategoryType.values[2 * i + 1], context),
-                          ],
-                        ),
-                        SizedBox(width: 4),
-                      ],
-                    ),
-                ],
+          SizedBox(height: 30),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: EdgeInsetsDirectional.fromSTEB(10, 20, 0, 20),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (int i = 0;
+                        i < (ImageCategory.listAsset.length + 1) ~/ 2;
+                        i++)
+                      Column(
+                        children: [
+                          if (2 * i < ImageCategory.listAsset.length)
+                            setSizeBox(
+                              ImageCategory.listAsset[2 * i],
+                              CategoryType.values[2 * i],
+                              context,
+                            ),
+                          if (2 * i + 1 < ImageCategory.listAsset.length)
+                            setSizeBox(
+                              ImageCategory.listAsset[2 * i + 1],
+                              CategoryType.values[2 * i + 1],
+                              context,
+                            ),
+                        ],
+                      ),
+                  ],
+                ),
               ),
             ),
           ),
-          Row(
-            children: [
-              Expanded(
-                child: Container(
-                  height: 1.0,
-                  color: Colors.black,
+          SizedBox(height: 40),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(8),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withOpacity(0.5),
+                  spreadRadius: 3,
+                  blurRadius: 7,
+                  offset: Offset(0, 3),
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Padding(
-                padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
-                child: Text(
-                  "My Card",
-                  style: TextStyle(
-                    fontSize: 23,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.bold,
-                  ),
+              ],
+            ),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    Padding(
+                      padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
+                      child: Text(
+                        "My Card",
+                        style: TextStyle(
+                          fontSize: 23,
+                          color: Colors.black87,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                    children: [
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                        child: Image.asset(
-                          'bankTting/img/testcard1.png',
-                          width: 300,
-                          height: 220,
+                Row(
+                  children: [
+                    Expanded(
+                      child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                              child: Image.asset(
+                                'bankTting/img/testcard1.png',
+                                width: 300,
+                                height: 220,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                              child: Image.asset(
+                                'bankTting/img/testcard2.png',
+                                width: 300,
+                                height: 220,
+                              ),
+                            ),
+                            Padding(
+                              padding:
+                                  EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
+                              child: Image.asset(
+                                'bankTting/img/testcard3.png',
+                                width: 300,
+                                height: 220,
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor:
+                                    Colors.transparent, // 배경색을 투명하게 설정
+                                shape: RoundedRectangleBorder(
+                                  // 라운드 코너 제거
+                                  borderRadius: BorderRadius.circular(0),
+                                ),
+                                elevation: 0, // 물방울 효과 제거
+                              ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CardInfoPage()),
+                                );
+                              },
+                              child: Image.asset(
+                                'bankTting/img/cardplus.PNG',
+                                width: 300,
+                                height: 220,
+                              ),
+                            ),
+                          ],
                         ),
                       ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                        child: Image.asset(
-                          'bankTting/img/testcard2.png',
-                          width: 300,
-                          height: 220,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsetsDirectional.fromSTEB(20, 0, 0, 0),
-                        child: Image.asset(
-                          'bankTting/img/testcard3.png',
-                          width: 300,
-                          height: 220,
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.transparent, // 배경색을 투명하게 설정
-                          shape: RoundedRectangleBorder(
-                            // 라운드 코너 제거
-                            borderRadius: BorderRadius.circular(0),
-                          ),
-                          elevation: 0, // 물방울 효과 제거
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => CardInfoPage()),
-                          );
-                        },
-                        child: Image.asset(
-                          'bankTting/img/cardplus.PNG',
-                          width: 300,
-                          height: 220,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
