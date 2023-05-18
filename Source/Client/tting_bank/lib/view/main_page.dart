@@ -228,56 +228,43 @@ class MainPage extends StatelessWidget {
       ),
       body: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(16.0),
-            color: Colors.white,
+          Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(10, 20, 0, 20),
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              child: Stack(
+              child: Row(
                 children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: double.infinity,
-                    child: Transform(
-                      transform: Matrix4.identity()
-                        ..setEntry(3, 2, 0.001) // 원근 효과를 위한 z축 스케일 조정
-                        ..rotateY(-0.2), // Y축 기준으로 회전
-                      child: Container(
-                        color: Colors.white,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    child: Row(
+                  for (int i = 0;
+                      i < (ImageCategory.listAsset.length + 1) ~/ 2;
+                      i++)
+                    Row(
                       children: [
-                        for (int i = 0;
-                            i < (ImageCategory.listAsset.length + 1) ~/ 2;
-                            i++)
-                          Row(
-                            children: [
-                              Column(
-                                children: [
-                                  if (2 * i < ImageCategory.listAsset.length)
-                                    setSizeBox(ImageCategory.listAsset[2 * i],
-                                        CategoryType.values[2 * i], context),
-                                  if (2 * i + 1 <
-                                      ImageCategory.listAsset.length)
-                                    setSizeBox(
-                                        ImageCategory.listAsset[2 * i + 1],
-                                        CategoryType.values[2 * i + 1],
-                                        context),
-                                ],
-                              ),
-                              SizedBox(width: 4),
-                            ],
-                          ),
+                        Column(
+                          children: [
+                            if (2 * i < ImageCategory.listAsset.length)
+                              setSizeBox(ImageCategory.listAsset[2 * i],
+                                  CategoryType.values[2 * i], context),
+                            if (2 * i + 1 < ImageCategory.listAsset.length)
+                              setSizeBox(ImageCategory.listAsset[2 * i + 1],
+                                  CategoryType.values[2 * i + 1], context),
+                          ],
+                        ),
+                        SizedBox(width: 4),
                       ],
                     ),
-                  ),
                 ],
               ),
             ),
+          ),
+          Row(
+            children: [
+              Expanded(
+                child: Container(
+                  height: 1.0,
+                  color: Colors.black,
+                ),
+              ),
+            ],
           ),
           Row(
             children: [

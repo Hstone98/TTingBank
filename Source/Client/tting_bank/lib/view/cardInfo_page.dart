@@ -24,10 +24,23 @@ class CardInfoPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         //오버플로우 나는거 해결
-        padding: EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Text(
+              "Card Information",
+              style: TextStyle(
+                fontSize: 23,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Divider(
+              height: 30,
+              thickness: 2,
+              color: Colors.grey,
+            ),
             SizedBox(height: 16),
             TextField(
               decoration: InputDecoration(
