@@ -5,8 +5,8 @@ import 'package:tting_bank/data/img_card.dart';
 //
 //------------------------------------------------------------------------------------------------//
 // TODO : 보유카드와 추천카드 개수는 DB에서 count 데이터 가지고 와서 설정 -> 화면 전환 시, 페이지 로드하면서 가지고 오기.
-var possessCardIndex = 0; // 보유카드 index
-var suggestCardIndex = 0; // 추천카드 index
+var possessCardIndex = 3; // 보유카드 index
+var suggestCardIndex = 5; // 추천카드 index
 
 //------------------------------------------------------------------------------------------------//
 // 카드 추천 페이지
