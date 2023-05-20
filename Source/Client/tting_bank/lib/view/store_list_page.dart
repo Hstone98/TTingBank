@@ -27,7 +27,7 @@ class _storeListPage extends State<StoreListPage>
     super.initState();
 
     _tabController = TabController(
-        vsync: this, length: 8, initialIndex: categoryType!.index);
+        vsync: this, length: 3, initialIndex: categoryType!.index);
 
     // super.initState();
   }
@@ -182,4 +182,3 @@ Row createStoreRow() {
     ],
   );
 }
-
