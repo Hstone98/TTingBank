@@ -14,7 +14,7 @@ class ImageCategory {
     'assets/images/im_angelin.png',
     'assets/images/im_bback.png',
     'assets/images/im_coffeebene.png',
-    'assets/images/im_coffeebin.png',
+    'assets/images/im_coffeebay.png',
     'assets/images/im_curban.png',
     'assets/images/im_dalkomm.png',
     'assets/images/im_ediya.png',
