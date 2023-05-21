@@ -78,13 +78,13 @@ class _storeListPage extends State<StoreListPage>
           body: TabBarView(controller: _tabController, children: [
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreCafe)),
+                child: StoreListScreen(ImageCategory.listStoreCafe, ImageCategory.CafeNameList)),
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreMovie)),
+                child: StoreListScreen(ImageCategory.listStoreMovie, ImageCategory.MovieNameList)),
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreConvenience))
+                child: StoreListScreen(ImageCategory.listStoreConvenience, ImageCategory.ConvenienceNameList))
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe))
@@ -95,8 +95,9 @@ class _storeListPage extends State<StoreListPage>
 
 class StoreListScreen extends StatelessWidget {
   List? listStore;
+  List allList;
 
-  StoreListScreen(this.listStore);
+  StoreListScreen(this.listStore, this.allList);
 
   Widget build(BuildContext context) {
     return CustomScrollView(
@@ -110,7 +111,7 @@ class StoreListScreen extends StatelessWidget {
             crossAxisCount: 4,
             children: <Widget>[
               for (int i = 0; i < listStore!.length; i++)
-                createColumn(listStore!, i, context),
+                createColumn(listStore!, allList[i], i, context),
             ],
           ),
         ),
@@ -119,15 +120,16 @@ class StoreListScreen extends StatelessWidget {
   }
 }
 
-Widget createColumn(List listStore, int index, BuildContext context) {
+Widget createColumn(List listStore, var name, int index, BuildContext context) {
+
+
   return Container(
     padding: const EdgeInsets.all(1),
     child: ElevatedButton(
       onPressed: () => {
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => RecommendPage(),
+          MaterialPageRoute(builder: (context) => RecommendPage(name),
           ),
         )
       },

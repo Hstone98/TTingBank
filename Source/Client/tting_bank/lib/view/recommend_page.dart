@@ -20,6 +20,9 @@ var suggestCardIndexFourth = 4; //캐시백순 탭 미보유 추천카드 갯수
 // 카드 추천 페이지
 //------------------------------------------------------------------------------------------------//
 class RecommendPage extends StatelessWidget {
+  var inputname;
+  RecommendPage(this.inputname, {Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -39,9 +42,10 @@ class RecommendPage extends StatelessWidget {
           ),
           backgroundColor: Color.fromARGB(255, 236, 243, 244),
           title: Text(
-            "twosome place",
+            inputname,
             style: TextStyle(
               color: Colors.black,
+              fontWeight: FontWeight.bold
             ),
           ),
           centerTitle: true,
