@@ -14,8 +14,7 @@ mysqlConnection.connect();
 // =======================================로그인 및 회원가입==========================================
 router.post('/:users/login', (req,res)=>{
     const email = req.body.email;
-    const username = req.body.username;
-    const birth = req.body.birth
+    const name = req.body.name;
     
     var sql =  'SELECT * FROM tbl_사용자 WHERE email = ?';
     var params = [email];
@@ -41,8 +40,9 @@ router.post('/:users/login', (req,res)=>{
             }
             else
             {
-                var insertSql = 'INSERT INTO tbl_사용자 (email, username, birth) VALUES (?, ?, ?)';
-                var insertParams = [email, username, birth];
+                var insertSql = 'INSERT INTO tbl_사용자 (email, name) VALUES (?, ?)';
+                var insertParams = [email, name];
+                console.log(email, name);
                 mysqlConnection.query(insertSql, insertParams, function(error, result, fields) {
                     if (error) {
                         res.status(400).json('error ocurred');  

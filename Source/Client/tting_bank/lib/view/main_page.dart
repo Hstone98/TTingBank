@@ -5,7 +5,7 @@ import 'package:tting_bank/conttoller/search_controller.dart';
 import '../data/search_store.dart';
 import 'assetmanagement_page.dart';
 import 'cardInfo_page.dart';
-import 'cashback_this_month_tting.dart';
+import 'consumption_details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
@@ -17,6 +17,8 @@ import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
 import 'package:tting_bank/view/registercard_page.dart';
 import 'package:tting_bank/conttoller/profile_controller.dart';
+
+var testname = 'test';
 
 class MainPage extends StatefulWidget {
   const MainPage({Key? key}) : super(key: key);
@@ -208,7 +210,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CashbackThisMonthTting()),
+                        builder: (context) => ConsumptionThisMonth()),
                   );
                 },
                 trailing: Icon(
@@ -229,7 +231,7 @@ class _MainPageState extends State<MainPage> {
                 selected: true,
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RecommendPage()));
+                      MaterialPageRoute(builder: (context) => RecommendPage(testname)));
                 },
                 trailing: Icon(
                   Icons.add,
@@ -356,9 +358,7 @@ class _MainPageState extends State<MainPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        for (int i = 0;
-                            i < (ImageCategory.listAsset.length + 1) ~/ 2;
-                            i++)
+                        for (int i = 0;i < (ImageCategory.listAsset.length + 1) ~/ 2;i++)
                           Column(
                             children: [
                               if (2 * i < ImageCategory.listAsset.length)

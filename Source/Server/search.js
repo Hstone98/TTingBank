@@ -82,8 +82,7 @@ router.post('/search/payment', (req, res) =>{
   const year = req.body.year;
   const month = req.body.month;
 
-  const sql = 'SELECT * FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND'
-  + 'SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
+  const sql = 'SELECT * FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
   var params = [id, year, month];
   mysqlConnection.query(sql,params, function(error, result, fields){
       if(error)
@@ -97,7 +96,8 @@ router.post('/search/payment', (req, res) =>{
               console.log('결제내역 데이터 조회 성공');
           }
           else{
-              res.status(404).json('The data does not exist');   
+              res.status(404).json(result);
+                 
               console.log('결제내역 데이터 없음');  
           }
       }
