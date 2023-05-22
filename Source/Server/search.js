@@ -54,5 +54,54 @@ router.post('/search', (req, res) => {
     }
   });
 });
+// =======================================사용자 이름 검색 기능==========================================
+router.post('/search/userid', (req, res) =>{
+  const name = req.body.name;
+  
+  let sql = 'SELECT * FROM tbl_사용자 WHERE name = ?';
+  let params = [name];
+
+  mysqlConnection.query(sql, params, function(error, result, fields){
+    if (error) {
+      console.log(error);
+      res.status(500).json({ message: '오류가 발생했습니다.' });
+    } else {
+      if (result.length === 0) {
+        res.status(400).json({ message: '찾을 수 없습니다.' });
+      } else {
+        res.json(result);
+        console.log('사용자 데이터 넘김');
+      }
+    }
+  })
+});
+
+// =======================================결제내역 조회 기능==========================================
+router.post('/search/payment', (req, res) =>{
+  const id = req.body.id;
+  const year = req.body.year;
+  const month = req.body.month;
+
+  const sql = 'SELECT * FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND'
+  + 'SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
+  var params = [id, year, month];
+  mysqlConnection.query(sql,params, function(error, result, fields){
+      if(error)
+      {
+          res.status(400).json('error ocurred');         
+          console.log('들어옴1');
+      }
+      else{
+          if(result.length > 0){
+              res.status(200).json(result);
+              console.log('결제내역 데이터 조회 성공');
+          }
+          else{
+              res.status(404).json('The data does not exist');   
+              console.log('결제내역 데이터 없음');  
+          }
+      }
+  })
+});
 
 module.exports = router;

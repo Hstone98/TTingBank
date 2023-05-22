@@ -16,12 +16,13 @@ app.use(express.json());
 // app.use('/db-card-company', dbCardCompanyRouter);
 // app.use('/account', accountRouter);
 
-app.use(require('./convert'));
 app.use(require('./search'));
 app.use(require('./account'));
 //app.use(require('./codef-auth'));
 console.log("들어옴");
 app.use(require('./test')); //test용 파일
+app.use(require('./testson')); //test용 파일(손)
+
 
 app.listen(app.get('port'), () => {
     console.log('Server listening on port', app.get('port'));
