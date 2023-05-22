@@ -1,28 +1,15 @@
-// 가맹점 타입
-
 class User {
-  int? id;
-  String? email;
+  final int id;
+  final String name;
+  final String email;
 
-  // 생성자
-  User(this.id, this.email);
+  User({required this.id, required this.name, required this.email});
 
-  // 초기화.
-  User.empty() {
-    this.id = null;
-    this.email = '';
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      id: json['id'],
+      name: json['name'],
+      email: json['email'],
+    );
   }
-
-  // json 변경.
-  Map<String, dynamic> toJson() {
-    return {
-      'id': id,
-      'email': email,
-    };
-  }
-
-  // 객체에 데이터 넣기.
-  User.fromJson(Map<String, dynamic> json)
-      : id = json['id'] != null ? json['id'] : null,
-        email = json['email'] != null ? json['email'] : '';
 }

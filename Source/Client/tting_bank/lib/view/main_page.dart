@@ -5,7 +5,7 @@ import 'package:tting_bank/conttoller/search_controller.dart';
 import '../data/search_store.dart';
 import 'assetmanagement_page.dart';
 import 'cardInfo_page.dart';
-import 'cashback_this_month_tting.dart';
+import 'consumption_details.dart';
 
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
@@ -208,7 +208,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => CashbackThisMonthTting()),
+                        builder: (context) => ConsumptionThisMonth()),
                   );
                 },
                 trailing: Icon(

@@ -2,9 +2,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tting_bank/data/search_store.dart';
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 Future<List<Store>> sendData(String name) async {
   final url = "http://121.181.192.82:7777/search/";
   final data = {'name': name};
