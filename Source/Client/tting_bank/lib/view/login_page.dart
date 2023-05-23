@@ -40,24 +40,16 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Color(0xfffbf5f1),
       body: Center(
-        
         child: Column(
-          
           children: [
-            SizedBox(height: 200,),
-                Container(
-                  
-                  child: Image.asset(
-                    
-                    'assets/images/im_rogo.png',
-                    
-                  ),
-                
-                
-                ),
-               SizedBox(height: 150),
+            SizedBox(height: 200),
+            Container(
+              child: Image.asset(
+                'assets/images/im_rogo.png',
+              ),
+            ),
+            SizedBox(height: 130),
             Row(
-              
               children: [
                 Text(
                   '     카카오톡 계정으로 간편 로그인',
@@ -115,7 +107,7 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -129,7 +121,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
