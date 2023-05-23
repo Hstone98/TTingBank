@@ -78,13 +78,16 @@ class _storeListPage extends State<StoreListPage>
           body: TabBarView(controller: _tabController, children: [
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreCafe, ImageCategory.CafeNameList)),
+                child: StoreListScreen(
+                    ImageCategory.listStoreCafe, ImageCategory.CafeNameList)),
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreMovie, ImageCategory.MovieNameList)),
+                child: StoreListScreen(
+                    ImageCategory.listStoreMovie, ImageCategory.MovieNameList)),
             Container(
                 color: Colors.grey[300],
-                child: StoreListScreen(ImageCategory.listStoreConvenience, ImageCategory.ConvenienceNameList))
+                child: StoreListScreen(ImageCategory.listStoreConvenience,
+                    ImageCategory.ConvenienceNameList))
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe)),
             // Container(color: Colors.grey[300], child: StoreListScreen(ImageCategory.listStoreCafe))
@@ -120,21 +123,25 @@ class StoreListScreen extends StatelessWidget {
   }
 }
 
-Widget createColumn(List listStore, var name, int index, BuildContext context) {
-
-
+Widget createColumn(
+  List listStore,
+  String name, // name의 타입을 String으로 변경
+  int index,
+  BuildContext context,
+) {
   return Container(
     padding: const EdgeInsets.all(1),
     child: ElevatedButton(
-      onPressed: () => {
+      onPressed: () {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => RecommendPage(name),
+          MaterialPageRoute(
+            builder: (context) => RecommendPage(name), // name을 문자열로 전달
           ),
-        )
+        );
       },
       style: ElevatedButton.styleFrom(
-        primary: Colors.white, // Background color
+        primary: Colors.white,
       ),
       child: Image.asset(
         listStore[index].toString(),

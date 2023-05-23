@@ -230,8 +230,10 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => RecommendPage(testname)));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => RecommendPage(testname)));
                 },
                 trailing: Icon(
                   Icons.add,
@@ -322,7 +324,13 @@ class _MainPageState extends State<MainPage> {
                             subtitle:
                                 Text('ID: ${store.id}, Type: ${store.type}'),
                             onTap: () {
-                              // ListTile을 클릭했을 때 수행할 작업 추가
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      RecommendPage(store.name),
+                                ),
+                              );
                             },
                           ),
                       ],
@@ -358,7 +366,9 @@ class _MainPageState extends State<MainPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        for (int i = 0;i < (ImageCategory.listAsset.length + 1) ~/ 2;i++)
+                        for (int i = 0;
+                            i < (ImageCategory.listAsset.length + 1) ~/ 2;
+                            i++)
                           Column(
                             children: [
                               if (2 * i < ImageCategory.listAsset.length)
@@ -366,27 +376,43 @@ class _MainPageState extends State<MainPage> {
                                   ImageCategory.listAsset[2 * i],
                                   CategoryType.values[2 * i],
                                   context,
-                                  
                                 ),
-                                if(i==0)
-                                  Text("카페",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  if(i==1)
-                                  Text("편의점",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  if(i==2)
-                                  Text("주유소",style: TextStyle(fontWeight: FontWeight.bold),),
-                                
+                              if (i == 0)
+                                Text(
+                                  "카페",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (i == 1)
+                                Text(
+                                  "편의점",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (i == 2)
+                                Text(
+                                  "주유소",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                               if (2 * i + 1 < ImageCategory.listAsset.length)
                                 setSizeBox(
                                   ImageCategory.listAsset[2 * i + 1],
                                   CategoryType.values[2 * i + 1],
                                   context,
                                 ),
-                                if(i==0)
-                                  Text("영화관",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  if(i==1)
-                                  Text("여행",style: TextStyle(fontWeight: FontWeight.bold),),
-                                  if(i==2)
-                                  Text("호텔/리조트",style: TextStyle(fontWeight: FontWeight.bold),),
+                              if (i == 0)
+                                Text(
+                                  "영화관",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (i == 1)
+                                Text(
+                                  "여행",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              if (i == 2)
+                                Text(
+                                  "호텔/리조트",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
                             ],
                           ),
                       ],
