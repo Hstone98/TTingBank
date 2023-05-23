@@ -16,7 +16,7 @@ void main() {
   KakaoInit();
   runApp(
     MaterialApp(
-      home: LoginPage(),
+      home: MainPage(),
     ),
   );
 }

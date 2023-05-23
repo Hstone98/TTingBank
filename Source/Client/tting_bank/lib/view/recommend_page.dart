@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:tting_bank/conttoller/profile_controller.dart';
+import 'package:tting_bank/conttoller/recommend_controller.dart';
+import 'package:tting_bank/conttoller/userid_controller.dart';
 import 'package:tting_bank/data/img_card.dart';
+import 'package:tting_bank/data/recommend_card.dart';
+import 'package:tting_bank/model/user.dart';
 
 //------------------------------------------------------------------------------------------------//
 //
@@ -133,7 +138,43 @@ CreateCardInfoPage(this.possessCardIndex, this.suggestCardIndex);
   }
 }
 
-class CreateCardInfo extends StatelessWidget {
+class CreateCardInfo extends StatefulWidget {
+  @override
+  _CreateCardInfoState createState() => _CreateCardInfoState();
+}
+
+class _CreateCardInfoState extends State<CreateCardInfo> {
+  List<Recommend_card> cardlist = [];
+  String name = '서상윤';
+  String company = 'GS25';
+
+  @override
+  void initState() {
+    super.initState();
+    recommendListset('ant1057@naver.com',company);
+  }
+
+  // Future<User> userSet() async {
+  //   String? name = await KakaoName();
+  //   return await searchUser(name);
+  // }
+  //
+  // Future<void> initUser() async {
+  //   User name = await userSet();
+  //   setState(() {
+  //     user = name;
+  //   });
+  //   await recommendListset(user, company);
+  // }
+
+  Future<void> recommendListset(String email, String company) async {
+    List<Recommend_card> list = await recommend(email, company);
+    setState(() {
+      cardlist = list;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.max,
@@ -148,7 +189,7 @@ class CreateCardInfo extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                  child: Text('NH 올바른 FLEX',
+                  child: Text('${cardlist[0].cdname}',
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                       )),
@@ -157,12 +198,12 @@ class CreateCardInfo extends StatelessWidget {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                   child: Text('NH 올바른 FLEX',
                       style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                   child: Text(
-                    'twosome place 10%할인',
+                    '${cardlist[0].company}',
                   ),
                 ),
                 Padding(

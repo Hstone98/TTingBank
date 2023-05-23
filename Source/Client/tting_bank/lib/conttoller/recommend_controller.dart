@@ -1,13 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:kakao_flutter_sdk/kakao_flutter_sdk.dart';
 import 'package:tting_bank/data/recommend_card.dart';
 
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-Future<List<Recommend_card>> sendData(String name) async {
+Future<List<Recommend_card>> sendData(String email, String company) async {
   final url = "http://121.181.192.82:7777/testson/";
-  final data = {'company': name, 'user': '서상윤'};
+  final data = {'email': email, 'company': company};
   final body = jsonEncode(data);
 
   final res = await http.post(
@@ -19,24 +17,33 @@ Future<List<Recommend_card>> sendData(String name) async {
   if (res.statusCode == 200) {
     final result = jsonDecode(res.body);
     if (result != null) {
-      print(List<Recommend_card>.from(result.map((item) => Recommend_card.fromJson(item))));
-      return List<Recommend_card>.from(result.map((item) => Recommend_card.fromJson(item)));
+      print(List<Recommend_card>.from(
+          result.map((item) => Recommend_card.fromJson(item))));
+      return List<Recommend_card>.from(
+          result.map((item) => Recommend_card.fromJson(item)));
     } else {
       throw Exception('Invalid data format');
     }
-  } else if (res.statusCode == 400) {
-    print('else if');
-    throw Exception('찾을 수 없음');
+  } else if (res.statusCode == 404) {
+    final result = jsonDecode(res.body);
+    if (result is List) {
+      print(List<Recommend_card>.from(
+          result.map((item) => Recommend_card.fromJson(item))));
+      return List<Recommend_card>.from(
+          result.map((item) => Recommend_card.fromJson(item)));
+    } else {
+      throw Exception('Invalid data format');
+    }
   } else {
-    print('else');
+    print(res.statusCode);
+    print('에러 발생');
     throw Exception('에러 발생');
   }
 }
 
-Future<List<Recommend_card>> recommend(String name) async {
+Future<List<Recommend_card>> recommend(String email, String company) async {
   try {
-    List<Recommend_card> results = await sendData(name);
-    print('Success');
+    List<Recommend_card> results = await sendData(email, company);
     return results;
   } catch (error) {
     print('catch error');
