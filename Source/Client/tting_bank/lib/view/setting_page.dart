@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/profile_controller.dart';
 
@@ -143,10 +145,20 @@ class ListTileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      onTap: () {},
-      leading: Icon(icon),
-      title: Text(title),
+    return Material(
+      color: Theme.of(context).cardColor, // ListTile의 배경색으로 설정
+      child: InkWell(
+        onTap: () {
+          if (title == '내 정보 수정하기') {
+            // '내 정보 수정하기'를 클릭했을 때 수행할 동작
+            // TODO: 동작 구현
+          }
+        },
+        child: ListTile(
+          leading: Icon(icon),
+          title: Text(title),
+        ),
+      ),
     );
   }
 }
