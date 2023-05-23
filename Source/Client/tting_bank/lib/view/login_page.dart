@@ -38,11 +38,40 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('KakaoTalk Login')),
+      backgroundColor: Colors.white,
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(height: 120),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/TTing Card.png',
+                  fit: BoxFit.cover,
+                ),
+                // Text(
+                //   'TTingCard',
+                //   style: TextStyle(
+                //       fontSize: 50,
+                //       color: Colors.grey[800],
+                //       fontWeight: FontWeight.bold),
+                // ),
+              ],
+            ),
+            SizedBox(height: 40),
+            Row(
+              children: [
+                Text(
+                  '     카카오톡 계정으로 간편 로그인',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 5),
             ElevatedButton(
               onPressed: () async => {
                 if (await btnLogin())
@@ -56,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
                   }
                 else
                   {
-                    debugPrint('씨발'),
+                    debugPrint('ssibal'),
                     showDialog<String>(
                       context: context,
                       builder: (BuildContext context) => AlertDialog(
@@ -89,10 +118,30 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () => Kakao_Withdrawal(),
-              child: Text('회원탈퇴'),
+            SizedBox(height: 300),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'TTing Card',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'TTing ver.2    Capstone',
+                  style: TextStyle(
+                    fontSize: 12,
+                    color: Colors.grey,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
