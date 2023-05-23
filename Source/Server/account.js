@@ -65,13 +65,13 @@ router.post('/:users/withdrawal', (req, res) => {
     mysqlConnection.query(sql, params, function(error, result, fields) {
       if (error) {
         res.status(500).json('Error occurred');
-        console.log('log1');
+        console.log('withdrawal error');
       } else {
         if (result.affectedRows === 0) {
           res.status(400).json('회원을 찾을 수 없음');
         } else {
           res.status(200).json('회원탈퇴 성공');
-          console.log('console log');
+          console.log('회원탈퇴 성공');
         }
       }
     });

@@ -38,29 +38,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xfffbf5f1),
       body: Center(
+        
         child: Column(
+          
           children: [
-            SizedBox(height: 120),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  'assets/images/TTing Card.png',
-                  fit: BoxFit.cover,
+            SizedBox(height: 200,),
+                Container(
+                  
+                  child: Image.asset(
+                    
+                    'assets/images/im_rogo.png',
+                    
+                  ),
+                
+                
                 ),
-                // Text(
-                //   'TTingCard',
-                //   style: TextStyle(
-                //       fontSize: 50,
-                //       color: Colors.grey[800],
-                //       fontWeight: FontWeight.bold),
-                // ),
-              ],
-            ),
-            SizedBox(height: 40),
+               SizedBox(height: 150),
             Row(
+              
               children: [
                 Text(
                   '     카카오톡 계정으로 간편 로그인',
@@ -118,10 +115,11 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 300),
+            SizedBox(height: 100),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 10),
                 Text(
                   'TTing Card',
                   style: TextStyle(
@@ -131,6 +129,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
+            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

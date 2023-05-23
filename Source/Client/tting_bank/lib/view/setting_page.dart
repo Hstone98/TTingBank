@@ -1,7 +1,9 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/profile_controller.dart';
+import 'package:tting_bank/conttoller/userdata_controller.dart';
+
+import '../conttoller/userid_controller.dart';
+import '../model/user.dart';
 
 class SettingPage extends StatefulWidget {
   const SettingPage({
@@ -12,7 +14,31 @@ class SettingPage extends StatefulWidget {
   SettingPageState createState() => SettingPageState();
 }
 
+User user = User(id: 0, name: '', email: ''); //사용자 정보
+
 class SettingPageState extends State<SettingPage> {
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  //KakaoName()에서 받아온 이름을 searchUser로 보내고 Futuer<User>형태로 return
+  Future<User> userSet() async {
+    String? name = await KakaoName();
+    // return await searchUser(name); // 실제로 탈퇴시키려면 이거 써야함
+    return await searchUser('test'); //다른 데이터도 다 삭제될까봐 이름 'test'로 검색하는거
+  }
+
+//받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
+  Future<void> initUser() async {
+    User name = await userSet();
+    print(name);
+    setState(() {
+      user = name;
+    });
+  }
+
   List<String> mainList = [
     '내 정보 수정하기',
     '내 자산',
@@ -90,7 +116,7 @@ class SettingPageState extends State<SettingPage> {
                     ),
                     SizedBox(height: 16),
                     Text(
-                      '회원 이름',
+                      user.name, //받아온 사용자 이름 출력
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -145,20 +171,57 @@ class ListTileItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Theme.of(context).cardColor, // ListTile의 배경색으로 설정
-      child: InkWell(
-        onTap: () {
-          if (title == '내 정보 수정하기') {
-            // '내 정보 수정하기'를 클릭했을 때 수행할 동작
-            // TODO: 동작 구현
-          }
-        },
-        child: ListTile(
-          leading: Icon(icon),
-          title: Text(title),
-        ),
-      ),
+    return ListTile(
+      onTap: () {
+        if (title == '내 정보 수정하기') {
+          // '내 정보 수정하기'를 클릭했을 때 수행할 동작
+          // TODO: 동작 구현
+        } else if (title == '내 자산') {
+          // '내 자산'을 클릭했을 때 수행할 동작
+          // TODO: 동작 구현
+        } else if (title == '고객센터') {
+          // '고객센터'를 클릭했을 때 수행할 동작
+          // TODO: 동작 구현
+        } else if (title == '탈퇴하기') {
+          // '탈퇴하기'를 클릭했을 때 수행할 동작
+          showConfirmationDialog(context);
+        } else if (title == '앱 버전 ver 1.0') {
+          // '앱 버전 ver 1.0'을 클릭했을 때 수행할 동작
+          // TODO: 동작 구현
+        }
+      },
+      leading: Icon(icon),
+      title: Text(title),
+    );
+  }
+
+  void showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('탈퇴하기'), // 다이얼로그 제목
+          content: Text('정말로 탈퇴하시겠습니까?'), // 다이얼로그 내용
+          actions: [
+            TextButton(
+              onPressed: () {
+                // 예를 선택한 경우 탈퇴처리
+                withdrawUser(user.email); //탈퇴기능
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('예'), // 예 버튼 텍스트
+            ),
+            TextButton(
+              onPressed: () {
+                // 아니오를 선택한 경우 취소됨
+
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('아니오'), // 아니오 버튼 텍스트
+            ),
+          ],
+        );
+      },
     );
   }
 }
