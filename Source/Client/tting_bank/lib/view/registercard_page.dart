@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tting_bank/conttoller/registercard_page_controller.dart' as ctrRegisterCard;
 
 class RegisterCardPage extends StatefulWidget {
   @override
@@ -22,7 +23,9 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
     'ibk',
     '농협'
   ];
-
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,7 +95,18 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
               style: ElevatedButton.styleFrom(
                 primary: Colors.black54,
               ),
-              onPressed: _selectedCard.isEmpty ? null : _registerCard,
+              onPressed: _selectedCard.isEmpty
+                  ? null
+                  : () async {
+                      if (await ctrRegisterCard.sendCardLoginData(
+                          'KR', 'CD', 'P', '0305', '1', _inputId, _inputPassword)) {
+                        print("Success");
+                        Navigator.of(context).pop();
+                        Navigator.of(context).pop();
+                      } else {
+                        _registerCard();
+                      }
+                    },
               child: Text('Register Card'),
             ),
           ],
@@ -101,6 +115,9 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
     );
   }
 
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
   Widget _buildCardButton(String card) {
     return InkWell(
       onTap: () {
@@ -118,6 +135,9 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
     );
   }
 
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
   void _registerCard() {
     if (_selectedCard.isEmpty) {
       return;
