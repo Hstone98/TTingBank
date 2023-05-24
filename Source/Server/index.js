@@ -22,6 +22,9 @@ app.use(require('./account'));
 console.log("들어옴");
 app.use(require('./test')); //test용 파일
 app.use(require('./testson')); //test용 파일(손)
+app.use(require('./codef/codef-auth-test'));
+// app.use(require('./codef/codef-index'));
+
 
 
 app.listen(app.get('port'), () => {

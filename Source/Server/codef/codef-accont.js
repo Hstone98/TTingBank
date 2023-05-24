@@ -8,23 +8,50 @@ const {
     EasyCodefUtil,
   } = require('easycodef-node');
 
-
 var crypto = require("crypto");
 var constants = require("constants");
 
-var codef_account_create_url = 'https://development.codef.io/v1/account/create'
+var codef_account_create_url = 'https://development.codef.io/v1/account/create';
+var codef_account_add_organization = 'https://api.codef.io/v1/account/add';
 
+// var RSA_password = publicEncRSA(KEY.PUBLIC_KEY, "djWjfkrh1324%");
 
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
 //------------------------------------------------------------------------------------------------//
-function request_create_connected_id(countryCode, businessType, clientType, organization, loginType
+function request_create_connected_id_body(countryCode, businessType, clientType, organization, loginType
                                         , id, password, birthDate, loginTypeLevel, clientTypeLevel, cardNo, cardPassword)
 {
-    RSA_password = publicEncRSA(KEY.PUBLIC_KEY, password)
+    return create_accountList;
+}
+//------------------------------------------------------------------------------------------------//
+// Connected ID 추가 -> 처음 발급 받은 Connecte ID에 새로운 은행이나 카드사 추가.
+//------------------------------------------------------------------------------------------------//
+function request_add_organization_connected_id_body(countryCode, businessType, clientType
+                                                    , organization, loginType, id, password
+                                                    , birthDate, loginTypeLevel, clientTypeLevel
+                                                    , cardNo, cardPassword)
+{
+    var codef_add_organization_connected_id_body = {
+        "accountList": request_create_connected_id_body(countryCode, businessType, clientType
+                                                        , organization, loginType, id, password
+                                                        , birthDate, loginTypeLevel, clientTypeLevel
+                                                        , cardNo, cardPassword),
+        "connectedId": ""// TODO : DB에서 가져와라.
+    }
+    
+    return codef_add_organization_connected_id_body;
+}
+//------------------------------------------------------------------------------------------------//
+// (JSON Fomat)create_accountList
+//------------------------------------------------------------------------------------------------//
+function create_accountList(countryCode, businessType, clientType, organization, loginType
+    , id, password, birthDate, loginTypeLevel, clientTypeLevel, cardNo, cardPassword)
+{
+    RSA_password = publicEncRSA(KEY.PUBLIC_KEY, password);
 
-    var codef_account_create_body = {
-        'accountList':[                  // 계정목록
+    return {
+        'accountList':[
           {
               "countryCode": countryCode,               // (필수)국가코드
               "businessType": businessType,             // (필수)업무구분 -> 은행,저축은행 : BK / 카드 : CD / 증권 : ST / 보험 : IS
@@ -40,26 +67,21 @@ function request_create_connected_id(countryCode, businessType, clientType, orga
               //"cardPassword": cardPassword,           // (옵션)KB카드 소지확인 필요한 경우 : 카드 비밀번호 앞 2자리
           }
         ]
-};
-
-    return;
+    };
 }
-
-
-var RSA_password = publicEncRSA(KEY.PUBLIC_KEY, "djWjfkrh1324%");
-
-
 //------------------------------------------------------------------------------------------------//
 // 비밀번호 암호화 -> codef에서 제공하는 public key로 RSA암호화 한 후, api 서버로 요청해야됨.
 //------------------------------------------------------------------------------------------------//
 function publicEncRSA(publicKey, data) {
-  var pubkeyStr = "-----BEGIN PUBLIC KEY-----\n" + publicKey + "\n-----END PUBLIC KEY-----";
-  var bufferToEncrypt = new Buffer(data);
-  var encryptedData = crypto.publicEncrypt({"key" : pubkeyStr, padding : constants.RSA_PKCS1_PADDING},bufferToEncrypt).toString("base64");
+    console.log(publicKey);
 
-  console.log(encryptedData); 
+    var pubkeyStr = "-----BEGIN PUBLIC KEY-----\n" + publicKey + "\n-----END PUBLIC KEY-----";
+    var bufferToEncrypt = new Buffer(data);
+    var encryptedData = crypto.publicEncrypt({"key" : pubkeyStr, padding : constants.RSA_PKCS1_PADDING},bufferToEncrypt).toString("base64");
 
-  return encryptedData;
+    console.log(encryptedData); 
+
+    return encryptedData;
 };
 
 module.exports = router;
