@@ -45,8 +45,11 @@ Future<void> withdrawUser(String? email) async {
   }
 }
 
-Future<void> save(String? kakaoname, String? kakaoemai) async {
+Future<void> save(String? kakaoemai, String? kakaoname) async {
   String? name = kakaoname;
   String? email = kakaoemai;
+  print(email);
+  print(name);
+
   await saveUser(email, name);
 }

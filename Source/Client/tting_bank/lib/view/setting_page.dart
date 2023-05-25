@@ -26,11 +26,10 @@ class SettingPageState extends State<SettingPage> {
 //받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
   Future<void> initUser() async {
     // User user = await userSet(await KakaoName());  //실제 사용자 정보 받아오는 거
-    User user = User(id: 2, name: 'testuser', email: 'testuser@naver.com');
+    User userInfo = await userSet('testuser'); //testuser 사용자 정보 받아오는 거
     //회원이랑 거래내역 카드정보 다 삭제되기 때문에 임시로 testuser로 접속하도록
-    print(user);
     setState(() {
-      user = user;
+      user = userInfo;
     });
   }
 
@@ -201,6 +200,7 @@ class ListTileItem extends StatelessWidget {
             TextButton(
               onPressed: () {
                 // 예를 선택한 경우 탈퇴처리
+                print(user.email);
                 withdrawUser(user.email); //탈퇴기능
                 Navigator.of(context).pop(); // 다이얼로그 닫기
               },
