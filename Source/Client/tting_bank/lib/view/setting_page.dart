@@ -25,19 +25,14 @@ class SettingPageState extends State<SettingPage> {
     initUser();
   }
 
-  //KakaoName()에서 받아온 이름을 searchUser로 보내고 Futuer<User>형태로 return
-  Future<User> userSet() async {
-    String? name = await KakaoName();
-    return await searchUser(name); // 실제로 탈퇴시키려면 이거 써야함
-    //return await searchUser('test'); //다른 데이터도 다 삭제될까봐 이름 'test'로 검색하는거
-  }
-
-//받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
+  //받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
   Future<void> initUser() async {
-    User name = await userSet();
-    print(name);
+    // User user = await userSet(await KakaoName());  //실제 사용자 정보 받아오는 거
+    User userInfo = await userSet('testuser'); //testuser 사용자 정보 받아오는 거
+    //회원이랑 거래내역 카드정보 다 삭제되기 때문에 임시로 testuser로 접속하도록
+
     setState(() {
-      user = name;
+      user = userInfo;
     });
   }
 
