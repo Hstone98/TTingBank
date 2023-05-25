@@ -984,3 +984,4 @@ tting_bank/windows/flutter/ephemeral/generated_config.cmake
 Source/Client/tting_bank/pubspec.lock
 Source/Client/tting_bank/ios/Runner.xcodeproj/project.pbxproj
 Source/Client/tting_bank/ios/Podfile.lock
+Source/Client/tting_bank/ios/Podfile
