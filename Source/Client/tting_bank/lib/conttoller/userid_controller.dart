@@ -27,3 +27,15 @@ Future<User> searchUser(String? name) async {
     throw Exception('에러 발생');
   }
 }
+
+//KakaoName()에서 받아온 이름을 searchUser로 보내고 User 형태로 return
+Future<User> userSet(String? name) async {
+  User user;
+  try {
+    user = await searchUser(name);
+    return user;
+  } catch (error) {
+    print('찾을 수 없음');
+    return user = User(id: 0, name: '', email: '');
+  }
+}
