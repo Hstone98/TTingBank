@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/registercard_page_controller.dart' as ctrRegisterCard;
+import 'package:fluttertoast/fluttertoast.dart';
 
 class RegisterCardPage extends StatefulWidget {
   @override
@@ -103,8 +104,9 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
                         print("Success");
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
+                        showToast('로그인 성공!!');
                       } else {
-                        _registerCard();
+                        showToast('로그인 실패!!');
                       }
                     },
               child: Text('Register Card'),
@@ -169,6 +171,20 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
           ),
         ],
       ),
+    );
+  }
+
+  //----------------------------------------------------------------------------------------------//
+  //
+  //----------------------------------------------------------------------------------------------//
+  void showToast(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.white,
+      fontSize: 15,
+      textColor: Colors.black,
+      toastLength: Toast.LENGTH_SHORT,
     );
   }
 }
