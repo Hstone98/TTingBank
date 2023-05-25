@@ -44,3 +44,9 @@ Future<void> withdrawUser(String? email) async {
     throw Exception('에러 발생');
   }
 }
+
+Future<void> save(String? kakaoname, String? kakaoemai) async {
+  String? name = kakaoname;
+  String? email = kakaoemai;
+  await saveUser(email, name);
+}

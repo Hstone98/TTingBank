@@ -21,18 +21,14 @@ class _LoginPageState extends State<LoginPage> {
           context,
           MaterialPageRoute(builder: (context) => MainPage()),
         );
-        set(); //DB로 사용자 데이터 전송
+        initUserSave(); //DB로 사용자 데이터 전송
       }
     });
   }
 
   //이메일, 이름 비동기로 받아올때까지 기다림
-  void set() async {
-    String? email = await KakaoEmail();
-    String? name = await KakaoName();
-    print(email);
-    print(name);
-    await saveUser(email, name);
+  void initUserSave() async {
+    await save(await KakaoEmail(), await KakaoName());
   }
 
   @override
@@ -70,7 +66,7 @@ class _LoginPageState extends State<LoginPage> {
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
                     ),
-                    set() //DB로 사용자 데이터 전송
+                    initUserSave() //DB로 사용자 데이터 전송
                   }
                 else
                   {

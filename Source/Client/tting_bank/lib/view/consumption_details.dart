@@ -65,15 +65,9 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
     });
   }
 
-//KakaoName()에서 받아온 이름을 searchUser로 보내고 Futuer<User>형태로 return
-  Future<User> userSet() async {
-    String? name = await KakaoName();
-    return await searchUser(name);
-  }
-
-//받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
+//받은 비동기 User를 User형태로 name에 저장하고 상태를 저장
   Future<void> initUser() async {
-    User name = await userSet();
+    User name = await userSet(await KakaoName());
     setState(() {
       user = name;
     });
@@ -83,13 +77,13 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
       monthString = month.toString().padLeft(2, '0');
     }
     yearString = DateTime.now().year.toString();
-    consumptionListSet(yearString, monthString); //거래내역 조회 실행
+    initConsumption();
   }
 
-  //거래내역을 조회해서 Consumption형태를 List에 담기
-  Future<void> consumptionListSet(String yearString, String monthString) async {
+//받은 user에 대한 데이터를 가져오고 거래내역 조회
+  Future<void> initConsumption() async {
     List<Consumption> list =
-        await consumptionData(user.id, yearString, monthString);
+        await consumptionListSet(user.id, yearString, monthString); //거래내역 조회 실행
     setState(() {
       consumptionList = list;
     });
@@ -156,7 +150,7 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
                         //String 으로 month 저장
                       }
                       Navigator.of(context).pop();
-                      consumptionListSet(yearString, monthString);
+                      initConsumption();
                     });
                   },
                 );
@@ -213,7 +207,7 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
                   onPressed: canDecrease
                       ? () {
                           decreaseMonth();
-                          consumptionListSet(yearString, monthString);
+                          initConsumption();
                         }
                       : null,
                 ),
@@ -237,7 +231,7 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
                   onPressed: canIncrease
                       ? () {
                           increaseMonth();
-                          consumptionListSet(yearString, monthString);
+                          initConsumption();
                         }
                       : null,
                 ),

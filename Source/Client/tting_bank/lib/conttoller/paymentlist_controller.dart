@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:tting_bank/model/consumption.dart';
+import 'package:tting_bank/view/setting_page.dart';
 
 Future<List<Consumption>> consumptionData(
     int id, String year, String month) async {
@@ -33,10 +34,22 @@ Future<List<Consumption>> consumptionData(
     } else {
       throw Exception('Invalid data format');
     }
-    return throw Exception('찾을 수 없음');
   } else {
     print(res.statusCode);
     print('에러 발생');
     throw Exception('에러 발생');
+  }
+}
+
+//거래내역을 조회해서 Consumption형태를 List에 담기
+Future<List<Consumption>> consumptionListSet(
+    int userId, String yearString, String monthString) async {
+  try {
+    List<Consumption> list =
+        await consumptionData(userId, yearString, monthString);
+    return list;
+  } catch (error) {
+    print('찾을 수 없음');
+    return [];
   }
 }
