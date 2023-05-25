@@ -27,7 +27,6 @@ var urlencode = require("urlencode");
 
 var connected_body;
 
-
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
 //------------------------------------------------------------------------------------------------//
@@ -54,7 +53,9 @@ var codef_account_create_body = {
               }
             ]
 };
-
+//------------------------------------------------------------------------------------------------//
+// RSA 암호화
+//------------------------------------------------------------------------------------------------//
 function publicEncRSA(publicKey, data) {
   var pubkeyStr = "-----BEGIN PUBLIC KEY-----\n" + publicKey + "\n-----END PUBLIC KEY-----";
   var bufferToEncrypt = new Buffer(data);
@@ -64,7 +65,6 @@ function publicEncRSA(publicKey, data) {
 
   return encryptedData;
 };
-
 //------------------------------------------------------------------------------------------------//
 // AUTH 2.0 인증
 //------------------------------------------------------------------------------------------------//
@@ -134,7 +134,6 @@ var codefApiCallback = function(response) {
     
   });
 };
-
 //------------------------------------------------------------------------------------------------//
 // httpSenderCreateConnectedId
 //------------------------------------------------------------------------------------------------//
@@ -158,7 +157,6 @@ var httpSenderCreateConnectedId = function(url, token, body) {
   request.write(urlencode.encode(JSON.stringify(body)));
   request.end();
 };
-
 //------------------------------------------------------------------------------------------------//
 // connectectedidCallback
 //------------------------------------------------------------------------------------------------//
@@ -190,33 +188,10 @@ var connectectedidCallback = function(response) {
   });
 };
 
-var getConnectedId = function(){
-  var sql =  'select connected_id FROM tbl_사용자 WHERE id = 15';
-  var params = [email];
-  mysqlConnection.query(sql, params, function(error, result, fields)
-  {
-    if(error)
-    {
-        res.status(400).json('error ocurred');         
-        console.log('들어옴1');  
-    }
-    else
-    {
-      if(result.length > 0 )
-      {
-        if(result[0].email == params[0])
-        {
-            return true;
-        }
-        else
-        {
-          return false;
-        }
-      }
-    }
-  });
-}
 
+//------------------------------------------------------------------------------------------------//
+// InsertConnectedId
+//------------------------------------------------------------------------------------------------//
 var InsertConnectedId = function(connectedId){
   var sql =  'SELECT * FROM tbl_사용자 WHERE email = ?';
   var params = [email];
@@ -333,8 +308,10 @@ var authTokenCallback = function(response) {
 
       // CODEF API 요청
       // Create ConnectedId
-      // if(getConnectedId == false)
-      httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      if(!getConnectedId)
+      {
+        httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      }
     } 
     else 
     {
@@ -342,7 +319,28 @@ var authTokenCallback = function(response) {
     }
   });
 };
+//------------------------------------------------------------------------------------------------//
+// ConnectedId
+//------------------------------------------------------------------------------------------------//
+var getConnectedId = function(userId) {
+  return new Promise((resolve, reject) => {
+    var sql = 'SELECT connected_id FROM tbl_user WHERE id = ?';
+    var params = [userId];
 
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result.length > 0) {
+          resolve(result[0].connected_id);
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+};
 //------------------------------------------------------------------------------------------------//
 // Router(/:connectedid) -> connectedId 발급 시 사용하는 url
 //------------------------------------------------------------------------------------------------//
@@ -369,8 +367,6 @@ router.post('/:connectedid', (req, res) => {
     // res.statusCode = 200;
     res.status(200).send("suceess!!");
 });
-
-
 //------------------------------------------------------------------------------------------------//
 // 
 //------------------------------------------------------------------------------------------------//
