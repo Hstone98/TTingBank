@@ -20,7 +20,6 @@ var suggestCardIndexSecond = 2; //할인률순 탭 미보유 추천카드 갯수
 var suggestCardIndexThird = 3; // 적립금순 탭 미보유 추천카드 갯수
 var suggestCardIndexFourth = 4; //캐시백순 탭 미보유 추천카드 갯수
 
-
 //------------------------------------------------------------------------------------------------//
 // 카드 추천 페이지
 //------------------------------------------------------------------------------------------------//
@@ -48,31 +47,30 @@ class RecommendPage extends StatelessWidget {
           backgroundColor: Color.fromARGB(255, 236, 243, 244),
           title: Text(
             inputname,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
           ),
           centerTitle: true,
           bottom: TabBar(
               tabs: TABS
                   .map((e) => Tab(
-                        child: Text(
-                          e.label,
-                          style: TextStyle(color: Colors.black),
-                        ),
+                        child: Text(e.label,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 13.5, // Adjust the font size as desired
+                            )),
                       ))
                   .toList()),
         ),
-        body:TabBarView(
+        body: TabBarView(
           children: [
             CreateCardInfoPage(possessCardIndexInFirst, suggestCardIndexFirst),
-            CreateCardInfoPage(possessCardIndexInSecond, suggestCardIndexSecond),
+            CreateCardInfoPage(
+                possessCardIndexInSecond, suggestCardIndexSecond),
             CreateCardInfoPage(possessCardIndexInThird, suggestCardIndexThird),
-            CreateCardInfoPage(possessCardIndexInFourth, suggestCardIndexFourth),
-          ], 
-          ),
-        
+            CreateCardInfoPage(
+                possessCardIndexInFourth, suggestCardIndexFourth),
+          ],
+        ),
       ),
     );
   }
@@ -82,59 +80,60 @@ class RecommendPage extends StatelessWidget {
 //
 //------------------------------------------------------------------------------------------------//
 
-class CreateCardInfoPage extends StatelessWidget{
+class CreateCardInfoPage extends StatelessWidget {
   var possessCardIndex, suggestCardIndex; //보유카드, 미보유 추천카드
 
-CreateCardInfoPage(this.possessCardIndex, this.suggestCardIndex);
-  Widget build(BuildContext context){
-    return SingleChildScrollView(child: Column(
+  CreateCardInfoPage(this.possessCardIndex, this.suggestCardIndex);
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
-                          child: Text(
-                            '보유중인 카드',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[500],
-                            ),
-                          )),
-                          for (int i = 0; i < possessCardIndex; i++)
-                        Card(
-                          child: CreateCardInfo(),
-                        ),
-                    ],
+                Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
+                    child: Text(
+                      '보유중인 카드',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[500],
+                      ),
+                    )),
+                for (int i = 0; i < possessCardIndex; i++)
+                  Card(
+                    child: CreateCardInfo(),
                   ),
-                ),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
-                          child: Text(
-                            '미 보유 카드 추천',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[500],
-                            ),
-                          )),
-                      // TODO : 미보유 카드 추천 동적 할당 코드.
-                      for (int i = 0; i < suggestCardIndex; i++)
-                        Card(
-                          child: CreateCardInfo(),
-                        ),
-                    ],
-                  ),
-                ),
               ],
             ),
-            );
+          ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                    padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
+                    child: Text(
+                      '미 보유 카드 추천',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.grey[500],
+                      ),
+                    )),
+                // TODO : 미보유 카드 추천 동적 할당 코드.
+                for (int i = 0; i < suggestCardIndex; i++)
+                  Card(
+                    child: CreateCardInfo(),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
@@ -151,7 +150,7 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
   @override
   void initState() {
     super.initState();
-    recommendListset('ant1057@naver.com',company);
+    recommendListset('ant1057@naver.com', company);
   }
 
   // Future<User> userSet() async {
@@ -189,7 +188,7 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
               children: [
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                  child: Text('${cardlist[0].cdname}',
+                  child: Text('}',
                       style: TextStyle(
                         color: Color.fromARGB(255, 255, 255, 255),
                       )),
@@ -198,12 +197,12 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                   child: Text('NH 올바른 FLEX',
                       style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                   child: Text(
-                    '${cardlist[0].company}',
+                    '',
                   ),
                 ),
                 Padding(
