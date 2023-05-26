@@ -1,179 +1,299 @@
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/profile_controller.dart';
 import 'package:tting_bank/conttoller/recommend_controller.dart';
+import 'package:tting_bank/conttoller/nocardrecommend_controller.dart';
 import 'package:tting_bank/conttoller/userid_controller.dart';
 import 'package:tting_bank/data/img_card.dart';
 import 'package:tting_bank/data/recommend_card.dart';
+import 'package:tting_bank/data/nocardrecommend.dart';
 import 'package:tting_bank/model/user.dart';
-
-//------------------------------------------------------------------------------------------------//
-//
-//------------------------------------------------------------------------------------------------//
-// TODO : 보유카드와 추천카드 개수는 DB에서 count 데이터 가지고 와서 설정 -> 화면 전환 시, 페이지 로드하면서 가지고 오기.
-var possessCardIndexInFirst = 1; // 할인금액순 탭 보유카드 갯수
-var possessCardIndexInSecond = 2; // 할인률순 탭 보유카드 갯수
-var possessCardIndexInThird = 3; // 적립금순 탭 보유카드 갯수
-var possessCardIndexInFourth = 4; // 캐시백순 탭 보유카드 갯수
-
-var suggestCardIndexFirst = 1; //할인금액순 탭 미보유 추천카드 갯수
-var suggestCardIndexSecond = 2; //할인률순 탭 미보유 추천카드 갯수
-var suggestCardIndexThird = 3; // 적립금순 탭 미보유 추천카드 갯수
-var suggestCardIndexFourth = 4; //캐시백순 탭 미보유 추천카드 갯수
-
 
 //------------------------------------------------------------------------------------------------//
 // 카드 추천 페이지
 //------------------------------------------------------------------------------------------------//
-class RecommendPage extends StatelessWidget {
-  var inputname;
-  RecommendPage(this.inputname, {Key? key}) : super(key: key);
+
+class RecommendPage extends StatefulWidget {
+  final String inputName;
+
+  RecommendPage(this.inputName, {Key? key}) : super(key: key);
+
+  @override
+  _RecommendPageState createState() => _RecommendPageState();
+}
+
+class _RecommendPageState extends State<RecommendPage> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+  late String selectedTabLabel;
+
+  @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(length: 4, vsync: this);
+    _tabController.addListener(() {
+      setState(() {
+        selectedTabLabel = TABS[_tabController.index].label;
+      });
+    });
+    selectedTabLabel = TABS[0].label;
+  }
+
+  @override
+  void dispose() {
+    _tabController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      //  animationDuration: const Duration(milliseconds: 300),
-      length: 4,
-      child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 236, 243, 244),
-        appBar: AppBar(
-          leading: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Colors.black,
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return Scaffold(
+      backgroundColor: Color.fromARGB(255, 236, 243, 244),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.black,
           ),
-          backgroundColor: Color.fromARGB(255, 236, 243, 244),
-          title: Text(
-            inputname,
-            style: TextStyle(
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-            ),
-          ),
-          centerTitle: true,
-          bottom: TabBar(
-              tabs: TABS
-                  .map((e) => Tab(
-                        child: Text(
-                          e.label,
-                          style: TextStyle(color: Colors.black),
-                        ),
-                      ))
-                  .toList()),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-        body:TabBarView(
-          children: [
-            CreateCardInfoPage(possessCardIndexInFirst, suggestCardIndexFirst),
-            CreateCardInfoPage(possessCardIndexInSecond, suggestCardIndexSecond),
-            CreateCardInfoPage(possessCardIndexInThird, suggestCardIndexThird),
-            CreateCardInfoPage(possessCardIndexInFourth, suggestCardIndexFourth),
-          ], 
+        backgroundColor: Color.fromARGB(255, 236, 243, 244),
+        title: Text(
+          widget.inputName,
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
           ),
-        
+        ),
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          tabs: TABS.map((e) => Tab(
+            child: Text(
+              e.label,
+              style: TextStyle(color: Colors.black),
+            ),
+          )).toList(),
+        ),
+      ),
+      body: TabBarView(
+        controller: _tabController,
+        children: [
+          CreateCardInfoPage(
+            selectedTabLabel: selectedTabLabel,
+            inputName: widget.inputName,
+          ),
+          CreateCardInfoPage(
+            selectedTabLabel: selectedTabLabel,
+            inputName: widget.inputName,
+          ),
+          CreateCardInfoPage(
+            selectedTabLabel: selectedTabLabel,
+            inputName: widget.inputName,
+          ),
+          CreateCardInfoPage(
+            selectedTabLabel: selectedTabLabel,
+            inputName: widget.inputName,
+          ),
+        ],
       ),
     );
   }
 }
 
-//------------------------------------------------------------------------------------------------//
-//
-//------------------------------------------------------------------------------------------------//
+class CreateCardInfoPage extends StatefulWidget {
+  final String selectedTabLabel;
+  final String inputName;
 
-class CreateCardInfoPage extends StatelessWidget{
-  var possessCardIndex, suggestCardIndex; //보유카드, 미보유 추천카드
+  const CreateCardInfoPage({
+    required this.selectedTabLabel, required this.inputName,
+    Key? key,
+  }) : super(key: key);
 
-CreateCardInfoPage(this.possessCardIndex, this.suggestCardIndex);
-  Widget build(BuildContext context){
-    return SingleChildScrollView(child: Column(
+  @override
+  _CreateCardInfoPageState createState() => _CreateCardInfoPageState();
+}
+
+class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
+  User user = User(id: 0, name: '', email: ''); // 사용자 정보
+  List<Recommend_card>? cardList = [];
+  List<NoCardRecommend>? nohavecardList = [];
+
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  @override
+  void didUpdateWidget(CreateCardInfoPage oldWidget) {
+    if (oldWidget.selectedTabLabel != widget.selectedTabLabel) {
+      recommendListSet(user.email, widget.inputName, widget.selectedTabLabel);
+    }
+    super.didUpdateWidget(oldWidget);
+  }
+
+  // 받은 비동기 User를 User 형태로 name에 저장하고 상태를 저장 -> user에 대한 데이터를 가져오고 거래내역 조회
+  Future<void> initUser() async {
+    User name = await userSet();
+    setState(() {
+      user = name;
+    });
+    await recommendListSet(user.email, widget.inputName, widget.selectedTabLabel);
+  }
+
+  // KakaoName()에서 받아온 이름을 searchUser로 보내고 Future<User> 형태로 반환
+  Future<User> userSet() async {
+    String? name = await KakaoName();
+    return await searchUser(name);
+  }
+
+  Future<void> recommendListSet(String cdname, String company, String label) async {
+    List<Recommend_card> list = await recommend(cdname, company, label);
+    List<NoCardRecommend> nohaveList = await nocardrecommend(widget.inputName, widget.selectedTabLabel);
+
+// cdname을 기준으로 nohaveList를 그룹화합니다.
+    Map<String, List<NoCardRecommend>> groupedMap = {};
+    nohaveList.forEach((card) {
+      groupedMap[card.cdname] ??= [];
+      groupedMap[card.cdname]!.add(card);
+    });
+
+// list에 있는 cdname을 제외한 그룹을 선택합니다.
+    List<NoCardRecommend> filteredList = [];
+    groupedMap.forEach((cdname, cards) {
+      if (!list.any((ownedCard) => ownedCard.cdname == cdname)) {
+        filteredList.addAll(cards);
+      }
+    });
+
+    setState(() {
+      cardList = list;
+      nohaveList = filteredList;
+      nohavecardList = nohaveList;
+    });
+  }
+
+  int getCardListLength() {
+      return cardList!.length;
+  }
+
+  int getnohaveCardListLength() {
+    return nohavecardList!.length;
+}
+
+  @override
+  Widget build(BuildContext context) {
+    int cardListLength = getCardListLength();
+    int nocardListLength = getnohaveCardListLength();
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
-                          child: Text(
-                            '보유중인 카드',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[500],
-                            ),
-                          )),
-                          for (int i = 0; i < possessCardIndex; i++)
-                        Card(
-                          child: CreateCardInfo(),
-                        ),
-                    ],
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
+                  child: Text(
+                    '보유중인 카드',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[500],
+                    ),
                   ),
                 ),
-                SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
-                          child: Text(
-                            '미 보유 카드 추천',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.grey[500],
-                            ),
-                          )),
-                      // TODO : 미보유 카드 추천 동적 할당 코드.
-                      for (int i = 0; i < suggestCardIndex; i++)
-                        Card(
-                          child: CreateCardInfo(),
-                        ),
-                    ],
+                for (int i = 0; i < cardListLength; i++)
+                  Card(
+                    child: CreateCardInfo(
+                        selectedTabLabel: widget.selectedTabLabel,
+                    cardList: cardList ?? [],
+                    index: i,),
                   ),
-                ),
               ],
             ),
-            );
+          ),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(16, 20, 0, 0),
+                  child: Text(
+                    '미 보유 카드 추천',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                ),
+                // TODO : 미보유 카드 추천 동적 할당 코드.
+                for (int i = 0; i < nocardListLength; i++)
+                  Card(
+                    child: CreateNoCardInfo(
+                      selectedTabLabel: widget.selectedTabLabel,
+                      nohavecardList: nohavecardList ?? [],
+                      index: i,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class CreateCardInfo extends StatefulWidget {
+  final String selectedTabLabel;
+  List<Recommend_card> cardList = [];
+  final int index;
+
+  CreateCardInfo({required this.selectedTabLabel, required this.cardList, required this.index, Key? key}) : super(key: key);
+
   @override
   _CreateCardInfoState createState() => _CreateCardInfoState();
 }
 
 class _CreateCardInfoState extends State<CreateCardInfo> {
-  List<Recommend_card> cardlist = [];
-  String name = '서상윤';
-  String company = 'GS25';
 
   @override
   void initState() {
     super.initState();
-    recommendListset('ant1057@naver.com',company);
   }
 
-  // Future<User> userSet() async {
-  //   String? name = await KakaoName();
-  //   return await searchUser(name);
-  // }
-  //
-  // Future<void> initUser() async {
-  //   User name = await userSet();
-  //   setState(() {
-  //     user = name;
-  //   });
-  //   await recommendListset(user, company);
-  // }
-
-  Future<void> recommendListset(String email, String company) async {
-    List<Recommend_card> list = await recommend(email, company);
-    setState(() {
-      cardlist = list;
-    });
+  String findBenefit(String label) {
+    if (label == '할인금액') {
+      int discount = widget.cardList[widget.index].discount ?? 0;
+      if (discount >= 100)
+        return widget.cardList[widget.index].discount.toString() + ' 원 할인';
+      else
+        return 'error';
+    }
+    else if (label == '할인률') {
+      int discount = widget.cardList[widget.index].discount ?? 0;
+      if (0< discount && discount < 100)
+        return widget.cardList[widget.index].discount.toString() + ' % 할인';
+      else
+        return 'error';
+    }
+    else if (label == '적립') {
+      int accumulate = widget.cardList[widget.index].accumulate ?? 0;
+      if (accumulate >= 100)
+        return widget.cardList[widget.index].accumulate.toString() + ' 원 적립';
+      else
+        return widget.cardList[widget.index].accumulate.toString() + ' % 적립';
+    } else {
+      int cashback = widget.cardList[widget.index].cashback ?? 0;
+      if (cashback >= 100)
+        return widget.cardList[widget.index].cashback.toString() + ' 원 캐시백';
+      else
+        return widget.cardList[widget.index].cashback.toString() + ' % 캐시백';
+    }
   }
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -187,32 +307,118 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 15, 0, 0),
-                  child: Text('${cardlist[0].cdname}',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      )),
-                ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text('NH 올바른 FLEX',
-                      style:
-                      TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                ),
+                SizedBox(height: 25),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
                   child: Text(
-                    '${cardlist[0].company}',
+                    '${widget.cardList[widget.index].cdname}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text('NH 올바른 FLEX',
-                      style: TextStyle(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                      )),
+                  child: Text(
+                    findBenefit(widget.selectedTabLabel),
+                  ),
                 ),
+                SizedBox(height: 25),
+              ],
+            ),
+          ),
+        ),
+        ClipRRect(
+          borderRadius: BorderRadius.only(
+            bottomLeft: Radius.circular(0),
+            bottomRight: Radius.circular(20),
+            topLeft: Radius.circular(0),
+            topRight: Radius.circular(20),
+          ),
+          child: Image.asset(
+            ImgCard.listCard[0],
+            width: 120,
+            height: 60,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CreateNoCardInfo extends StatefulWidget {
+  final String selectedTabLabel;
+  List<NoCardRecommend> nohavecardList = [];
+  final int index;
+
+  CreateNoCardInfo({required this.selectedTabLabel, required this.nohavecardList, required this.index, Key? key}) : super(key: key);
+
+  @override
+  _CreateNoCardInfoState createState() => _CreateNoCardInfoState();
+}
+
+class _CreateNoCardInfoState extends State<CreateNoCardInfo> {
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  String findBenefit(String label) {
+    if (label == '할인금액') {
+      int discount = widget.nohavecardList[widget.index].discount ?? 0;
+      if (discount >= 100)
+        return widget.nohavecardList[widget.index].discount.toString() + ' 원 할인';
+      else
+        return 'error';
+    }
+    else if (label == '할인률') {
+      int discount = widget.nohavecardList[widget.index].discount ?? 0;
+      if (0< discount && discount < 100)
+        return widget.nohavecardList[widget.index].discount.toString() + ' % 할인';
+      else
+        return 'error';
+    }
+    else if (label == '적립') {
+      int accumulate = widget.nohavecardList[widget.index].accumulate ?? 0;
+      if (accumulate >= 100)
+        return widget.nohavecardList[widget.index].accumulate.toString() + ' 원 적립';
+      else
+        return widget.nohavecardList[widget.index].accumulate.toString() + ' % 적립';
+    } else {
+      int cashback = widget.nohavecardList[widget.index].cashback ?? 0;
+      if (cashback >= 100)
+        return widget.nohavecardList[widget.index].cashback.toString() + ' 원 캐시백';
+      else
+        return widget.nohavecardList[widget.index].cashback.toString() + ' % 캐시백';
+    }
+  }
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        Expanded(
+          child: Padding(
+            padding: EdgeInsetsDirectional.fromSTEB(8, 4, 0, 4),
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: 25),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                  child: Text(
+                    '${widget.nohavecardList[widget.index].cdname}',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                  child: Text(
+                    findBenefit(widget.selectedTabLabel),
+                  ),
+                ),
+                SizedBox(height: 25),
               ],
             ),
           ),
@@ -242,8 +448,8 @@ class TabInfo {
 }
 
 const TABS = [
-  TabInfo(label: '할인금액 순'),
-  TabInfo(label: '할인률 순'),
-  TabInfo(label: '적립금 순'),
-  TabInfo(label: '캐시백 순'),
+  TabInfo(label: '할인금액'),
+  TabInfo(label: '할인률'),
+  TabInfo(label: '적립'),
+  TabInfo(label: '캐시백'),
 ];

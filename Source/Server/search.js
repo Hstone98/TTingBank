@@ -96,12 +96,94 @@ router.post('/search/payment', (req, res) =>{
               console.log('결제내역 데이터 조회 성공');
           }
           else{
-              res.status(404).json(result);
-                 
+              res.status(404).json(result);   
               console.log('결제내역 데이터 없음');  
           }
       }
   })
 });
+// =======================================카드추천 기능==========================================
+router.post('/search/recommend', (req, res) => {
+  const parameter1 = req.body.email;
+  const parameter2 = req.body.company;
+  const parameter3 = req.body.label;
+  let sql="SELECT * FROM  v_사용자_카드_혜택";
 
+  console.log('전달된 파라미터:', parameter1, parameter2, parameter3);
+
+  if (parameter3 == '할인금액'){
+    sql += ' WHERE 이메일 = ? AND 가맹점 = ? AND 할인 IS NOT NULL AND 할인>=100';
+  } 
+  else if (parameter3 == '할인률'){
+    sql += ' WHERE 이메일 = ? AND 가맹점 = ? AND 할인 IS NOT NULL AND 할인<100';
+  }
+  else if (parameter3 == '적립'){
+    sql += ' WHERE 이메일 = ? AND 가맹점 = ? AND 적립 IS NOT NULL';
+  }
+  else{
+    sql += ' WHERE 이메일 = ? AND 가맹점 = ? AND 캐쉬백 IS NOT NULL';
+  }
+
+  mysqlConnection.query(sql, [parameter1, parameter2], function(error, result, fields) {
+    if(error)
+      {
+          res.status(400).json('error ocurred');         
+          console.log('test1');
+      }
+      else{
+          if(result.length > 0){
+              res.status(200).json(result);
+              console.log('데이터 성공');
+              console.log(result)
+          }
+          else{
+              res.status(404).json('The data does not exist');   
+              console.log('데이터 실패');  
+          }
+      }
+    
+  });
+
+});
+// ===================================모든 카드 혜택==========================================
+router.post('/search/nocardrecommend', (req, res) => {
+  const parameter1 = req.body.company;
+  const parameter2 = req.body.label;
+  let sql="SELECT * FROM view_혜택";
+  console.log('전달된 파라미터:', parameter1);
+
+  if (parameter2 == '할인금액'){
+    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 >= 100';
+  } 
+  else if (parameter2 == '할인률'){
+    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 < 100';
+  }
+  else if (parameter2 == '적립'){
+    sql += ' WHERE 가맹점 = ? AND 적립 IS NOT NULL';
+  }
+  else{
+    sql += ' WHERE 가맹점 = ? AND 캐쉬백 IS NOT NULL';
+  }
+
+  mysqlConnection.query(sql, [parameter1], function(error, result, fields) {
+    if(error)
+      {
+          res.status(400).json('error ocurred');         
+          console.log('test1');
+      }
+      else{
+          if(result.length > 0){
+              res.status(200).json(result);
+              console.log('데이터 성공');
+              console.log(result)
+          }
+          else{
+              res.status(404).json('The data does not exist');   
+              console.log('데이터 실패');  
+          }
+      }
+    
+  });
+
+});
 module.exports = router;
