@@ -982,3 +982,6 @@ tting_bank/macos/Flutter/ephemeral/flutter_export_environment.sh
 tting_bank/macos/Flutter/ephemeral/Flutter-Generated.xcconfig
 tting_bank/windows/flutter/ephemeral/generated_config.cmake
 Source/Client/tting_bank/pubspec.lock
+Source/Client/tting_bank/ios/Runner.xcodeproj/project.pbxproj
+Source/Client/tting_bank/ios/Podfile.lock
+Source/Client/tting_bank/ios/Podfile

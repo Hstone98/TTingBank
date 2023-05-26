@@ -12,27 +12,33 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool isLoggedIn = false;
   @override
   void initState() {
     super.initState();
     TokenCheck().then((isValid) {
       if (isValid) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => MainPage()),
-        );
-        set(); //DB로 사용자 데이터 전송
+        setState(() {
+          isLoggedIn = true;
+        });
       }
     });
   }
 
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (isLoggedIn) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => MainPage()), // MainPage로 이동
+      );
+    }
+  }
+
   //이메일, 이름 비동기로 받아올때까지 기다림
-  void set() async {
-    String? email = await KakaoEmail();
-    String? name = await KakaoName();
-    print(email);
-    print(name);
-    await saveUser(email, name);
+  void initUserSave() async {
+    await save(await KakaoEmail(), await KakaoName()); //카카오 로그인된 사용자 저장
+    await save('testuser@naver.com', 'testuser'); //testuser 사용자 저장
   }
 
   @override
@@ -40,24 +46,16 @@ class _LoginPageState extends State<LoginPage> {
     return Scaffold(
       backgroundColor: Color(0xfffbf5f1),
       body: Center(
-        
         child: Column(
-          
           children: [
-            SizedBox(height: 200,),
-                Container(
-                  
-                  child: Image.asset(
-                    
-                    'assets/images/im_rogo.png',
-                    
-                  ),
-                
-                
-                ),
-               SizedBox(height: 150),
+            SizedBox(height: 200),
+            Container(
+              child: Image.asset(
+                'assets/images/im_rogo.png',
+              ),
+            ),
+            SizedBox(height: 130),
             Row(
-              
               children: [
                 Text(
                   '     카카오톡 계정으로 간편 로그인',
@@ -78,7 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                       context,
                       MaterialPageRoute(builder: (context) => MainPage()),
                     ),
-                    set() //DB로 사용자 데이터 전송
+                    initUserSave() //DB로 사용자 데이터 전송
                   }
                 else
                   {
@@ -115,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 100),
+            SizedBox(height: 30),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -129,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ],
             ),
-            
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
