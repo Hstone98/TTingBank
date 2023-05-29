@@ -153,16 +153,16 @@ router.post('/search/nocardrecommend', (req, res) => {
   console.log('전달된 파라미터:', parameter1);
 
   if (parameter2 == '할인금액'){
-    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 >= 100';
+    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 >= 100 ORDER BY 할인 DESC';
   } 
   else if (parameter2 == '할인률'){
-    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 < 100';
+    sql += ' WHERE 가맹점 = ? AND 할인 IS NOT NULL AND 할인 < 100 ORDER BY 할인 DESC';
   }
   else if (parameter2 == '적립'){
-    sql += ' WHERE 가맹점 = ? AND 적립 IS NOT NULL';
+    sql += ' WHERE 가맹점 = ? AND 적립 IS NOT NULL ORDER BY 적립 DESC';
   }
   else{
-    sql += ' WHERE 가맹점 = ? AND 캐쉬백 IS NOT NULL';
+    sql += ' WHERE 가맹점 = ? AND 캐쉬백 IS NOT NULL ORDER BY 캐쉬백 DESC';
   }
 
   mysqlConnection.query(sql, [parameter1], function(error, result, fields) {
