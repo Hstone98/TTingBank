@@ -186,4 +186,27 @@ router.post('/search/nocardrecommend', (req, res) => {
   });
 
 });
+// ===================================사용자 보유카드 검색==========================================
+router.post('/search/usercard', (req, res) =>{
+  const id = req.body.id;
+  
+  let sql1 = 'SELECT uc.id, uc.카드번호, uc.카드비밀번호, c.카드이름 FROM tbl_사용자_카드 AS uc JOIN tbl_카드 AS c ON uc.id_카드 = c.id WHERE uc.id_사용자 = ?';
+  let params1 = [id];
+
+  mysqlConnection.query(sql1, params1, function(error, result, fields){
+
+    if (error) {
+      console.log(error);
+      console.log('오류가 발생했습니다.');
+    } else {
+      if (result.length == 0) {
+        console.log('찾을 수 없습니다.');
+      } else {
+        res.json(result);
+        console.log(result);
+        console.log('카드 데이터 넘김');
+      }
+    }
+  })
+});
 module.exports = router;
