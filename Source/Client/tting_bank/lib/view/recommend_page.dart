@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:tting_bank/conttoller/profile_controller.dart';
 import 'package:tting_bank/conttoller/recommend_controller.dart';
@@ -259,7 +261,7 @@ class CreateCardInfo extends StatefulWidget {
 }
 
 class _CreateCardInfoState extends State<CreateCardInfo> {
-
+  bool isCardClicked = false; // 카드 클릭 여부를 나타내는 변수
   @override
   void initState() {
     super.initState();
@@ -296,49 +298,77 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
   }
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
+    return Column(
       children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(8, 4, 0, 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 25),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text(
-                    '${widget.cardList[widget.index].cdname}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        GestureDetector(
+          // GestureDetector를 사용하여 카드 클릭 이벤트 처리
+          onTap: () {
+            setState(() {
+              isCardClicked = !isCardClicked; // 카드 클릭 상태 변경
+            });
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(8, 4, 0, 4),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 25),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          '${widget.cardList[widget.index].cdname}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          findBenefit(widget.selectedTabLabel),
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text(
-                    findBenefit(widget.selectedTabLabel),
-                  ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(20),
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(20),
                 ),
-                SizedBox(height: 25),
-              ],
+                child: Image.asset(
+                  ImgCard.listCard[0],
+                  width: 120,
+                  height: 60,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (isCardClicked) // 카드가 클릭된 경우에만 작은 페이지 표시
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              '${widget.cardList[widget.index].text}',
+              style: TextStyle(fontSize: 16),
             ),
           ),
-        ),
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(0),
-            bottomRight: Radius.circular(20),
-            topLeft: Radius.circular(0),
-            topRight: Radius.circular(20),
-          ),
-          child: Image.asset(
-            ImgCard.listCard[0],
-            width: 120,
-            height: 60,
-          ),
-        ),
       ],
     );
   }
@@ -356,7 +386,7 @@ class CreateNoCardInfo extends StatefulWidget {
 }
 
 class _CreateNoCardInfoState extends State<CreateNoCardInfo> {
-
+  bool isCardClicked = false;
   @override
   void initState() {
     super.initState();
@@ -393,49 +423,76 @@ class _CreateNoCardInfoState extends State<CreateNoCardInfo> {
   }
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.max,
+    return Column(
       children: [
-        Expanded(
-          child: Padding(
-            padding: EdgeInsetsDirectional.fromSTEB(8, 4, 0, 4),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 25),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text(
-                    '${widget.nohavecardList[widget.index].cdname}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isCardClicked = !isCardClicked;
+            });
+          },
+          child: Row(
+            mainAxisSize: MainAxisSize.max,
+            children: [
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsetsDirectional.fromSTEB(8, 4, 0, 4),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.max,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 25),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          '${widget.nohavecardList[widget.index].cdname}',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
+                        child: Text(
+                          findBenefit(widget.selectedTabLabel),
+                        ),
+                      ),
+                      SizedBox(height: 25),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: EdgeInsetsDirectional.fromSTEB(0, 4, 0, 0),
-                  child: Text(
-                    findBenefit(widget.selectedTabLabel),
-                  ),
+              ),
+              ClipRRect(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(0),
+                  bottomRight: Radius.circular(20),
+                  topLeft: Radius.circular(0),
+                  topRight: Radius.circular(20),
                 ),
-                SizedBox(height: 25),
-              ],
+                child: Image.asset(
+                  ImgCard.listCard[0],
+                  width: 120,
+                  height: 60,
+                ),
+              ),
+            ],
+          ),
+        ),
+        if (isCardClicked)
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 10),
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: Colors.grey[200],
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: Text(
+              '${widget.nohavecardList[widget.index].text}',
+              style: TextStyle(fontSize: 16),
             ),
           ),
-        ),
-        ClipRRect(
-          borderRadius: BorderRadius.only(
-            bottomLeft: Radius.circular(0),
-            bottomRight: Radius.circular(20),
-            topLeft: Radius.circular(0),
-            topRight: Radius.circular(20),
-          ),
-          child: Image.asset(
-            ImgCard.listCard[0],
-            width: 120,
-            height: 60,
-          ),
-        ),
       ],
     );
   }
