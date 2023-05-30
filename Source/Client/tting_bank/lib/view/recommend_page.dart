@@ -10,14 +10,9 @@ import 'package:tting_bank/data/recommend_card.dart';
 import 'package:tting_bank/data/nocardrecommend.dart';
 import 'package:tting_bank/model/user.dart';
 
-import '../conttoller/user_card_controller.dart';
-import '../model/card_info.dart';
-
 //------------------------------------------------------------------------------------------------//
 // 카드 추천 페이지
 //------------------------------------------------------------------------------------------------//
-User user = User(id: 0, name: '', email: ''); //사용자 정보
-List<CardInfo> card = []; //사용자가 보유한 카드 정보
 
 class RecommendPage extends StatefulWidget {
   final String inputName;
@@ -28,13 +23,7 @@ class RecommendPage extends StatefulWidget {
   _RecommendPageState createState() => _RecommendPageState();
 }
 
-//받아온 카드이름을 경로로 변환
-String cardPath(String cdname) {
-  return 'bankTting/img/' + cdname.toString() + '.png';
-}
-
-class _RecommendPageState extends State<RecommendPage>
-    with SingleTickerProviderStateMixin {
+class _RecommendPageState extends State<RecommendPage> with SingleTickerProviderStateMixin {
   late TabController _tabController;
   late String selectedTabLabel;
 
@@ -70,8 +59,7 @@ class _RecommendPageState extends State<RecommendPage>
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: Colors.white, // 새로운 배경색
-        elevation: 0,
+        backgroundColor: Color.fromARGB(255, 236, 243, 244),
         title: Text(
           widget.inputName,
           style: TextStyle(
@@ -81,17 +69,13 @@ class _RecommendPageState extends State<RecommendPage>
         ),
         centerTitle: true,
         bottom: TabBar(
-          labelStyle: TextStyle(fontWeight: FontWeight.bold), // 선택된 탭의 텍스트 스타일
-          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal), // 선택되지 않은 탭의 텍스트 스타일
           controller: _tabController,
-          tabs: TABS
-              .map((e) => Tab(
-                    child: Text(
-                      e.label,
-                      style: TextStyle(color: Colors.black),
-                    ),
-                  ))
-              .toList(),
+          tabs: TABS.map((e) => Tab(
+            child: Text(
+              e.label,
+              style: TextStyle(color: Colors.black),
+            ),
+          )).toList(),
         ),
       ),
       body: TabBarView(
@@ -124,8 +108,7 @@ class CreateCardInfoPage extends StatefulWidget {
   final String inputName;
 
   const CreateCardInfoPage({
-    required this.selectedTabLabel,
-    required this.inputName,
+    required this.selectedTabLabel, required this.inputName,
     Key? key,
   }) : super(key: key);
 
@@ -154,27 +137,22 @@ class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
 
   // 받은 비동기 User를 User 형태로 name에 저장하고 상태를 저장 -> user에 대한 데이터를 가져오고 거래내역 조회
   Future<void> initUser() async {
-    User name = await userSet(widget.inputName);
+    User name = await userSet();
     setState(() {
       user = name;
     });
-    await recommendListSet(
-        user.email, widget.inputName, widget.selectedTabLabel);
+    await recommendListSet(user.email, widget.inputName, widget.selectedTabLabel);
   }
 
-  Future<void> initUserCard() async {
-    List<CardInfo> cardInfo = await userCard(user.id); //실제 사용자가 보유한 카드정보 받아오는 거
-
-    setState(() {
-      card = cardInfo;
-    });
+  // KakaoName()에서 받아온 이름을 searchUser로 보내고 Future<User> 형태로 반환
+  Future<User> userSet() async {
+    String? name = await KakaoName();
+    return await searchUser(name);
   }
 
-  Future<void> recommendListSet(
-      String cdname, String company, String label) async {
+  Future<void> recommendListSet(String cdname, String company, String label) async {
     List<Recommend_card> list = await recommend(cdname, company, label);
-    List<NoCardRecommend> nohaveList =
-        await nocardrecommend(widget.inputName, widget.selectedTabLabel);
+    List<NoCardRecommend> nohaveList = await nocardrecommend(widget.inputName, widget.selectedTabLabel);
 
 // cdname을 기준으로 nohaveList를 그룹화합니다.
     Map<String, List<NoCardRecommend>> groupedMap = {};
@@ -233,8 +211,7 @@ class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
                     child: CreateCardInfo(
                       selectedTabLabel: widget.selectedTabLabel,
                       cardList: cardList ?? [],
-                      index: i,
-                    ),
+                      index: i,),
                   ),
               ],
             ),
@@ -277,12 +254,7 @@ class CreateCardInfo extends StatefulWidget {
   List<Recommend_card> cardList = [];
   final int index;
 
-  CreateCardInfo(
-      {required this.selectedTabLabel,
-      required this.cardList,
-      required this.index,
-      Key? key})
-      : super(key: key);
+  CreateCardInfo({required this.selectedTabLabel, required this.cardList, required this.index, Key? key}) : super(key: key);
 
   @override
   _CreateCardInfoState createState() => _CreateCardInfoState();
@@ -302,13 +274,15 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
         return widget.cardList[widget.index].discount.toString() + ' 원 할인';
       else
         return 'error';
-    } else if (label == '할인률') {
+    }
+    else if (label == '할인률') {
       int discount = widget.cardList[widget.index].discount ?? 0;
-      if (0 < discount && discount < 100)
+      if (0< discount && discount < 100)
         return widget.cardList[widget.index].discount.toString() + ' % 할인';
       else
         return 'error';
-    } else if (label == '적립') {
+    }
+    else if (label == '적립') {
       int accumulate = widget.cardList[widget.index].accumulate ?? 0;
       if (accumulate >= 100)
         return widget.cardList[widget.index].accumulate.toString() + ' 원 적립';
@@ -322,7 +296,6 @@ class _CreateCardInfoState extends State<CreateCardInfo> {
         return widget.cardList[widget.index].cashback.toString() + ' % 캐시백';
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -406,12 +379,7 @@ class CreateNoCardInfo extends StatefulWidget {
   List<NoCardRecommend> nohavecardList = [];
   final int index;
 
-  CreateNoCardInfo(
-      {required this.selectedTabLabel,
-      required this.nohavecardList,
-      required this.index,
-      Key? key})
-      : super(key: key);
+  CreateNoCardInfo({required this.selectedTabLabel, required this.nohavecardList, required this.index, Key? key}) : super(key: key);
 
   @override
   _CreateNoCardInfoState createState() => _CreateNoCardInfoState();
@@ -428,36 +396,31 @@ class _CreateNoCardInfoState extends State<CreateNoCardInfo> {
     if (label == '할인금액') {
       int discount = widget.nohavecardList[widget.index].discount ?? 0;
       if (discount >= 100)
-        return widget.nohavecardList[widget.index].discount.toString() +
-            ' 원 할인';
+        return widget.nohavecardList[widget.index].discount.toString() + ' 원 할인';
       else
         return 'error';
-    } else if (label == '할인률') {
+    }
+    else if (label == '할인률') {
       int discount = widget.nohavecardList[widget.index].discount ?? 0;
-      if (0 < discount && discount < 100)
-        return widget.nohavecardList[widget.index].discount.toString() +
-            ' % 할인';
+      if (0< discount && discount < 100)
+        return widget.nohavecardList[widget.index].discount.toString() + ' % 할인';
       else
         return 'error';
-    } else if (label == '적립') {
+    }
+    else if (label == '적립') {
       int accumulate = widget.nohavecardList[widget.index].accumulate ?? 0;
       if (accumulate >= 100)
-        return widget.nohavecardList[widget.index].accumulate.toString() +
-            ' 원 적립';
+        return widget.nohavecardList[widget.index].accumulate.toString() + ' 원 적립';
       else
-        return widget.nohavecardList[widget.index].accumulate.toString() +
-            ' % 적립';
+        return widget.nohavecardList[widget.index].accumulate.toString() + ' % 적립';
     } else {
       int cashback = widget.nohavecardList[widget.index].cashback ?? 0;
       if (cashback >= 100)
-        return widget.nohavecardList[widget.index].cashback.toString() +
-            ' 원 캐시백';
+        return widget.nohavecardList[widget.index].cashback.toString() + ' 원 캐시백';
       else
-        return widget.nohavecardList[widget.index].cashback.toString() +
-            ' % 캐시백';
+        return widget.nohavecardList[widget.index].cashback.toString() + ' % 캐시백';
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -533,6 +496,10 @@ class _CreateNoCardInfoState extends State<CreateNoCardInfo> {
       ],
     );
   }
+}
+//받아온 카드이름을 경로로 변환
+String cardPath(String cdname) {
+  return 'bankTting/img/' + cdname.toString() + '.png';
 }
 
 class TabInfo {
