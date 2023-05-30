@@ -59,7 +59,8 @@ class _RecommendPageState extends State<RecommendPage> with SingleTickerProvider
             Navigator.of(context).pop();
           },
         ),
-        backgroundColor: Color.fromARGB(255, 236, 243, 244),
+        backgroundColor: Colors.white, // 새로운 배경색
+        elevation: 0,
         title: Text(
           widget.inputName,
           style: TextStyle(
@@ -69,6 +70,8 @@ class _RecommendPageState extends State<RecommendPage> with SingleTickerProvider
         ),
         centerTitle: true,
         bottom: TabBar(
+          labelStyle: TextStyle(fontWeight: FontWeight.bold), // 선택된 탭의 텍스트 스타일
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal), // 선택되지 않은 탭의 텍스트 스타일
           controller: _tabController,
           tabs: TABS.map((e) => Tab(
             child: Text(
