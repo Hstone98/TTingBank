@@ -7,20 +7,9 @@ import 'package:http/http.dart' as http;
 //------------------------------------------------------------------------------------------------//
 //
 //------------------------------------------------------------------------------------------------//
-Future<bool> sendCardLoginData(String countryCode, String businessType, String clientType,
-    String organization, String loginType, String id, String pwd) async {
-  final url = "http://121.181.192.82:7777/connectedid";
-  final data = {
-    'countryCode': countryCode,
-    'businessType': businessType,
-    'clientType': clientType,
-    'organization': organization,
-    'loginType': loginType,
-    'id': id,
-    'password': pwd
-  };
-
-  print("pwd : " + pwd + "\n");
+Future<bool> sendCardAddData(String id, String cardNum, String cardPwd, String organization) async {
+  final url = "http://121.181.192.82:7777/addCard";
+  final data = {'id': id, 'organization': organization, 'cardNumber': cardNum, 'password': cardPwd};
 
   final body = jsonEncode(data);
 
@@ -62,4 +51,26 @@ Future<bool> sendCardLoginData(String countryCode, String businessType, String c
   print("왔어");
 
   return true;
+}
+
+bool checkCardNumLength(int length) {
+  if (length < 16) {
+    return false;
+  }
+
+  return true;
+}
+
+bool checkCardPasswordLength(int length) {
+  if (length < 2) {
+    return false;
+  }
+
+  return true;
+}
+
+class CardInfoPageController {
+  //----------------------------------------------------------------------------------------------//
+  //
+  //----------------------------------------------------------------------------------------------//
 }

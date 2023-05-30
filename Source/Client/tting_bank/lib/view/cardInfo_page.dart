@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:tting_bank/conttoller/cardInfo_page_controller.dart' as ctrCardInfo;
 
 //------------------------------------------------------------------------------------------------//
 //
@@ -15,8 +17,6 @@ class CardInfoPage extends StatefulWidget {
 class _CardInfoPageState extends State<CardInfoPage> {
   String _cardNumber = "";
   String _cardPassword = "";
-
-  TextEditingController val1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -60,8 +60,6 @@ class _CardInfoPageState extends State<CardInfoPage> {
                   TextFormField(
                       maxLength: 16,
                       keyboardType: TextInputType.number,
-                      controller: val1,
-                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Colors.white,
@@ -73,42 +71,12 @@ class _CardInfoPageState extends State<CardInfoPage> {
                         labelText: '카드번호',
                       ),
                       onChanged: (value) {
-                        setState(() {});
-                      },
-                      validator: (value) {
-                        // if (value != null) {
-                        //   for (int i = 0; i < 19; i++) {
-                        //     if (i % 4 == 0) {
-                        //       value = value?.concat(" ");
-                        //     }
-                        //   }
-                        // }
+                        setState(() {
+                          // print(value);
+                          _cardNumber = value;
+                          print(_cardNumber);
+                        });
                       }),
-
-                  SizedBox(height: 16),
-                  // TextField(
-                  //   decoration: InputDecoration(
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     hintText: "만료일 (MM/YY)",
-                  //     hintStyle: TextStyle(
-                  //       color: Color.fromARGB(255, 185, 183, 183),
-                  //     ),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // SizedBox(height: 16),
-                  // TextField(
-                  //   decoration: InputDecoration(
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     hintText: "생년월일 (YY/MM/DD)",
-                  //     hintStyle: TextStyle(
-                  //       color: Color.fromARGB(255, 185, 183, 183),
-                  //     ),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
                   SizedBox(height: 16),
                   TextField(
                     maxLength: 2,
@@ -130,19 +98,6 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       });
                     },
                   ),
-                  // SizedBox(height: 16),
-                  // TextField(
-                  //   decoration: InputDecoration(
-                  //     filled: true,
-                  //     fillColor: Colors.white,
-                  //     hintText: "CVV",
-                  //     hintStyle: TextStyle(
-                  //       color: Color.fromARGB(255, 185, 183, 183),
-                  //     ),
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  // ),
-                  // SizedBox(height: 15),
                 ],
               ),
             ),
@@ -173,24 +128,14 @@ class _CardInfoPageState extends State<CardInfoPage> {
                           child: ElevatedButton(
                             onPressed: () {
                               //TODO: 등록 버튼이 눌렸을 때 실행할 코드
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: Text("등록 완료"),
-                                    content: Text("카드가 정상 등록되었습니다."),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.of(context).pop(); // 대화상자 닫기
-                                          Navigator.of(context).pop(); // 이전 페이지로 돌아가기
-                                        },
-                                        child: Text("확인"),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
+                              if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
+                                showToast("카드 16자리를 입력해주세요.");
+                              }
+                              if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
+                                showToast("카드 비밀번호 2자리를 입력해주세요.");
+                              }
+
+                              ctrCardInfo.sendCardAddData('4', _cardNumber, _cardPassword, '0305');
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Color.fromARGB(255, 68, 75, 88),
@@ -216,6 +161,20 @@ class _CardInfoPageState extends State<CardInfoPage> {
           ),
         ],
       ),
+    );
+  }
+
+  //----------------------------------------------------------------------------------------------//
+  //
+  //----------------------------------------------------------------------------------------------//
+  void showToast(String msg) {
+    Fluttertoast.showToast(
+      msg: msg,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.white,
+      fontSize: 15,
+      textColor: Colors.black,
+      toastLength: Toast.LENGTH_SHORT,
     );
   }
 }
