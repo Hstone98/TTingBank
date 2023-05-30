@@ -35,6 +35,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
     setState(() {
       if (month > 1) {
         month--;
+        monthString = month.toString();
+
         if (month < 10) {
           //month int로 받으면 앞에 0이 없어져서 0을 붙임
           monthString = month.toString().padLeft(2, '0');
@@ -52,6 +54,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
     setState(() {
       if (month < 12) {
         month++;
+        monthString = month.toString();
+
         if (month < 10) {
           //month int로 받으면 앞에 0이 없어져서 0을 붙임
           monthString = month.toString().padLeft(2, '0');
