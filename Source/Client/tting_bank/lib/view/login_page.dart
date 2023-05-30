@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
     });
   }
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     if (isLoggedIn) {
@@ -38,7 +39,7 @@ class _LoginPageState extends State<LoginPage> {
   //이메일, 이름 비동기로 받아올때까지 기다림
   void initUserSave() async {
     await save(await KakaoEmail(), await KakaoName()); //카카오 로그인된 사용자 저장
-    await save('testuser@naver.com', 'testuser'); //testuser 사용자 저장
+    //await save('testuser@naver.com', 'testuser'); //testuser 사용자 저장
   }
 
   @override
@@ -72,9 +73,10 @@ class _LoginPageState extends State<LoginPage> {
                 if (await btnLogin())
                   {
                     debugPrint('넘어가'),
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
-                      MaterialPageRoute(builder: (context) => MainPage()),
+                      MaterialPageRoute(
+                          builder: (context) => MainPage()), // MainPage로 이동
                     ),
                     initUserSave() //DB로 사용자 데이터 전송
                   }

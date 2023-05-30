@@ -1,22 +1,24 @@
 import 'dart:async';
 
-import 'package:tting_bank/conttoller/search_controller.dart';
-
-import '../data/search_store.dart';
-import 'assetmanagement_page.dart';
-import 'cardInfo_page.dart';
-import 'consumption_details.dart';
-
 import 'package:flutter/material.dart';
 import 'package:kakao_flutter_sdk/kakao_flutter_sdk_template.dart';
-import 'package:tting_bank/view/recommend_page.dart';
-import 'package:tting_bank/view/setting_page.dart';
 import 'package:tting_bank/conttoller/main_page_controller.dart';
-import 'package:tting_bank/view/store_list_page.dart';
+import 'package:tting_bank/conttoller/profile_controller.dart';
+import 'package:tting_bank/conttoller/search_controller.dart';
+import 'package:tting_bank/conttoller/user_card_controller.dart';
+import 'package:tting_bank/conttoller/userid_controller.dart';
 import 'package:tting_bank/data/category.dart';
 import 'package:tting_bank/data/image_category.dart';
+import 'package:tting_bank/data/search_store.dart';
+import 'package:tting_bank/model/card_info.dart';
+import 'package:tting_bank/model/user.dart';
+import 'package:tting_bank/view/assetmanagement_page.dart';
+import 'package:tting_bank/view/cardInfo_page.dart';
+import 'package:tting_bank/view/consumption_details.dart';
 import 'package:tting_bank/view/registercard_page.dart';
-import 'package:tting_bank/conttoller/profile_controller.dart';
+import 'package:tting_bank/view/recommend_page.dart';
+import 'package:tting_bank/view/setting_page.dart';
+import 'package:tting_bank/view/store_list_page.dart';
 
 var testname = 'test';
 
@@ -26,6 +28,10 @@ class MainPage extends StatefulWidget {
   @override
   _MainPageState createState() => _MainPageState();
 }
+
+User user = User(id: 0, name: '', email: ''); //사용자 정보
+List<CardInfo> card = []; //사용자가 보유한 카드 정보
+List<String> imageName = []; //카드의 이미지에 대한 정보
 
 class _MainPageState extends State<MainPage> {
   TextEditingController _searchController = TextEditingController();
@@ -50,6 +56,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
     _searchController.addListener(_searchTextChanged);
+    initUser();
   }
 
   @override
@@ -65,6 +72,33 @@ class _MainPageState extends State<MainPage> {
       _searchResultsController.add([]); // 검색 결과를 비워줍니다.
       _showClearButton = false;
     });
+  }
+
+  //받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
+  Future<void> initUser() async {
+    User userInfo = await userSet(await KakaoName()); //실제 사용자 정보 받아오는 거
+    //User userInfo = await userSet('testuser'); //test 사용자 정보 받아오는 거
+
+    setState(() {
+      user = userInfo;
+    });
+    initUserCard();
+  }
+
+  Future<void> initUserCard() async {
+    List<CardInfo> cardInfo = await userCard(user.id); //실제 사용자가 보유한 카드정보 받아오는 거
+
+    setState(() {
+      card = cardInfo;
+    });
+    cardPath();
+  }
+
+  //받아온 카드이름을 경로로 변환
+  Future<void> cardPath() async {
+    for (int i = 0; i < card.length; i++) {
+      imageName.add('bankTting/img/' + card[i].cardName.toString() + '.png');
+    }
   }
 
   @override
@@ -459,42 +493,26 @@ class _MainPageState extends State<MainPage> {
                             scrollDirection: Axis.horizontal,
                             child: Row(
                               children: [
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 0, 0, 0),
-                                  child: Image.asset(
-                                    'bankTting/img/testcard1.png',
-                                    width: 300,
-                                    height: 220,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 0, 0, 0),
-                                  child: Image.asset(
-                                    'bankTting/img/testcard2.png',
-                                    width: 300,
-                                    height: 220,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: EdgeInsetsDirectional.fromSTEB(
-                                      20, 0, 0, 0),
-                                  child: Image.asset(
-                                    'bankTting/img/testcard3.png',
-                                    width: 300,
-                                    height: 220,
+                                ...List.generate(
+                                  imageName.length,
+                                  (index) => Padding(
+                                    padding: EdgeInsets.only(
+                                        left: index == 0 ? 20 : 0),
+                                    child: Image.asset(
+                                      //'bankTting/img/노리.png',
+                                      imageName[index]!,
+                                      width: 300,
+                                      height: 220,
+                                    ),
                                   ),
                                 ),
                                 ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:
-                                        Colors.transparent, // 배경색을 투명하게 설정
+                                    backgroundColor: Colors.transparent,
                                     shape: RoundedRectangleBorder(
-                                      // 라운드 코너 제거
                                       borderRadius: BorderRadius.circular(0),
                                     ),
-                                    elevation: 0, // 물방울 효과 제거
+                                    elevation: 0,
                                   ),
                                   onPressed: () {
                                     Navigator.push(

@@ -1,6 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
-class CardInfoPage extends StatelessWidget {
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+class CardInfoPage extends StatefulWidget {
+  @override
+  _CardInfoPageState createState() => _CardInfoPageState();
+}
+
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+class _CardInfoPageState extends State<CardInfoPage> {
+  String _cardNumber = "";
+  String _cardPassword = "";
+
+  TextEditingController val1 = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,66 +57,92 @@ class CardInfoPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   SizedBox(height: 15),
-                  TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "카드 번호 (-제외)",
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 185, 183, 183),
+                  TextFormField(
+                      maxLength: 16,
+                      keyboardType: TextInputType.number,
+                      controller: val1,
+                      inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Colors.white,
+                        hintText: "카드 번호 (- 제외)",
+                        hintStyle: TextStyle(
+                          color: Color.fromARGB(255, 185, 183, 183),
+                        ),
+                        border: OutlineInputBorder(),
+                        labelText: '카드번호',
                       ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
+                      onChanged: (value) {
+                        setState(() {});
+                      },
+                      validator: (value) {
+                        // if (value != null) {
+                        //   for (int i = 0; i < 19; i++) {
+                        //     if (i % 4 == 0) {
+                        //       value = value?.concat(" ");
+                        //     }
+                        //   }
+                        // }
+                      }),
+
+                  SizedBox(height: 16),
+                  // TextField(
+                  //   decoration: InputDecoration(
+                  //     filled: true,
+                  //     fillColor: Colors.white,
+                  //     hintText: "만료일 (MM/YY)",
+                  //     hintStyle: TextStyle(
+                  //       color: Color.fromARGB(255, 185, 183, 183),
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 16),
+                  // TextField(
+                  //   decoration: InputDecoration(
+                  //     filled: true,
+                  //     fillColor: Colors.white,
+                  //     hintText: "생년월일 (YY/MM/DD)",
+                  //     hintStyle: TextStyle(
+                  //       color: Color.fromARGB(255, 185, 183, 183),
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
                   SizedBox(height: 16),
                   TextField(
+                    maxLength: 2,
+                    keyboardType: TextInputType.number,
+                    obscureText: true,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: "만료일 (MM/YY)",
+                      hintText: "카드 비밀번호 앞 두자리(**)",
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 185, 183, 183),
                       ),
                       border: OutlineInputBorder(),
+                      labelText: '카드번호 앞 두자리',
                     ),
+                    onChanged: (value) {
+                      setState(() {
+                        _cardPassword = value;
+                      });
+                    },
                   ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "생년월일 (YY/MM/DD)",
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 185, 183, 183),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "비밀번호",
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 185, 183, 183),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 16),
-                  TextField(
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "CVV",
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 185, 183, 183),
-                      ),
-                      border: OutlineInputBorder(),
-                    ),
-                  ),
-                  SizedBox(height: 15),
+                  // SizedBox(height: 16),
+                  // TextField(
+                  //   decoration: InputDecoration(
+                  //     filled: true,
+                  //     fillColor: Colors.white,
+                  //     hintText: "CVV",
+                  //     hintStyle: TextStyle(
+                  //       color: Color.fromARGB(255, 185, 183, 183),
+                  //     ),
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  // ),
+                  // SizedBox(height: 15),
                 ],
               ),
             ),
@@ -139,10 +182,8 @@ class CardInfoPage extends StatelessWidget {
                                     actions: [
                                       TextButton(
                                         onPressed: () {
-                                          Navigator.of(context)
-                                              .pop(); // 대화상자 닫기
-                                          Navigator.of(context)
-                                              .pop(); // 이전 페이지로 돌아가기
+                                          Navigator.of(context).pop(); // 대화상자 닫기
+                                          Navigator.of(context).pop(); // 이전 페이지로 돌아가기
                                         },
                                         child: Text("확인"),
                                       ),
