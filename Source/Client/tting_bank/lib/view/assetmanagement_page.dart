@@ -54,7 +54,7 @@ class AssetmanagementPage extends StatelessWidget {
                     Row(
                       children: [
                         Text(
-                          '    Cashback This Month',
+                          '    금월 혜택 받은 금액',
                           style: TextStyle(
                             fontSize: 23,
                             color: Colors.black87,
@@ -68,7 +68,7 @@ class AssetmanagementPage extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          '156,000 Won    ',
+                          '0 원    ',
                           style: TextStyle(
                             fontSize: 29,
                             color: Colors.black87,
@@ -104,7 +104,7 @@ class AssetmanagementPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '    2월 소비',
+                              '    5월 소비',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -118,7 +118,7 @@ class AssetmanagementPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              '2,518,647원    ',
+                              '38,000원    ',
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.black87,
@@ -136,7 +136,7 @@ class AssetmanagementPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '    2월 소비',
+                              '    4월 소비',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -150,7 +150,7 @@ class AssetmanagementPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              '2,518,647원    ',
+                              '8,700원    ',
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.black87,
@@ -168,7 +168,7 @@ class AssetmanagementPage extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              '    2월 소비',
+                              '    3월 소비',
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -182,7 +182,7 @@ class AssetmanagementPage extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Text(
-                              '2,518,647원    ', //후에 여기 들어갈 값 변경
+                              '27,000원    ', //후에 여기 들어갈 값 변경
                               style: TextStyle(
                                 fontSize: 30,
                                 color: Colors.black87,
