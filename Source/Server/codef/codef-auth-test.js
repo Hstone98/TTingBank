@@ -26,6 +26,7 @@ var parse = require("url-parse");
 var urlencode = require("urlencode");
 
 var connected_body;
+var check_card_num;
 
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
@@ -75,6 +76,7 @@ const DEMO_CLIENT_SECRET = '25e56a19-87e0-4f18-a67b-a743ef0b3788';
 var https = require("https");
 var parse = require("url-parse");
 var urlencode = require("urlencode");
+const { connected } = require('process');
 
 //------------------------------------------------------------------------------------------------//
 // httpSender -> HTTP 기본 함수
@@ -115,12 +117,15 @@ var codefApiCallback = function(response) {
 
   // end 이벤트가 감지되면 데이터 수신을 종료하고 내용을 출력한다
   response.on("end", function() {
-    console.log("codefApiCallback body:" + urlencode.decode(body));
+    // console.log("codefApiCallback body:" + urlencode.decode(body));
 
     // 데이저 수신 완료
     if (response.statusCode == 200) {
       console.log("정상처리");
-      httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      if(!isConnectedId(4))
+      {
+        httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      }
     } else if (response.statusCode == 401) {
       requestToken(
         token_url,
@@ -179,7 +184,7 @@ var connectectedidCallback = function(response) {
     if (response.statusCode === 200) {
       console.log("Connected ID Issued");
       console.log("Connected ID: " + responseBody.data.connectedId);
-
+      InsertConnectedId(4, responseBody.data.connectedId);
     } else if (response.statusCode === 401) {
       console.log("Failed");
     } else {
@@ -192,51 +197,25 @@ var connectectedidCallback = function(response) {
 //------------------------------------------------------------------------------------------------//
 // InsertConnectedId
 //------------------------------------------------------------------------------------------------//
-var InsertConnectedId = function(connectedId){
-  var sql =  'SELECT * FROM tbl_사용자 WHERE email = ?';
-  var params = [email];
-  mysqlConnection.query(sql, params, function(error, result, fields)
-  {
-    if(error)
-    {
-        res.status(400).json('error ocurred');         
-        console.log('들어옴1');  
-    }
-    else
-    {
-      if(result.length > 0 )
-      {
-          if(result[0].email == params[0])
-          {
-              res.status(200).json(result);
-              console.log('로그인 성공');  
-          }
-          else
-          {
-              res.status(204).json('Email does not match');   
-              console.log('로그인 실패: 이메일이 일치하지 않음');  
-          }
-      }
-      else
-      {
-          var insertSql = 'INSERT INTO tbl_사용자 (email, name) VALUES (?, ?)';
-          var insertParams = [email, name];
-          console.log(email, name);
-          mysqlConnection.query(insertSql, insertParams, function(error, result, fields) 
-          {
-              if (error) {
-                  res.status(400).json('error ocurred');  
-                  console.log('들어옴2');
-              } else {
-                  res.status(200).json(result);
-                  console.log('회원가입 성공');  
-              }
-          });
-      }
-    }
-  });
-}
+var InsertConnectedId = function(userId, connectedId) {
+  return new Promise((resolve, reject) => {
+    var sql = `UPDATE tbl_사용자 SET connected_id = ? WHERE id = ?`;
+    var params = [connectedId, userId];
 
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result. length > 0) {
+          resolve(result[0].connected_id);
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+};
 //------------------------------------------------------------------------------------------------//
 // requestToken -> Token 재발급
 //------------------------------------------------------------------------------------------------//
@@ -308,10 +287,11 @@ var authTokenCallback = function(response) {
 
       // CODEF API 요청
       // Create ConnectedId
-      if(!getConnectedId)
-      {
-        httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
-      }
+      // if(isConnectedId(4) == false)
+      // {
+        console.log('여기는 왜 들어와?');
+        // httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      // }
     } 
     else 
     {
@@ -322,20 +302,24 @@ var authTokenCallback = function(response) {
 //------------------------------------------------------------------------------------------------//
 // ConnectedId
 //------------------------------------------------------------------------------------------------//
-var getConnectedId = function(userId) {
+var isConnectedId = function(userId) {
   return new Promise((resolve, reject) => {
-    var sql = 'SELECT connected_id FROM tbl_user WHERE id = ?';
+    var sql = 'SELECT connected_id FROM tbl_사용자 WHERE id = ?';
     var params = [userId];
-
+    console.log('여기는 들어오니?');
     mysqlConnection.query(sql, params, function(error, result, fields) {
       if (error) {
         console.log('Error occurred:', error);
         reject(error);
       } else {
         if (result.length > 0) {
-          resolve(result[0].connected_id);
+          return true;
+          resolve(true);
+          
         } else {
-          resolve(null);
+          return false;
+          resolve(false);
+          
         }
       }
     });
@@ -344,7 +328,7 @@ var getConnectedId = function(userId) {
 //------------------------------------------------------------------------------------------------//
 // Router(/:connectedid) -> connectedId 발급 시 사용하는 url
 //------------------------------------------------------------------------------------------------//
-router.post('/:connectedid', (req, res) => {
+router.post('/connectedid', (req, res) => {
   const id = req.body.id;
   const pwd = req.body.password;
   const organization = req.body.organization;
@@ -362,10 +346,10 @@ router.post('/:connectedid', (req, res) => {
     ,'', '', '', '', '');
   // CODEF API 요청
     // CODEF API request
-    httpSender(codef_url + account_list_path, token, connected_body);
+  httpSender(codef_url + account_list_path, token, connected_body);
 
     // res.statusCode = 200;
-    res.status(200).send("suceess!!");
+  res.status(200).send("suceess!!");
 });
 //------------------------------------------------------------------------------------------------//
 // 
@@ -398,6 +382,208 @@ function create_accountList(countryCode, businessType, clientType, organization,
   
   return codef_account_create_body;
 }
+
+//------------------------------------------------------------------------------------------------//
+// Router(/addCard) -> 카드 추가 시 사용하는 url
+//------------------------------------------------------------------------------------------------//
+var httpSenderAddCard = function(url, token, body) {
+  console.log("========== httpSender ========== ");
+  var uri = parse(url, true);
+
+  var request = https.request(
+    {
+      hostname: uri.hostname,
+      path: uri.pathname,
+      port: uri.port,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    },
+    addCardCallback
+  );
+  request.write(urlencode.encode(JSON.stringify(body)));
+  request.end();
+};
+//------------------------------------------------------------------------------------------------//
+// httpSender -> HTTP 기본 callback 함수
+//------------------------------------------------------------------------------------------------//
+// CODEF API Callback
+var addCardCallback = async function(response) {
+  console.log("codefApiCallback Status: " + response.statusCode);
+  console.log("codefApiCallback Headers: " + JSON.stringify(response.headers));
+
+  var userId = '4';
+  var body = "";
+  response.setEncoding("utf8");
+  response.on("data", function(data) {
+    body += data;
+  });
+
+  // end 이벤트가 감지되면 데이터 수신을 종료하고 내용을 출력한다
+  response.on("end", function() {
+    console.log("codefApiCallback body:" + urlencode.decode(body));
+    var responseBody = JSON.parse(urlencode.decode(body)).data; // Parse the body as JSON
+    console.log("addCardCallback body = " + responseBody[0].resCardNo);
+    // 데이저 수신 완료
+    if (response.statusCode == 200) {
+      console.log("정상처리");
+      console.log("return 받은 cardNo : ", responseBody.map(item => item.resCardNo));
+
+      var map = responseBody.map(item => item.resCardNo);
+
+      for(i = 0; i < map.length; i++)
+      {
+        if(map[i] == check_card_num)
+        {
+          console.log("같음");
+          InsertCard(map[i], userId);
+          // response.status(200).send('suceess');
+        }
+        else{
+          // response.status(400).send("fail!");
+        }
+      }
+
+    } else if (response.statusCode == 401) {
+      console.log('API 요청 실패');
+    } else {
+      console.log("API 요청 오류");
+    }
+    // callback(response);
+    
+  });
+};
+//------------------------------------------------------------------------------------------------//
+// InsertConnectedId
+//------------------------------------------------------------------------------------------------//
+var InsertCard = function(cardNum, userId) {
+  return new Promise((resolve, reject) => {
+    var sql = 'INSERT INTO tbl_사용자_카드 (`카드번호`, `id_사용자`, `id_카드`) VALUES (?, ?, ?)';
+    var params = [cardNum, userId, '4'];
+
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result. length > 0) {
+          resolve(result[0].connected_id);
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+};
+//------------------------------------------------------------------------------------------------//
+// Router(/:addCard) -> 카드 추가 시 사용하는 url
+//------------------------------------------------------------------------------------------------//
+router.post('/addCard', (req, res) => {
+  const id = req.body.id;
+  const organization = req.body.organization;
+  const cardNum = req.body.cardNumber;
+  const cardPwd = req.body.password;
+
+  console.log("나라고!!!!!!!!!!")
+  console.log(cardNum);
+
+  // 입력한 카드와 돌아온 데이터가 일치하는지 확인.
+  check_card_num = cardNum;
+  var arr = check_card_num.split('');
+  for(var i = 6; i < 12; i++ )
+  {
+    arr[i] = '*';
+  }
+  check_card_num = arr.join('');
+  console.log("check_card_num : ", check_card_num);
+    
+  
+  add_card(id, organization, cardNum, cardPwd);
+
+  console.log('들어옴');
+  res.status(200).send("suceess!!");
+  // console.log("\n\n" + id + " " + pwd + " "+ organization + " "+ businessType + " "+ clientType + " "+ loginType + " " + "\n\n");
+
+  // // var RSA_password = publicEncRSA(PUBLIC_KEY, pwd);
+
+  // console.log("나왔쪄");
+
+  // connected_body = create_accountList('KR', businessType, clientType, organization, loginType, id, pwd
+  //   ,'', '', '', '', '');
+  // // CODEF API 요청
+  //   // CODEF API request
+  //   httpSender(codef_url + account_list_path, token, connected_body);
+
+  //   // res.statusCode = 200;
+  //   res.status(200).send("suceess!!");
+});
+//------------------------------------------------------------------------------------------------//
+// AddCard
+//------------------------------------------------------------------------------------------------//
+async function add_card(id, organization, card_num, card_pwd)
+{
+  console.log('add_card()');
+  id = 4;
+  organization = '0305';
+
+  getConnectedId(4)
+  .then(function(connected_id) {
+    console.log('Result:', connected_id);
+    body = add_card_body(id, connected_id, organization, card_num, card_pwd);
+    console.log(body);
+
+
+    url = 'https://development.codef.io/v1/kr/card/p/account/card-list';
+    httpSenderAddCard(url, token, body);
+    
+  })
+  .catch(function(error) {
+    console.log('Error occurred:', error);
+    // Handle the error accordingly
+  });
+}
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+function add_card_body(id, connected_id, organization, card_num, card_pwd)
+{
+  // connected_id = 'fYHnAH-sAmE8NF1dhTp3BV';
+  var RSA_cardNumber = publicEncRSA(PUBLIC_KEY, card_num);
+  var RSA_password = publicEncRSA(PUBLIC_KEY, card_pwd);
+
+  return{
+      "organization": organization,
+      "connectedId": connected_id,
+      "cardNo": RSA_cardNumber,
+      "cardPassword": RSA_password,
+      "birthDate": "",
+      "inquiryType": "1"
+  };
+}
+//------------------------------------------------------------------------------------------------//
+// getConectedId
+//------------------------------------------------------------------------------------------------//
+var getConnectedId = function(userId) {
+  return new Promise(function(resolve, reject) {
+    var sql = 'SELECT connected_id FROM tbl_사용자 WHERE id = ?';
+    var params = [userId];
+    
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result.length > 0) {
+          resolve(result[0].connected_id);
+        } else {
+          resolve(false);
+        }
+      }
+    });
+  });
+};
 
 //------------------------------------------------------------------------------------------------//
 // 카드 승인내역 조회
@@ -435,5 +621,8 @@ var codef_card_body = {
 //------------------------------------------------------------------------------------------------//
 // 데모 endpoint -> https://development.codef.io/v1/kr/card/p/account/approval-list
 // 정식 endpoint -> https://api.codef.io/v1/kr/card/p/account/approval-list
+
+
+httpSender(codef_url + account_list_path, token, connected_body);
 
 module.exports = router;
