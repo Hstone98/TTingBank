@@ -126,7 +126,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       children: [
                         Expanded(
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               //TODO: 등록 버튼이 눌렸을 때 실행할 코드
                               if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
                                 showToast("카드 16자리를 입력해주세요.");
@@ -135,7 +135,15 @@ class _CardInfoPageState extends State<CardInfoPage> {
                                 showToast("카드 비밀번호 2자리를 입력해주세요.");
                               }
 
-                              ctrCardInfo.sendCardAddData('4', _cardNumber, _cardPassword, '0305');
+                              if (await ctrCardInfo.sendCardAddData(
+                                      '4', _cardNumber, _cardPassword, '0305') ==
+                                  true) {
+                                print("Success");
+                                Navigator.of(context).pop();
+                                showToast('등록 성공!!');
+                              } else {
+                                showToast('등록 실패!!');
+                              }
                             },
                             style: ElevatedButton.styleFrom(
                               primary: Color.fromARGB(255, 68, 75, 88),
