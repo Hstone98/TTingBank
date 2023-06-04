@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
         setState(() {
           isLoggedIn = true;
         });
+        didChangeDependencies();
       }
     });
   }
