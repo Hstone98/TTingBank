@@ -27,9 +27,7 @@ class SettingPageState extends State<SettingPage> {
 
   //받은 비동기 User를 User형태로 name에 저장하고 상태를 저장-> user에 대한 데이터를 가져오고 거래내역 조회
   Future<void> initUser() async {
-    // User user = await userSet(await KakaoName());  //실제 사용자 정보 받아오는 거
-    User userInfo = await userSet('testuser'); //testuser 사용자 정보 받아오는 거
-    //회원이랑 거래내역 카드정보 다 삭제되기 때문에 임시로 testuser로 접속하도록
+    User userInfo = await userSet(await KakaoName()); //실제 사용자 정보 받아오는 거
 
     setState(() {
       user = userInfo;
@@ -40,6 +38,7 @@ class SettingPageState extends State<SettingPage> {
     '내 정보 수정하기',
     '내 자산',
     '고객센터',
+    '로그아웃',
     '탈퇴하기',
     '앱 버전 ver 1.0',
   ];
@@ -56,6 +55,10 @@ class SettingPageState extends State<SettingPage> {
     ListTileItem(
       icon: Icons.phone,
       title: '고객센터',
+    ),
+    ListTileItem(
+      icon: Icons.cancel,
+      title: '로그아웃',
     ),
     ListTileItem(
       icon: Icons.cancel,
@@ -181,6 +184,10 @@ class ListTileItem extends StatelessWidget {
           } else if (title == '고객센터') {
             // '고객센터'를 클릭했을 때 수행할 동작
             // TODO: 동작 구현
+          } else if (title == '로그아웃') {
+            // '고객센터'를 클릭했을 때 수행할 동작
+            // TODO: 동작 구현
+            LogoutshowConfirmationDialog(context);
           } else if (title == '탈퇴하기') {
             // '탈퇴하기'를 클릭했을 때 수행할 동작
             showConfirmationDialog(context);
@@ -209,6 +216,43 @@ class ListTileItem extends StatelessWidget {
               onPressed: () {
                 // 예를 선택한 경우 탈퇴처리
                 withdrawUser(user.email); //탈퇴기능
+                Kakao_Withdrawal();
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+                Navigator.pushAndRemoveUntil(
+                    //모든 화면 pop 후 LoginPage push
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoginPage(),
+                    ),
+                    (route) => false);
+              },
+              child: Text('예'), // 예 버튼 텍스트
+            ),
+            TextButton(
+              onPressed: () {
+                // 아니오를 선택한 경우 취소됨
+
+                Navigator.of(context).pop(); // 다이얼로그 닫기
+              },
+              child: Text('아니오'), // 아니오 버튼 텍스트
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void LogoutshowConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('로그아웃'), // 다이얼로그 제목
+          content: Text('정말로 로그아웃 하시겠습니까?'), // 다이얼로그 내용
+          actions: [
+            TextButton(
+              onPressed: () {
+                // 예를 선택한 경우 로그아웃
                 Kakao_Withdrawal();
                 Navigator.of(context).pop(); // 다이얼로그 닫기
                 Navigator.pushAndRemoveUntil(
