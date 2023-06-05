@@ -439,10 +439,10 @@ var addCardCallback = async function(response) {
         {
           console.log("같음");
           InsertCard(map[i], userId);
-          // response.status(200).send('suceess');
+          response.status(200).send('suceess');
         }
         else{
-          // response.status(400).send("fail!");
+          response.status(400).send("fail!");
         }
       }
 
@@ -503,7 +503,7 @@ router.post('/addCard', (req, res) => {
   add_card(id, organization, cardNum, cardPwd);
 
   console.log('들어옴');
-  res.status(200).send("suceess!!");
+  // res.status(200).send("suceess!!");
   // console.log("\n\n" + id + " " + pwd + " "+ organization + " "+ businessType + " "+ clientType + " "+ loginType + " " + "\n\n");
 
   // // var RSA_password = publicEncRSA(PUBLIC_KEY, pwd);
