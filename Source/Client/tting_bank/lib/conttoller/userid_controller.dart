@@ -22,7 +22,7 @@ Future<User> searchUser(String? name) async {
     SendUserId(sendUserData.id);
 
     print('전송 완료');
-    print(sendUserData);
+    print(userData);
 
     return sendUserData;
   } else if (res.statusCode == 400) {
