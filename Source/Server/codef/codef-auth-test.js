@@ -27,6 +27,7 @@ var urlencode = require("urlencode");
 
 var connected_body;
 var check_card_num;
+var userId;
 
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
@@ -414,7 +415,7 @@ var addCardCallback = async function(response) {
   console.log("codefApiCallback Status: " + response.statusCode);
   console.log("codefApiCallback Headers: " + JSON.stringify(response.headers));
 
-  var userId = '4';
+  // var userId = '4';
   var body = "";
   response.setEncoding("utf8");
   response.on("data", function(data) {
@@ -617,10 +618,15 @@ var codef_card_body = {
 
 
 //------------------------------------------------------------------------------------------------//
-// 카드 승인내역 조회
+// Get User ID
 //------------------------------------------------------------------------------------------------//
-// 데모 endpoint -> https://development.codef.io/v1/kr/card/p/account/approval-list
-// 정식 endpoint -> https://api.codef.io/v1/kr/card/p/account/approval-list
+router.post('/getUserId', (req, res) => {
+  const id = req.body.id;
+
+  userId = id;
+  userId = 4;
+  console.log('userId : ', userId);
+});
 
 
 httpSender(codef_url + account_list_path, token, connected_body);
