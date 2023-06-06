@@ -15,9 +15,39 @@ class CardInfoPage extends StatefulWidget {
 //
 //------------------------------------------------------------------------------------------------//
 class _CardInfoPageState extends State<CardInfoPage> {
+  String _selectedCard = "";
+  String _selectedCardCode = "";
   String _cardNumber = "";
   String _cardPassword = "";
 
+  final List<String> _cards = [
+    '현대카드',
+    '삼성카드',
+    '롯데카드',
+    '비씨카드',
+    '신한카드',
+    '국민카드',
+    '우리카드',
+    '하나카드',
+    '농협',
+    'ibk',
+  ];
+
+  final List<String> _cardCodes = [
+    '0302',
+    '0303',
+    '0311',
+    '0305',
+    '0306',
+    '0301',
+    '0309',
+    '0313',
+    '0304',
+    '0000'
+  ];
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,140 +62,146 @@ class _CardInfoPageState extends State<CardInfoPage> {
           },
         ),
         backgroundColor: Colors.white,
-        title: Text("카드 등록", style: TextStyle(color: Colors.black)),
+        title: Text(
+          '카드 등록',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          SizedBox(height: 20),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: Offset(0, 3),
-                ),
-              ],
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: GridView.count(
+                crossAxisCount: 4,
+                children: _cards.map((card) => _buildCardButton(card)).toList(),
+              ),
             ),
-            child: SingleChildScrollView(
-              padding: EdgeInsets.all(16),
+            SizedBox(height: 16),
+            Text(
+              '$_selectedCard',
+              style: TextStyle(fontSize: 18),
+            ),
+            SizedBox(height: 16),
+            Visibility(
+              visible: _selectedCard.isNotEmpty,
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  SizedBox(height: 15),
                   TextFormField(
-                      maxLength: 16,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Colors.white,
-                        hintText: "카드 번호 (- 제외)",
-                        hintStyle: TextStyle(
-                          color: Color.fromARGB(255, 185, 183, 183),
-                        ),
-                        border: OutlineInputBorder(),
-                        labelText: '카드번호',
-                      ),
-                      onChanged: (value) {
-                        setState(() {
-                          // print(value);
-                          _cardNumber = value;
-                          print(_cardNumber);
-                        });
-                      }),
+                    decoration: InputDecoration(labelText: 'ID'),
+                    onChanged: (value) {
+                      setState(() {
+                        _cardNumber = value;
+                      });
+                    },
+                  ),
                   SizedBox(height: 16),
-                  TextField(
-                    maxLength: 2,
-                    keyboardType: TextInputType.number,
+                  TextFormField(
+                    decoration: InputDecoration(labelText: 'Password'),
                     obscureText: true,
-                    decoration: InputDecoration(
-                      filled: true,
-                      fillColor: Colors.white,
-                      hintText: "카드 비밀번호 앞 두자리(**)",
-                      hintStyle: TextStyle(
-                        color: Color.fromARGB(255, 185, 183, 183),
-                      ),
-                      border: OutlineInputBorder(),
-                      labelText: '카드번호 앞 두자리',
-                    ),
                     onChanged: (value) {
                       setState(() {
                         _cardPassword = value;
                       });
                     },
                   ),
+                  SizedBox(height: 16),
                 ],
               ),
             ),
-          ),
-          SizedBox(height: 40),
-          Container(
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
-                  spreadRadius: 3,
-                  blurRadius: 7,
-                  offset: Offset(0, 3),
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: 20), // 여백 추가
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedButton(
-                            onPressed: () async {
-                              //TODO: 등록 버튼이 눌렸을 때 실행할 코드
-                              if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
-                                showToast("카드 16자리를 입력해주세요.");
-                              }
-                              if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
-                                showToast("카드 비밀번호 2자리를 입력해주세요.");
-                              }
-
-                              if (await ctrCardInfo.sendCardAddData(
-                                      '4', _cardNumber, _cardPassword, '0305') ==
-                                  true) {
-                                print("Success");
-                                Navigator.of(context).pop();
-                                showToast('등록 성공!!');
-                              } else {
-                                showToast('등록 실패!!');
-                              }
-                            },
-                            style: ElevatedButton.styleFrom(
-                              primary: Color.fromARGB(255, 68, 75, 88),
-                              onPrimary: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(9),
-                              ),
-                              padding: EdgeInsets.symmetric(vertical: 10),
-                            ),
-                            child: Text(
-                              '등록',
-                              style: TextStyle(fontSize: 18),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 50), // 여백 추가
-                  ],
-                ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                primary: Colors.black54,
               ),
+              onPressed: _selectedCard.isEmpty
+                  ? null
+                  : () async {
+                      //TODO: 등록 버튼이 눌렸을 때 실행할 코드
+                      if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
+                        showToast("카드 16자리를 입력해주세요.");
+                      }
+                      if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
+                        showToast("카드 비밀번호 2자리를 입력해주세요.");
+                      }
+
+                      if (await ctrCardInfo.sendCardAddData(
+                              '4', _cardNumber, _cardPassword, '0305') ==
+                          true) {
+                        print("Success");
+                        Navigator.of(context).pop();
+                        showToast('등록 성공!!');
+                      } else {
+                        showToast('등록 실패!!');
+                      }
+                    },
+              child: Text('등록'),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+  Widget _buildCardButton(String card) {
+    return InkWell(
+      onTap: () {
+        setState(
+          () {
+            for (int i = 0; i < _cardCodes.length; i++) {
+              if (_cards[i] == card) {
+                _selectedCardCode = _cardCodes[i];
+              }
+            }
+            _selectedCard = card;
+          },
+        );
+      },
+      child: Card(
+        child: Center(
+          child: Text(card),
+        ),
+      ),
+    );
+  }
+
+//------------------------------------------------------------------------------------------------//
+//
+//------------------------------------------------------------------------------------------------//
+  void _registerCard() {
+    if (_selectedCard.isEmpty) {
+      return;
+    }
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text('Card Registration'),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text('Card: $_selectedCard'),
+            SizedBox(height: 8),
+            Text('ID: $_cardNumber'),
+            SizedBox(height: 8),
+            Text('Password: $_cardPassword'),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              primary: Colors.black54,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: Text('OK'),
           ),
         ],
       ),
