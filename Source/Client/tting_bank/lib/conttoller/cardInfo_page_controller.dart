@@ -47,10 +47,6 @@ Future<bool> sendCardAddData(String id, String cardNum, String cardPwd, String o
     print("에러가 발생했습니다.");
     throw Exception('error 발생!!!');
   }
-
-  print("왔어");
-
-  return true;
 }
 
 bool checkCardNumLength(int length) {

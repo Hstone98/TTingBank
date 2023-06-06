@@ -9,6 +9,7 @@ class RegisterCardPage extends StatefulWidget {
 
 class _RegisterCardPageState extends State<RegisterCardPage> {
   String _selectedCard = "";
+  String _selectedCardCode = "";
   String _inputId = "";
   String _inputPassword = "";
 
@@ -21,8 +22,21 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
     '국민카드',
     '우리카드',
     '하나카드',
+    '농협',
     'ibk',
-    '농협'
+  ];
+
+  final List<String> _cardCodes = [
+    '0302',
+    '0303',
+    '0311',
+    '0305',
+    '0306',
+    '0301',
+    '0309',
+    '0313',
+    '0304',
+    '0000'
   ];
 //------------------------------------------------------------------------------------------------//
 //
@@ -99,8 +113,9 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
               onPressed: _selectedCard.isEmpty
                   ? null
                   : () async {
+                      print(_cardCodes);
                       if (await ctrRegisterCard.sendCardLoginData(
-                          'KR', 'CD', 'P', '0305', '1', _inputId, _inputPassword)) {
+                          'KR', 'CD', 'P', _selectedCard, '1', _inputId, _inputPassword)) {
                         print("Success");
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
@@ -125,6 +140,12 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
       onTap: () {
         setState(
           () {
+            for (int i = 0; i < _cardCodes.length; i++) {
+              print(_cardCodes[i]);
+              if (_cards[i] == card) {
+                _selectedCardCode = _cardCodes[i];
+              }
+            }
             _selectedCard = card;
           },
         );

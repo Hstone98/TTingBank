@@ -38,8 +38,7 @@ class _MainPageState extends State<MainPage> {
   bool _showClearButton = false;
   StreamController<List<Store>> _searchResultsController =
       StreamController<List<Store>>.broadcast();
-  Stream<List<Store>> get _searchResultsStream =>
-      _searchResultsController.stream;
+  Stream<List<Store>> get _searchResultsStream => _searchResultsController.stream;
 
   void _searchTextChanged() async {
     String searchText = _searchController.text;
@@ -81,6 +80,7 @@ class _MainPageState extends State<MainPage> {
 
     setState(() {
       user = userInfo;
+      print('user id : ' + user.id.toString());
     });
     initUserCard();
   }
@@ -116,25 +116,21 @@ class _MainPageState extends State<MainPage> {
             children: [
               FutureBuilder<String?>(
                 future: KakaoName(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<String?> nameSnapshot) {
+                builder: (BuildContext context, AsyncSnapshot<String?> nameSnapshot) {
                   return FutureBuilder<String>(
                     future: KakaoEmail(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<String> emailSnapshot) {
+                    builder: (BuildContext context, AsyncSnapshot<String> emailSnapshot) {
                       String? kakaoName = nameSnapshot.data;
                       String? kakaoEmail = emailSnapshot.data;
                       return FutureBuilder<String?>(
                         future: KakaoImage(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<String?> imageSnapshot) {
+                        builder: (BuildContext context, AsyncSnapshot<String?> imageSnapshot) {
                           String? kakaoImage = imageSnapshot.data;
                           return UserAccountsDrawerHeader(
                             currentAccountPicture: CircleAvatar(
                               backgroundImage: kakaoImage != null
                                   ? NetworkImage(kakaoImage)
-                                  : AssetImage('assets/images/im_white.png')
-                                      as ImageProvider,
+                                  : AssetImage('assets/images/im_white.png') as ImageProvider,
                             ),
                             accountName: Text(
                               kakaoName ?? '이름 없음',
@@ -176,8 +172,7 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => AssetmanagementPage()),
+                    MaterialPageRoute(builder: (context) => AssetmanagementPage()),
                   );
                 },
                 trailing: Icon(
@@ -243,8 +238,7 @@ class _MainPageState extends State<MainPage> {
                 onTap: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(
-                        builder: (context) => ConsumptionThisMonth()),
+                    MaterialPageRoute(builder: (context) => ConsumptionThisMonth()),
                   );
                 },
                 trailing: Icon(
@@ -265,9 +259,7 @@ class _MainPageState extends State<MainPage> {
                 selected: true,
                 onTap: () {
                   Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => RecommendPage(testname)));
+                      context, MaterialPageRoute(builder: (context) => RecommendPage(testname)));
                 },
                 trailing: Icon(
                   Icons.add,
@@ -286,8 +278,7 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SettingPage()));
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => SettingPage()));
                 },
                 trailing: Icon(
                   Icons.add,
@@ -355,14 +346,12 @@ class _MainPageState extends State<MainPage> {
                         for (var store in searchResults)
                           ListTile(
                             title: Text(store.name),
-                            subtitle:
-                                Text('ID: ${store.id}, Type: ${store.type}'),
+                            subtitle: Text('ID: ${store.id}, Type: ${store.type}'),
                             onTap: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) =>
-                                      RecommendPage(store.name),
+                                  builder: (context) => RecommendPage(store.name),
                                 ),
                               );
                             },
@@ -400,9 +389,7 @@ class _MainPageState extends State<MainPage> {
                     scrollDirection: Axis.horizontal,
                     child: Row(
                       children: [
-                        for (int i = 0;
-                            i < (ImageCategory.listAsset.length + 1) ~/ 2;
-                            i++)
+                        for (int i = 0; i < (ImageCategory.listAsset.length + 1) ~/ 2; i++)
                           Column(
                             children: [
                               if (2 * i < ImageCategory.listAsset.length)
@@ -473,8 +460,7 @@ class _MainPageState extends State<MainPage> {
                     Row(
                       children: [
                         Padding(
-                          padding:
-                              EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
+                          padding: EdgeInsetsDirectional.fromSTEB(20, 30, 0, 10),
                           child: Text(
                             "My Card",
                             style: TextStyle(
@@ -496,8 +482,7 @@ class _MainPageState extends State<MainPage> {
                                 ...List.generate(
                                   imageName.length,
                                   (index) => Padding(
-                                    padding: EdgeInsets.only(
-                                        left: index == 0 ? 20 : 0),
+                                    padding: EdgeInsets.only(left: index == 0 ? 20 : 0),
                                     child: Image.asset(
                                       //'bankTting/img/노리.png',
                                       imageName[index]!,
@@ -517,8 +502,7 @@ class _MainPageState extends State<MainPage> {
                                   onPressed: () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(
-                                          builder: (context) => CardInfoPage()),
+                                      MaterialPageRoute(builder: (context) => CardInfoPage()),
                                     );
                                   },
                                   child: Image.asset(
