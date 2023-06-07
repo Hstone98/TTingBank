@@ -453,56 +453,45 @@ var addCardCallback = async function(response) {
       console.log("정상처리");
       console.log("addCardCallback body = " + responseBody.resCardNo);
 
-        if(responseBody.resCardNo != null)
+        if(responseBody.resCardNo == check_card_num)
         {
           console.log("addCardCallback body = " + responseBody.resCardNo);
           if( responseBody.resCardNo == check_card_num)
           {
-            console.log("같음");
-            InsertCard(responseBody.resCardNo, userId);
+            console.log("같음1");
+            GetCardName(responseBody.resCardName)
+            .then(function(cardId){
+              InsertCard(responseBody.resCardNo, userId, cardId);
+            })
+            .catch({
+
+            })
+            
           }
           else{
             // response.status(400).send("fail!");
           }
         }
-        else(responseBody.map != null)
+        else
         {
-          console.log("return 받은 cardNo : ", responseBody.map(item => item.resCardNo));
-
           var map = responseBody.map(item => item.resCardNo);
 
           for(i = 0; i < map.length; i++)
           {
             if(map[i] == check_card_num)
             {
-              console.log("같음");
-              InsertCard(map[i], userId);
-              
-            }
-            else{
-              // response.status(400).send("fail!");
+              console.log("같음2");
+              console.log("같음1");
+              GetCardName(responseBody.resCardName)
+              .then(function(cardId){
+                InsertCard(map[i], userId, cardId);
+              })
+              .catch({
+  
+              })
             }
           }
         }
-
-
-
-
-      // if(responseBody.length == 0)
-      // {
-
-      // }
-      // else if(responseBody.length == 1)
-      // {
-       
-      // }
-      // else
-      // {
-        
-      // }
-
-      
-
     } else if (response.statusCode == 401) {
       console.log('API 요청 실패');
     } else {
@@ -513,12 +502,35 @@ var addCardCallback = async function(response) {
   });
 };
 //------------------------------------------------------------------------------------------------//
+// getCardName
+//------------------------------------------------------------------------------------------------//
+var GetCardName = function(cardName) {
+  return new Promise((resolve, reject) => {
+    var sql = 'SELECT id FROM tbl_카드 WHERE 카드이름 = ?';
+    var params = [cardName];
+
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result. length > 0) {
+          resolve(result[0].id);
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+};
+
+//------------------------------------------------------------------------------------------------//
 // InsertConnectedId
 //------------------------------------------------------------------------------------------------//
-var InsertCard = function(cardNum, userId) {
+var InsertCard = function(cardNum, userId, cardId) {
   return new Promise((resolve, reject) => {
     var sql = 'INSERT INTO tbl_사용자_카드 (`카드번호`, `id_사용자`, `id_카드`) VALUES (?, ?, ?)';
-    var params = [cardNum, userId, '4'];
+    var params = [cardNum, userId, cardId];
 
     mysqlConnection.query(sql, params, function(error, result, fields) {
       if (error) {
@@ -573,7 +585,7 @@ router.post('/addCard', (req, res) => {
   
   add_card(id, organization, cardNum, cardPwd);
 
-  console.log('들어옴');
+  res.status(200).send("suceess!!");
 });
 //------------------------------------------------------------------------------------------------//
 // AddCard
@@ -763,7 +775,7 @@ var getPaymentCallback = async function(response) {
     // 데이저 수신 완료
     if (response.statusCode == 200) {
       console.log('payment success');
-      DeletePaymentData(date)
+      DeletePaymentData('202304')
 
       .then(function() {
         console.log(responseBody);
@@ -795,7 +807,7 @@ async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
         reject(error);
       } else {
         if (result. length > 0) {
-          resolve(result[0].connected_id);
+          resolve(true);
         } else {
           resolve(null);
         }
