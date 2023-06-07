@@ -130,17 +130,17 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       }
                       if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
                         showToast("카드 비밀번호 2자리를 입력해주세요.");
-                      }
-
-                      if (await ctrCardInfo.sendCardAddData(
-                              user.id, _cardNumber, _cardPassword, _selectedCardCode) ==
-                          true) {
-                        print("Success");
-                        Navigator.of(context).pop();
-                        showToast('등록 성공!!');
-                        Refresh.addCardInfoChangedEvent(true);
                       } else {
-                        showToast('등록 실패!!');
+                        if (await ctrCardInfo.sendCardAddData(
+                                user.id, _cardNumber, _cardPassword, _selectedCardCode) ==
+                            true) {
+                          print("Success");
+                          Navigator.of(context).pop();
+                          showToast('등록 성공!!');
+                          Refresh.addCardInfoChangedEvent(true);
+                        } else {
+                          showToast('등록 실패!!');
+                        }
                       }
                     },
               child: Text('등록'),
