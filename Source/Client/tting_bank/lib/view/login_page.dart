@@ -16,13 +16,15 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    TokenCheck().then((isValid) {
-      if (isValid) {
-        setState(() {
-          isLoggedIn = true;
-        });
-        didChangeDependencies();
-      }
+    Future.delayed(Duration(milliseconds: 500), () {
+      TokenCheck().then((isValid) {
+        if (isValid) {
+          setState(() {
+            isLoggedIn = true;
+          });
+          didChangeDependencies();
+        }
+      });
     });
   }
 
