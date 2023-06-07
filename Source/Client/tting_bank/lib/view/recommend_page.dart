@@ -16,8 +16,9 @@ import 'package:tting_bank/model/user.dart';
 
 class RecommendPage extends StatefulWidget {
   final String inputName;
+  final User user;
 
-  RecommendPage(this.inputName, {Key? key}) : super(key: key);
+  RecommendPage(this.inputName, this.user, {Key? key}) : super(key: key);
 
   @override
   _RecommendPageState createState() => _RecommendPageState();
@@ -84,18 +85,22 @@ class _RecommendPageState extends State<RecommendPage> with SingleTickerProvider
           CreateCardInfoPage(
             selectedTabLabel: selectedTabLabel,
             inputName: widget.inputName,
+            user: widget.user,
           ),
           CreateCardInfoPage(
             selectedTabLabel: selectedTabLabel,
             inputName: widget.inputName,
+            user: widget.user,
           ),
           CreateCardInfoPage(
             selectedTabLabel: selectedTabLabel,
             inputName: widget.inputName,
+            user: widget.user,
           ),
           CreateCardInfoPage(
             selectedTabLabel: selectedTabLabel,
             inputName: widget.inputName,
+            user: widget.user,
           ),
         ],
       ),
@@ -106,9 +111,10 @@ class _RecommendPageState extends State<RecommendPage> with SingleTickerProvider
 class CreateCardInfoPage extends StatefulWidget {
   final String selectedTabLabel;
   final String inputName;
+  final User user;
 
   const CreateCardInfoPage({
-    required this.selectedTabLabel, required this.inputName,
+    required this.selectedTabLabel, required this.inputName, required this.user,
     Key? key,
   }) : super(key: key);
 
@@ -116,39 +122,22 @@ class CreateCardInfoPage extends StatefulWidget {
   _CreateCardInfoPageState createState() => _CreateCardInfoPageState();
 }
 
-class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
-  User user = User(id: 0, name: '', email: '', connected_id: ''); // 사용자 정보
+class _CreateCardInfoPageState extends State<CreateCardInfoPage> { // 사용자 정보
   List<Recommend_card>? cardList = [];
   List<NoCardRecommend>? nohavecardList = [];
 
   @override
   void initState() {
     super.initState();
-    initUser();
-    print(this.user.email);
+    print(widget.user.email);
   }
 
   @override
   void didUpdateWidget(CreateCardInfoPage oldWidget) {
     if (oldWidget.selectedTabLabel != widget.selectedTabLabel) {
-      recommendListSet(user.email, widget.inputName, widget.selectedTabLabel);
+      recommendListSet(widget.user.email, widget.inputName, widget.selectedTabLabel);
     }
     super.didUpdateWidget(oldWidget);
-  }
-
-  // 받은 비동기 User를 User 형태로 name에 저장하고 상태를 저장 -> user에 대한 데이터를 가져오고 거래내역 조회
-  Future<void> initUser() async {
-    User name = await userSet();
-    setState(() {
-      user = name;
-    });
-    await recommendListSet(user.email, widget.inputName, widget.selectedTabLabel);
-  }
-
-  // KakaoName()에서 받아온 이름을 searchUser로 보내고 Future<User> 형태로 반환
-  Future<User> userSet() async {
-    String? name = await KakaoName();
-    return await searchUser(name);
   }
 
   Future<void> recommendListSet(String cdname, String company, String label) async {
@@ -505,7 +494,6 @@ String cardPath(String cdname) {
 
 class TabInfo {
   final String label;
-
   const TabInfo({required this.label});
 }
 

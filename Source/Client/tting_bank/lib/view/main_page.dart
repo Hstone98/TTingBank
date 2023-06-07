@@ -275,7 +275,7 @@ class _MainPageState extends State<MainPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => RecommendPage(testname)));
+                          builder: (context) => RecommendPage(testname, user)));
                 },
                 trailing: Icon(
                   Icons.add,
@@ -370,7 +370,7 @@ class _MainPageState extends State<MainPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) =>
-                                      RecommendPage(store.name),
+                                      RecommendPage(store.name, user),
                                 ),
                               );
                             },
@@ -546,6 +546,7 @@ Widget setSizeBox(String strImgPath, CategoryType type, BuildContext context) {
           MaterialPageRoute(
             builder: (context) => StoreListPage(
               categoryType: type,
+              user: user,
             ),
           ),
         )

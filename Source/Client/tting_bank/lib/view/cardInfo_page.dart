@@ -94,7 +94,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'ID'),
+                    decoration: InputDecoration(labelText: '카드번호'),
                     onChanged: (value) {
                       setState(() {
                         _cardNumber = value;
@@ -103,7 +103,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
                   ),
                   SizedBox(height: 16),
                   TextFormField(
-                    decoration: InputDecoration(labelText: 'Password'),
+                    decoration: InputDecoration(labelText: '비밀번호 앞 2자리'),
                     obscureText: true,
                     onChanged: (value) {
                       setState(() {
