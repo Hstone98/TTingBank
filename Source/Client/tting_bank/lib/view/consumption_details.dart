@@ -15,7 +15,7 @@ class ConsumptionThisMonth extends StatefulWidget {
 }
 
 class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
-  User user = User(id: 0, name: '', email: ''); //사용자 정보
+  User user = User(id: 0, name: '', email: '', connected_id: ''); //사용자 정보
   List<Consumption> consumptionList = []; //결제내역 정보
   int year = DateTime.now().year;
   int month = DateTime.now().month;

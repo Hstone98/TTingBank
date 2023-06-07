@@ -16,7 +16,7 @@ class SettingPage extends StatefulWidget {
   SettingPageState createState() => SettingPageState();
 }
 
-User user = User(id: 0, name: '', email: ''); //사용자 정보
+User user = User(id: 0, name: '', email: '', connected_id: ''); //사용자 정보
 
 class SettingPageState extends State<SettingPage> {
   @override

@@ -46,7 +46,7 @@ Future<User> userSet(String? name) async {
     return user;
   } catch (error) {
     print('찾을 수 없음');
-    return user = User(id: 0, name: '', email: '');
+    return user = User(id: 0, name: '', email: '', connected_id: '');
   }
 }
 

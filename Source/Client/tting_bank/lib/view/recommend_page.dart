@@ -117,7 +117,7 @@ class CreateCardInfoPage extends StatefulWidget {
 }
 
 class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
-  User user = User(id: 0, name: '', email: ''); // 사용자 정보
+  User user = User(id: 0, name: '', email: '', connected_id: ''); // 사용자 정보
   List<Recommend_card>? cardList = [];
   List<NoCardRecommend>? nohavecardList = [];
 
@@ -125,6 +125,7 @@ class _CreateCardInfoPageState extends State<CreateCardInfoPage> {
   void initState() {
     super.initState();
     initUser();
+    print(this.user.email);
   }
 
   @override

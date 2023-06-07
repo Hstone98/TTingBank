@@ -29,7 +29,7 @@ class MainPage extends StatefulWidget {
   _MainPageState createState() => _MainPageState();
 }
 
-User user = User(id: 0, name: '', email: ''); //사용자 정보
+User user = User(id: 0, name: '', email: '', connected_id: ''); //사용자 정보
 List<CardInfo> card = []; //사용자가 보유한 카드 정보
 List<String> imageName = []; //카드의 이미지에 대한 정보
 
