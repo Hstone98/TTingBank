@@ -137,7 +137,6 @@ class _CardInfoPageState extends State<CardInfoPage> {
                           print("Success");
                           Navigator.of(context).pop();
                           showToast('등록 성공!!');
-                          Refresh.addCardInfoChangedEvent(true);
                         } else {
                           showToast('등록 실패!!');
                         }
