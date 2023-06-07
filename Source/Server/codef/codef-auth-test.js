@@ -447,26 +447,61 @@ var addCardCallback = async function(response) {
   response.on("end", function() {
     console.log("codefApiCallback body:" + urlencode.decode(body));
     var responseBody = JSON.parse(urlencode.decode(body)).data; // Parse the body as JSON
-    console.log("addCardCallback body = " + responseBody[0].resCardNo);
+    
     // 데이저 수신 완료
     if (response.statusCode == 200) {
       console.log("정상처리");
-      console.log("return 받은 cardNo : ", responseBody.map(item => item.resCardNo));
+      console.log("addCardCallback body = " + responseBody.resCardNo);
 
-      var map = responseBody.map(item => item.resCardNo);
-
-      for(i = 0; i < map.length; i++)
-      {
-        if(map[i] == check_card_num)
+        if(responseBody.resCardNo != null)
         {
-          console.log("같음");
-          InsertCard(map[i], userId);
-          response.status(200).send('suceess');
+          console.log("addCardCallback body = " + responseBody.resCardNo);
+          if( responseBody.resCardNo == check_card_num)
+          {
+            console.log("같음");
+            InsertCard(responseBody.resCardNo, userId);
+          }
+          else{
+            // response.status(400).send("fail!");
+          }
         }
-        else{
-          response.status(400).send("fail!");
+        else(responseBody.map != null)
+        {
+          console.log("return 받은 cardNo : ", responseBody.map(item => item.resCardNo));
+
+          var map = responseBody.map(item => item.resCardNo);
+
+          for(i = 0; i < map.length; i++)
+          {
+            if(map[i] == check_card_num)
+            {
+              console.log("같음");
+              InsertCard(map[i], userId);
+              
+            }
+            else{
+              // response.status(400).send("fail!");
+            }
+          }
         }
-      }
+
+
+
+
+      // if(responseBody.length == 0)
+      // {
+
+      // }
+      // else if(responseBody.length == 1)
+      // {
+       
+      // }
+      // else
+      // {
+        
+      // }
+
+      
 
     } else if (response.statusCode == 401) {
       console.log('API 요청 실패');
@@ -523,6 +558,8 @@ router.post('/addCard', (req, res) => {
   console.log("나라고!!!!!!!!!!")
   console.log(cardNum);
 
+  
+
   // 입력한 카드와 돌아온 데이터가 일치하는지 확인.
   check_card_num = cardNum;
   var arr = check_card_num.split('');
@@ -532,7 +569,7 @@ router.post('/addCard', (req, res) => {
   }
   check_card_num = arr.join('');
   console.log("check_card_num : ", check_card_num);
-    
+  console.log(organization + '      ' +  cardNum + + '      ' + cardPwd);  
   
   add_card(id, organization, cardNum, cardPwd);
 
@@ -544,13 +581,14 @@ router.post('/addCard', (req, res) => {
 async function add_card(id, organization, card_num, card_pwd)
 {
   console.log('add_card()');
-  id = userId;
+
+  console.log()
   // organization = '0305';
 
-  getConnectedId(4)
+  getConnectedId(userId)
   .then(function(connected_id) {
     console.log('Result:', connected_id);
-    body = add_card_body(id, connected_id, organization,card_num, card_pwd);
+    body = add_card_body(connected_id, organization,card_num, card_pwd);
     console.log(body);
 
 
