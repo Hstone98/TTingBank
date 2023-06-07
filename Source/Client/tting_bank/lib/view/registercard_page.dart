@@ -115,7 +115,7 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
                   : () async {
                       print(_cardCodes);
                       if (await ctrRegisterCard.sendCardLoginData(
-                          'KR', 'CD', 'P', _selectedCard, '1', _inputId, _inputPassword)) {
+                          'KR', 'CD', 'P', _selectedCardCode, '1', _inputId, _inputPassword)) {
                         print("Success");
                         Navigator.of(context).pop();
                         Navigator.of(context).pop();
