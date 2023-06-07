@@ -133,7 +133,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       }
 
                       if (await ctrCardInfo.sendCardAddData(
-                              '4', _cardNumber, _cardPassword, '0305') ==
+                              user.id, _cardNumber, _cardPassword, _selectedCardCode) ==
                           true) {
                         print("Success");
                         Navigator.of(context).pop();

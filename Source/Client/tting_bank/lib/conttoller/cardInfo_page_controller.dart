@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 //------------------------------------------------------------------------------------------------//
 //
 //------------------------------------------------------------------------------------------------//
-Future<bool> sendCardAddData(String id, String cardNum, String cardPwd, String organization) async {
+Future<bool> sendCardAddData(int id, String cardNum, String cardPwd, String organization) async {
   final url = "http://121.181.192.82:7777/addCard";
   final data = {'id': id, 'organization': organization, 'cardNumber': cardNum, 'password': cardPwd};
 
