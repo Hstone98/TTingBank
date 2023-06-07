@@ -247,7 +247,7 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
               separatorBuilder: (context, index) => Divider(), // 구분선 추가
               itemBuilder: (context, index) {
                 return ListTile(
-                  title: Text('소비 기록 $index + 1'),
+                  title: Text('소비 기록 $index'),
                   subtitle: Text(consumptionList[index].name),
                   trailing: Text(
                     consumptionList[index].amount.toString() + '원',
