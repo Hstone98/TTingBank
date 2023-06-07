@@ -78,6 +78,7 @@ var https = require("https");
 var parse = require("url-parse");
 var urlencode = require("urlencode");
 const { connected } = require('process');
+const { get } = require('http');
 
 //------------------------------------------------------------------------------------------------//
 // httpSender -> HTTP 기본 함수
@@ -479,6 +480,18 @@ var InsertCard = function(cardNum, userId) {
   });
 };
 //------------------------------------------------------------------------------------------------//
+// Get User ID
+//------------------------------------------------------------------------------------------------//
+router.post('/getId', (req, res) => {
+  // const id = req.header.id;
+  const id = req.body.id;
+
+  userId = id;
+  console.log('userId : ', userId);
+
+});
+
+//------------------------------------------------------------------------------------------------//
 // Router(/:addCard) -> 카드 추가 시 사용하는 url
 //------------------------------------------------------------------------------------------------//
 router.post('/addCard', (req, res) => {
@@ -504,21 +517,6 @@ router.post('/addCard', (req, res) => {
   add_card(id, organization, cardNum, cardPwd);
 
   console.log('들어옴');
-  // res.status(200).send("suceess!!");
-  // console.log("\n\n" + id + " " + pwd + " "+ organization + " "+ businessType + " "+ clientType + " "+ loginType + " " + "\n\n");
-
-  // // var RSA_password = publicEncRSA(PUBLIC_KEY, pwd);
-
-  // console.log("나왔쪄");
-
-  // connected_body = create_accountList('KR', businessType, clientType, organization, loginType, id, pwd
-  //   ,'', '', '', '', '');
-  // // CODEF API 요청
-  //   // CODEF API request
-  //   httpSender(codef_url + account_list_path, token, connected_body);
-
-  //   // res.statusCode = 200;
-  //   res.status(200).send("suceess!!");
 });
 //------------------------------------------------------------------------------------------------//
 // AddCard
@@ -526,13 +524,13 @@ router.post('/addCard', (req, res) => {
 async function add_card(id, organization, card_num, card_pwd)
 {
   console.log('add_card()');
-  id = 4;
+  id = userId;
   organization = '0305';
 
   getConnectedId(4)
   .then(function(connected_id) {
     console.log('Result:', connected_id);
-    body = add_card_body(id, connected_id, organization, card_num, card_pwd);
+    body = add_card_body(id, connected_id, card_num, card_pwd);
     console.log(body);
 
 
@@ -587,27 +585,193 @@ var getConnectedId = function(userId) {
 };
 
 //------------------------------------------------------------------------------------------------//
-// 카드 승인내역 조회
+// 카드 승인 내역 http post.
 //------------------------------------------------------------------------------------------------//
-// 데모 endpoint -> https://development.codef.io/v1/kr/card/p/account/approval-list
-// 정식 endpoint -> https://api.codef.io/v1/kr/card/p/account/approval-list
+router.post('/getPayment', (req, res) => {
+  // userId = '4';
+  console.log("getPayment");
+  // console.log(req.body);
+  // TODO : 기억하자 문법.
+  let { organization, connectedId, date } = req.body;
 
-var codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
-var codef_is_card_url = "https://development.codef.io/v1/kr/card/p/user/registration-status";
+  console.log(organization + "   " + connectedId + '    ' + date)
 
-var codef_card_body = {
-    "organization": codef_api_body.organization,
-    "connectedId": codef_api_body.connectedId,
+  getPayment(organization, connectedId, date);
+
+
+});
+//------------------------------------------------------------------------------------------------//
+// 카드 승인 내역 가지고 오기.
+//------------------------------------------------------------------------------------------------//
+function getPayment(organization, connectedId, date)
+{
+  let codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
+  
+  let startDate = date + "01";
+  let endDate = '';
+  endDate = date + '0';
+
+  // for(var i = 0; i < 4; i++)
+  // {
+  //   startDate += date[i];
+  // }
+  // startDate += '01';
+
+  // for(var i = 4; i < 6; i++)
+  // {
+  //   endDate += date[i];
+  // }
+  
+  console.log(startDate);
+  console.log(endDate);
+  
+  let body = createPaymentBody(organization, connectedId, startDate, endDate);
+  
+
+  httpGetPaymentSender(codef_card_url, token, body);
+}
+//------------------------------------------------------------------------------------------------//
+// 카드승인 내역 가지고 오는 json 쿼리 생성.
+//------------------------------------------------------------------------------------------------//
+function createPaymentBody(organization, connectedId, startDate, endDate)
+{
+  let codef_payment_body = {
+    "organization": organization,
+    "connectedId": connectedId,
     "birthDate": "",
-    "startDate": "20220101",
-    "endDate": "20230517",
+    "startDate": startDate,        // ex) 20220101
+    "endDate": endDate,            // ex) 20231212
     "orderBy": "0",
     "inquiryType": "1",
     "cardName": "",
     "duplicateCardIdx": "0",
     "cardNo": "",
     "cardPassword": ""
+  }
+
+  return codef_payment_body;
+}
+//------------------------------------------------------------------------------------------------//
+// httpSender -> HTTP 기본 함수
+//------------------------------------------------------------------------------------------------//
+var httpGetPaymentSender = function(url, token, body) {
+  console.log("========== httpSender ========== ");
+  var uri = parse(url, true);
+
+  var request = https.request(
+    {
+      hostname: uri.hostname,
+      path: uri.pathname,
+      port: uri.port,
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token
+      }
+    },
+    getPaymentCallback
+  );
+  request.write(urlencode.encode(JSON.stringify(body)));
+  request.end();
 };
+//------------------------------------------------------------------------------------------------//
+// httpSender -> HTTP 기본 callback 함수
+//------------------------------------------------------------------------------------------------//
+// CODEF API Callback
+var getPaymentCallback = async function(response) {
+  console.log("codefApiCallback Status: " + response.statusCode);
+  console.log("codefApiCallback Headers: " + JSON.stringify(response.headers));
+
+  // var userId = '4';
+  var body = "";
+  response.setEncoding("utf8");
+  response.on("data", function(data) {
+    body += data;
+  });
+
+  // end 이벤트가 감지되면 데이터 수신을 종료하고 내용을 출력한다
+  response.on("end", function() {
+    console.log("codefApiCallback body:" + urlencode.decode(body));
+    var responseBody = JSON.parse(urlencode.decode(body)).data; // Parse the body as JSON
+
+    // console.log("addCardCallback body = " + responseBody[0].resCardNo);
+    // 데이저 수신 완료
+    if (response.statusCode == 200) {
+      console.log('payment success');
+      DeletePaymentData()
+
+      .then(function() {
+        console.log(responseBody);
+      })
+      .catch(function(error) {
+        console.log('Error occurred:', error);
+      });
+    } else if (response.statusCode == 401) {
+      console.log('API 요청 실패');
+    } else {
+      console.log("API 요청 오류");
+    }
+  });
+};
+async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
+{
+  return new Promise((resolve, reject) => {
+    let sql_delete = 'DELETE FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
+    var params = [userId, date, date];
+
+    mysqlConnection.query(sql, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result. length > 0) {
+          resolve(result[0].connected_id);
+        } else {
+          resolve(null);
+        }
+      }
+    });
+  });
+}
+
+//------------------------------------------------------------------------------------------------//
+// 
+//------------------------------------------------------------------------------------------------//
+async function InsertPaymentData()
+{
+  const id = req.body.id;
+  const year = req.body.year;
+  const month = req.body.month;
+
+  
+  let sql_insert = 'INSERT INTO tbl_사용자_카드_거래내역 (사용일, 사용일시, 가맹점명, 결제금액, id_사용자_카드, id_사용자) VALUES (?, ?, ?, ?, ?, ?)';
+
+  var params = [id, year, month];
+  mysqlConnection.query(sql,params, function(error, result, fields){
+      if(error)
+      {
+          res.status(400).json('error ocurred');         
+          console.log('들어옴1');
+      }
+      else{
+          if(result.length > 0){
+              res.status(200).json(result);
+              console.log('결제내역 데이터 조회 성공');
+          }
+          else{
+              res.status(404).json(result);   
+              console.log('결제내역 데이터 없음');  
+          }
+      }
+  })
+}
+
+
+
+
+// var codef_is_card_url = "https://development.codef.io/v1/kr/card/p/user/registration-status";
+
+
 
 // "organization": codef_api_body.organization,         // (필수)기관코드
 // "connectedId": codef_api_body.connectedId,          // (필수)ConnectedID
@@ -617,16 +781,12 @@ var codef_card_body = {
 // "inquiryType": "",   // (옵션)조회구분 -> [카드이미지 포함여부] -> 미포함 : 0 / 포함 : 1
 
 
-//------------------------------------------------------------------------------------------------//
-// Get User ID
-//------------------------------------------------------------------------------------------------//
-router.post('/getUserId', (req, res) => {
-  const id = req.body.id;
+// router.post('/', (req, res) => {
 
-  userId = id;
-  userId = 4;
-  console.log('userId : ', userId);
-});
+
+// )};
+
+
 
 
 httpSender(codef_url + account_list_path, token, connected_body);

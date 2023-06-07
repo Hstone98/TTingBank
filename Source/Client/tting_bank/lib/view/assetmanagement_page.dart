@@ -21,7 +21,7 @@ class AssetmanagementPage extends StatelessWidget {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          "Asset Manamgement",
+          "소비 및 캐시백 총액",
           style: TextStyle(
             color: Colors.black,
           ),

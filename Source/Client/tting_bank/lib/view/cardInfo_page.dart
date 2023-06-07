@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tting_bank/conttoller/cardInfo_page_controller.dart'
-    as ctrCardInfo;
+import 'package:tting_bank/conttoller/cardInfo_page_controller.dart' as ctrCardInfo;
 import 'package:tting_bank/view/main_page.dart';
 
 //------------------------------------------------------------------------------------------------//
@@ -94,7 +93,8 @@ class _CardInfoPageState extends State<CardInfoPage> {
               child: Column(
                 children: [
                   TextFormField(
-                    decoration: InputDecoration(labelText: '카드번호'),
+                    maxLength: 16,
+                    decoration: InputDecoration(labelText: '카드번호', hintText: '카드 번호 (- 제외)'),
                     onChanged: (value) {
                       setState(() {
                         _cardNumber = value;
@@ -103,7 +103,9 @@ class _CardInfoPageState extends State<CardInfoPage> {
                   ),
                   SizedBox(height: 16),
                   TextFormField(
-                    decoration: InputDecoration(labelText: '비밀번호 앞 2자리'),
+                    maxLength: 2,
+                    decoration: InputDecoration(
+                        labelText: '카드 비밀번호 앞 두 자리', hintText: '카드 비밀번호 앞 두 자리(**)'),
                     obscureText: true,
                     onChanged: (value) {
                       setState(() {
@@ -126,8 +128,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
                         showToast("카드 16자리를 입력해주세요.");
                       }
-                      if (!ctrCardInfo
-                          .checkCardPasswordLength(_cardPassword.length)) {
+                      if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
                         showToast("카드 비밀번호 2자리를 입력해주세요.");
                       }
 

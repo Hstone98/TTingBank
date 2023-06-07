@@ -181,6 +181,8 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
+                  // Server로 UserId 전달.
+                  SendUserId(user.id);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -204,6 +206,8 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
+                  // Server로 UserId 전달.
+                  SendUserId(user.id);
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => RegisterCardPage()),
@@ -226,6 +230,9 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
+                  // Server로 UserId 전달.
+                  SendUserId(user.id);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(builder: (context) => CardInfoPage()),
@@ -249,6 +256,9 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
+                  // Server로 UserId 전달.
+                  SendUserId(user.id);
+
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -272,6 +282,9 @@ class _MainPageState extends State<MainPage> {
                 ),
                 selected: true,
                 onTap: () {
+                  // Server로 UserId 전달.
+                  SendUserId(user.id);
+
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -505,6 +518,9 @@ class _MainPageState extends State<MainPage> {
                                     elevation: 0,
                                   ),
                                   onPressed: () {
+                                    // Server로 UserId 전달.
+                                    SendUserId(user.id);
+
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
