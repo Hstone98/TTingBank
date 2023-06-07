@@ -51,22 +51,22 @@ Future<List<Consumption>> consumptionListSet(
 //------------------------------------------------------------------------------------------------//
 //
 //------------------------------------------------------------------------------------------------//
-Future<void> sendDate(int id, String organization, String? connectedId, String date) async {
-  final url = "http://121.181.192.82:7777/getPayment";
-  final data = {'id': id, 'organization': organization, 'connectedId': connectedId, 'date': date};
-  final body = jsonEncode(data);
+// Future<void> sendDate(int id, String organization, String? connectedId, String date) async {
+//   final url = "http://121.181.192.82:7777/getPayment";
+//   final data = {'id': id, 'organization': organization, 'connectedId': connectedId, 'date': date};
+//   final body = jsonEncode(data);
 
-  final res = await http.post(
-    Uri.parse(url),
-    headers: {"accept": "application/json", "content-type": "application/json"},
-    body: body,
-  );
-  if (res.statusCode == 200) {
-    print("성공");
-  } else if (res.statusCode == 404) {
-  } else {
-    print(res.statusCode);
-    print('에러 발생');
-    throw Exception('에러 발생');
-  }
-}
+//   final res = await http.post(
+//     Uri.parse(url),
+//     headers: {"accept": "application/json", "content-type": "application/json"},
+//     body: body,
+//   );
+//   if (res.statusCode == 200) {
+//     print("성공");
+//   } else if (res.statusCode == 404) {
+//   } else {
+//     print(res.statusCode);
+//     print('에러 발생');
+//     throw Exception('에러 발생');
+//   }
+// }

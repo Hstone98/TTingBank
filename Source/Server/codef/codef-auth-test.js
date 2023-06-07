@@ -29,12 +29,14 @@ var connected_body;
 var check_card_num;
 var userId;
 var date;
+var year;
+var month;
 
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
 //------------------------------------------------------------------------------------------------//
 var codef_account_create_url = 'https://development.codef.io/v1/account/create'
-const PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsPUBYBaCoHfnZA0vjfbArkiHts8SBVx1NCiSRmwVuKV341Oj80Csyx0mUdnv3agIRPG3puYMi2wbe+ZCAjXA7rttKN1rldidAcbqdth+tuL9WAVr4wPJ3eCJVkulghN7Gx5Y0bQr1YB3s/2rY87R17D/uFI0hjfF5ZmUtSFbLk2jh+MY1ToM+vQfrwlQNfTpNljjR6Hkd1lRKuDjth1z/KsEwP75baASRV+Pj4RePJE8u2Pqt4vYrLHMhnbOwVtuNSirG82sgJjgrq8QB2Jl71yYzwpg1UABOs7CrNbvtNm9xTswzTIXf7mQpPncryvk7To3d7QniWwUqLuiC4SzwQIDAQAB';
+const PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnly1yy7UmR8j626+VMNaTLZvjG/DrsewHgz7kF1DR76psoMKcJcGmeHx7PhO+QLojNDZQ80LsWwYBUEsdrm/StYtP+1BfnIbUaW3+fk8ggz4DvgeRuoA6QHG9zBBYhe/MiZCs/DW2Nc+KC7fTeFesjmAQyc8dfEHv6wjUm0s+AsRJk0xWTBbN1+NjSQoOVwE30jbobRNLGsOSmqofhXNSMl0qNmsyYbSH+MhZMKD0DImLcsv61DNXe375jJTw4JF2uKSaQFi6XL7QiivjLByoLZdMODlB7wd1moq9KASrrlK6IHP9447qANskMe56tSaz1MLhMOlkjCqJL+4tPGX9QIDAQAB';
 // TODO: 비밀번호 앱에서 가져오는 테스트 중. 나중에 주석 풀기.
 // var RSA_password = publicEncRSA(PUBLIC_KEY, "djWjfkrh1324%");
 
@@ -71,8 +73,8 @@ function publicEncRSA(publicKey, data) {
 //------------------------------------------------------------------------------------------------//
 // AUTH 2.0 인증
 //------------------------------------------------------------------------------------------------//
-const DEMO_CLIENT_ID = '46a1384a-b3f5-4562-884b-42e131d00417';
-const DEMO_CLIENT_SECRET = '25e56a19-87e0-4f18-a67b-a743ef0b3788';
+const DEMO_CLIENT_ID = '7b8e76e1-94be-447d-a405-f8f9c92231e8';
+const DEMO_CLIENT_SECRET = 'de668143-1bc1-4f4f-b0ef-93decfa1d637';
 
 
 var https = require("https");
@@ -80,6 +82,7 @@ var parse = require("url-parse");
 var urlencode = require("urlencode");
 const { connected } = require('process');
 const { get } = require('http');
+const { error } = require('console');
 
 //------------------------------------------------------------------------------------------------//
 // httpSender -> HTTP 기본 함수
@@ -678,8 +681,6 @@ function getPayment(organization, connectedId, _date)
   let codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
   date = _date;
 
-  let year = '';
-  let month = '';
   let startDate = date + "01";
   let endDate = '';
   endDate = date + '0';
@@ -712,6 +713,8 @@ function getPayment(organization, connectedId, _date)
 //------------------------------------------------------------------------------------------------//
 function createPaymentBody(organization, connectedId, startDate, endDate)
 {
+  startDate = '20230601';
+  endDate = '20230608';
   let codef_payment_body = {
     "organization": organization,
     "connectedId": connectedId,
@@ -754,35 +757,50 @@ var httpGetPaymentSender = function(url, token, body) {
 //------------------------------------------------------------------------------------------------//
 // httpSender -> HTTP 기본 callback 함수
 //------------------------------------------------------------------------------------------------//
-// CODEF API Callback
 var getPaymentCallback = async function(response) {
   console.log("codefApiCallback Status: " + response.statusCode);
   console.log("codefApiCallback Headers: " + JSON.stringify(response.headers));
 
-  // var userId = '4';
   var body = "";
   response.setEncoding("utf8");
   response.on("data", function(data) {
     body += data;
   });
 
-  // end 이벤트가 감지되면 데이터 수신을 종료하고 내용을 출력한다
+  // When the end event is detected, data reception ends and the contents are output
   response.on("end", function() {
     console.log("codefApiCallback body:" + urlencode.decode(body));
     var responseBody = JSON.parse(urlencode.decode(body)).data; // Parse the body as JSON
 
-    // console.log("addCardCallback body = " + responseBody[0].resCardNo);
-    // 데이저 수신 완료
+    // Data reception complete
     if (response.statusCode == 200) {
       console.log('payment success');
-      DeletePaymentData('202304')
-
-      .then(function() {
-        console.log(responseBody);
-      })
-      .catch(function(error) {
-        console.log('Error occurred:', error);
-      });
+      DeletePaymentData()
+        .then(function() {
+          // console.log(responseBody);
+          var map = responseBody.map;
+          console.log(map.toString());
+          for (let index = 0; index < map.length; index++) {
+            
+            InsertPaymentData(
+              map[index].resUsedDate.toString(),
+              map[index].resUsedTime.toString(),
+              map[index].resMemberStoreName.toString(),
+              map[index].resUsedAmount,
+              19,
+              (typeof userId)
+            )
+              .then(function() {
+                console.log('Data inserted successfully.');
+              })
+              .catch(function(error) {
+                console.log('Error occurred:', error);
+              });
+          }
+        })
+        .catch(function(error) {
+          console.log('Error occurred:', error);
+        });
     } else if (response.statusCode == 401) {
       console.log('API 요청 실패');
     } else {
@@ -790,16 +808,16 @@ var getPaymentCallback = async function(response) {
     }
   });
 };
+
 //------------------------------------------------------------------------------------------------//
 // 
 //------------------------------------------------------------------------------------------------//
-async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
+async function DeletePaymentData() // TODO: date 형식 -> ex) 202306
 {
   return new Promise((resolve, reject) => {
-    let sql_delete = 'DELETE FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
-    var params = [userId, date, date];
-
-    console.log(params);
+    let sql_delete = 'DELETE FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ?';
+    let params = [userId];
+    // console.log(params);
 
     mysqlConnection.query(sql_delete, params, function(error, result, fields) {
       if (error) {
@@ -819,33 +837,26 @@ async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
 //------------------------------------------------------------------------------------------------//
 // 
 //------------------------------------------------------------------------------------------------//
-async function InsertPaymentData()
-{
-  const id = req.body.id;
-  const year = req.body.year;
-  const month = req.body.month;
+async function InsertPaymentData(resUsedDate, resUsedDate, resUsedTime, resMemberStoreName, resUsedAmount, cardId)
+{ 
+  return new Promise((resolve, reject) => {
+       
+    let sql_insert = 'INSERT INTO tbl_사용자_카드_거래내역 (사용일, 사용일시, 가맹점명, 결제금액, id_사용자_카드, id_사용자) VALUES (?, ?, ?, ?, ?, ?)';
 
-  
-  let sql_insert = 'INSERT INTO tbl_사용자_카드_거래내역 (사용일, 사용일시, 가맹점명, 결제금액, id_사용자_카드, id_사용자) VALUES (?, ?, ?, ?, ?, ?)';
-
-  var params = [id, year, month];
-  mysqlConnection.query(sql,params, function(error, result, fields){
-      if(error)
-      {
-          res.status(400).json('error ocurred');         
-          console.log('들어옴1');
+    var params = [resUsedDate, resUsedDate, resUsedTime, resMemberStoreName, resUsedAmount, cardId, userId];
+    mysqlConnection.query(sql_insert, params, function(error, result, fields) {
+      if (error) {
+        console.log('Error occurred:', error);
+        reject(error);
+      } else {
+        if (result. length > 0) {
+          resolve(true);
+        } else {
+          resolve(null);
+        }
       }
-      else{
-          if(result.length > 0){
-              res.status(200).json(result);
-              console.log('결제내역 데이터 조회 성공');
-          }
-          else{
-              res.status(404).json(result);   
-              console.log('결제내역 데이터 없음');  
-          }
-      }
-  })
+    });
+  });
 }
 
 

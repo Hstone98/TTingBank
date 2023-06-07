@@ -80,7 +80,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
       monthString = month.toString().padLeft(2, '0');
     }
     yearString = DateTime.now().year.toString();
-    setPayData();
+    initConsumption();
+    // setPayData();
   }
 
 //받은 user에 대한 데이터를 가져오고 거래내역 조회
@@ -92,10 +93,9 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
     });
   }
 
-  Future<void> setPayData() async {
-    await sendDate(user.id, '0305', user.connected_id, yearString + monthString);
-    initConsumption();
-  }
+  // Future<void> setPayData() async {
+  //   await sendDate(user.id, '0305', user.connected_id, yearString + monthString);
+  // }
 
   Future<void> showMonthPicker(BuildContext context) async {
     await showDialog<int>(
