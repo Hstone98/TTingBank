@@ -28,6 +28,7 @@ var urlencode = require("urlencode");
 var connected_body;
 var check_card_num;
 var userId;
+var date;
 
 //------------------------------------------------------------------------------------------------//
 // 계정 등록
@@ -35,26 +36,26 @@ var userId;
 var codef_account_create_url = 'https://development.codef.io/v1/account/create'
 const PUBLIC_KEY = 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsPUBYBaCoHfnZA0vjfbArkiHts8SBVx1NCiSRmwVuKV341Oj80Csyx0mUdnv3agIRPG3puYMi2wbe+ZCAjXA7rttKN1rldidAcbqdth+tuL9WAVr4wPJ3eCJVkulghN7Gx5Y0bQr1YB3s/2rY87R17D/uFI0hjfF5ZmUtSFbLk2jh+MY1ToM+vQfrwlQNfTpNljjR6Hkd1lRKuDjth1z/KsEwP75baASRV+Pj4RePJE8u2Pqt4vYrLHMhnbOwVtuNSirG82sgJjgrq8QB2Jl71yYzwpg1UABOs7CrNbvtNm9xTswzTIXf7mQpPncryvk7To3d7QniWwUqLuiC4SzwQIDAQAB';
 // TODO: 비밀번호 앱에서 가져오는 테스트 중. 나중에 주석 풀기.
-var RSA_password = publicEncRSA(PUBLIC_KEY, "djWjfkrh1324%");
+// var RSA_password = publicEncRSA(PUBLIC_KEY, "djWjfkrh1324%");
 
-var codef_account_create_body = {
-            'accountList':[                  // 계정목록
-              {
-                  "countryCode": "KR",        // (필수)국가코드
-                  "businessType": "CD",       // (필수)업무구분 -> 은행,저축은행 : BK / 카드 : CD / 증권 : ST / 보험 : IS
-                  "clientType": "P",          // (필수)고객구분 -> 개인 : P / 기업, 법인 : B / 통합 : A
-                  "organization": "0305",     // (필수)기관코드
-                  "loginType": "1",           // (필수)로그인방식 -> 인증서 : 0 / 아이디, 패스워드 : 1
-                  "id": "askhs0302",          // (옵션)아이디방식 -> 아이디 방식일 경우 필수/ (키움)복수 계정 보유 고객의 경우 사용
-                  "password": RSA_password,   // (필수)인증서 방식일 경우 인증서 패스워드 / 아이디 방식일 경우 아이디 패스우드 입력
-                  "birthDate": "980302",      // (옵션)생년월일
-                  //"loginTypeLevel":"",        // (옵션)신한/롯데 법인카드의 경우 [로그인구분] 이용자 : 0 / 사업장/부서관리자 : 1 / 총괄관리자 : 2. (default : 2)
-                  //"clientTypeLevel":"",       // (옵션)신한 법인카드의 경우 [회원구분] 신용카드 회원 : 0 / 체크카드 회원 : 1 / 연구비 신용카드 회원 : 2
-                  //"cardNo":"",                // (옵션)KB카드 소지확인 인증이 필요한 경우 필수 : 마스킹 없는 전체 카드번호 입력
-                  //"cardPassword":"",          // (옵션)KB카드 소지확인 필요한 경우 : 카드 비밀번호 앞 2자리
-              }
-            ]
-};
+// var codef_account_create_body = {
+//             'accountList':[                  // 계정목록
+//               {
+//                   "countryCode": "KR",        // (필수)국가코드
+//                   "businessType": "CD",       // (필수)업무구분 -> 은행,저축은행 : BK / 카드 : CD / 증권 : ST / 보험 : IS
+//                   "clientType": "P",          // (필수)고객구분 -> 개인 : P / 기업, 법인 : B / 통합 : A
+//                   "organization": "0305",     // (필수)기관코드
+//                   "loginType": "1",           // (필수)로그인방식 -> 인증서 : 0 / 아이디, 패스워드 : 1
+//                   "id": "askhs0302",          // (옵션)아이디방식 -> 아이디 방식일 경우 필수/ (키움)복수 계정 보유 고객의 경우 사용
+//                   "password": RSA_password,   // (필수)인증서 방식일 경우 인증서 패스워드 / 아이디 방식일 경우 아이디 패스우드 입력
+//                   "birthDate": "980302",      // (옵션)생년월일
+//                   //"loginTypeLevel":"",        // (옵션)신한/롯데 법인카드의 경우 [로그인구분] 이용자 : 0 / 사업장/부서관리자 : 1 / 총괄관리자 : 2. (default : 2)
+//                   //"clientTypeLevel":"",       // (옵션)신한 법인카드의 경우 [회원구분] 신용카드 회원 : 0 / 체크카드 회원 : 1 / 연구비 신용카드 회원 : 2
+//                   //"cardNo":"",                // (옵션)KB카드 소지확인 인증이 필요한 경우 필수 : 마스킹 없는 전체 카드번호 입력
+//                   //"cardPassword":"",          // (옵션)KB카드 소지확인 필요한 경우 : 카드 비밀번호 앞 2자리
+//               }
+//             ]
+// };
 //------------------------------------------------------------------------------------------------//
 // RSA 암호화
 //------------------------------------------------------------------------------------------------//
@@ -123,11 +124,14 @@ var codefApiCallback = function(response) {
 
     // 데이저 수신 완료
     if (response.statusCode == 200) {
-      console.log("정상처리");
-      if(!isConnectedId(4))
-      {
+      isConnectedId(userId)
+      .then(function(){
+        console.log('데이터 있음.');
+        response.send.status(200);
+      })
+      .catch(function(error){
         httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
-      }
+      });
     } else if (response.statusCode == 401) {
       requestToken(
         token_url,
@@ -186,11 +190,22 @@ var connectectedidCallback = function(response) {
     if (response.statusCode === 200) {
       console.log("Connected ID Issued");
       console.log("Connected ID: " + responseBody.data.connectedId);
-      InsertConnectedId(4, responseBody.data.connectedId);
+
+      InsertConnectedId(userId, responseBody.data.connectedId)
+      .then(function(){
+        console.log('성공!!');
+        // response.status(200).send('success!!');
+      })
+      .catch(function(error){
+        console.log('에러 발생:', error);
+        // response.status(400).send('fail!!');
+      });
     } else if (response.statusCode === 401) {
       console.log("Failed");
+      // response.status(401).send('failed!!');
     } else {
       console.log("API request error");
+      // response.status(500).send('API request error!!');
     }
   });
 };
@@ -287,12 +302,21 @@ var authTokenCallback = function(response) {
       console.log("토큰발급 성공");
       console.log("token = " + token);
 
+      // userId = 5;
       // CODEF API 요청
       // Create ConnectedId
-      // if(isConnectedId(4) == false)
+      isConnectedId(userId)
+      .then(function(){
+        console.log('데이터 있음.');
+      })
+      .catch(function(error){
+        httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      });
+
+      // if(isConnectedId(userId) == false)
       // {
-        console.log('여기는 왜 들어와?');
-        // httpSenderCreateConnectedId(codef_account_create_url, token, connected_body);
+      //   console.log('여기는 왜 들어와?');
+        
       // }
     } 
     else 
@@ -315,13 +339,9 @@ var isConnectedId = function(userId) {
         reject(error);
       } else {
         if (result.length > 0) {
-          return true;
           resolve(true);
-          
         } else {
-          return false;
           resolve(false);
-          
         }
       }
     });
@@ -603,10 +623,11 @@ router.post('/getPayment', (req, res) => {
 //------------------------------------------------------------------------------------------------//
 // 카드 승인 내역 가지고 오기.
 //------------------------------------------------------------------------------------------------//
-function getPayment(organization, connectedId, date)
+function getPayment(organization, connectedId, _date)
 {
   let codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
-  
+  date = _date;
+
   let year = '';
   let month = '';
   let startDate = date + "01";
@@ -704,7 +725,7 @@ var getPaymentCallback = async function(response) {
     // 데이저 수신 완료
     if (response.statusCode == 200) {
       console.log('payment success');
-      DeletePaymentData()
+      DeletePaymentData(date)
 
       .then(function() {
         console.log(responseBody);
@@ -727,6 +748,8 @@ async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
   return new Promise((resolve, reject) => {
     let sql_delete = 'DELETE FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
     var params = [userId, date, date];
+
+    console.log(params);
 
     mysqlConnection.query(sql_delete, params, function(error, result, fields) {
       if (error) {
