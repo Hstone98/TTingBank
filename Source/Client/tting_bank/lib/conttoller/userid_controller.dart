@@ -18,8 +18,8 @@ Future<User> searchUser(String? name) async {
     final userData = result[0];
     final sendUserData = User.fromJson(userData);
 
-    // Server로 UserId 전달.
-    SendUserId(sendUserData.id);
+    // // Server로 UserId 전달.
+    // SendUserId(sendUserData.id);
 
     print('전송 완료');
     print(userData);
@@ -51,16 +51,16 @@ Future<User> userSet(String? name) async {
 }
 
 //------------------------------------------------------------------------------------------------//
-//
+// Send to server.(User ID)
 //------------------------------------------------------------------------------------------------//
-Future<bool> SendUserId(int userId) async {
-  final url = "http://121.181.192.82:7777/getUserId";
+void SendUserId(int userId) async {
+  final url = "http://121.181.192.82:7777/getId";
 
   final data = {'id': userId};
 
   final body = jsonEncode(data);
 
-  print('들어옴?');
+  print(body);
 
   final res = await http.post(
     Uri.parse(url),
@@ -68,9 +68,16 @@ Future<bool> SendUserId(int userId) async {
     body: body,
   );
 
+  // final url = "http://121.181.192.82:7777/codef/codef-auth-test/getuserid?id=$userId";
+
+  // final res = await http.get(
+  //   Uri.parse(url),
+  //   headers: {"accept": "application/json"},
+  // );
+
   if (res.statusCode == 200) {
     print('성공');
-    return true;
+    // return true;
   } else if (res.statusCode == 400) {
     print("error code : 400");
     print("잘못된 요청. 서버가 요청의 구문을 인식하지 못했습니다.");
