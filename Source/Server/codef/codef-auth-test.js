@@ -545,12 +545,12 @@ async function add_card(id, organization, card_num, card_pwd)
 {
   console.log('add_card()');
   id = userId;
-  organization = '0305';
+  // organization = '0305';
 
   getConnectedId(4)
   .then(function(connected_id) {
     console.log('Result:', connected_id);
-    body = add_card_body(id, connected_id, card_num, card_pwd);
+    body = add_card_body(id, connected_id, organization,card_num, card_pwd);
     console.log(body);
 
 
@@ -566,7 +566,7 @@ async function add_card(id, organization, card_num, card_pwd)
 //------------------------------------------------------------------------------------------------//
 //
 //------------------------------------------------------------------------------------------------//
-function add_card_body(id, connected_id, organization, card_num, card_pwd)
+function add_card_body(connected_id, organization, card_num, card_pwd)
 {
   // connected_id = 'fYHnAH-sAmE8NF1dhTp3BV';
   var RSA_cardNumber = publicEncRSA(PUBLIC_KEY, card_num);
