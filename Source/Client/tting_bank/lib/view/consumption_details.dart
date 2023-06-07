@@ -93,10 +93,6 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
     });
   }
 
-  // Future<void> setPayData() async {
-  //   await sendDate(user.id, '0305', user.connected_id, yearString + monthString);
-  // }
-
   Future<void> showMonthPicker(BuildContext context) async {
     await showDialog<int>(
       context: context,
