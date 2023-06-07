@@ -16,13 +16,15 @@ Future<User> searchUser(String? name) async {
   if (res.statusCode == 200) {
     final result = jsonDecode(res.body);
     final userData = result[0];
+    final sendUserData = User.fromJson(userData);
 
     // Server로 UserId 전달.
-    SendUserId(userData.id);
+    SendUserId(sendUserData.id);
 
     print('전송 완료');
     print(userData);
-    return User.fromJson(userData);
+
+    return sendUserData;
   } else if (res.statusCode == 400) {
     print('찾을 수 없음');
 

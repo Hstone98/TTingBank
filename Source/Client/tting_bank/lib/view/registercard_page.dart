@@ -56,7 +56,7 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
         ),
         backgroundColor: Colors.white,
         title: Text(
-          'Card Registration',
+          '카드사 로그인',
           style: TextStyle(
             color: Colors.black,
           ),
@@ -124,7 +124,7 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
                         showToast('로그인 실패!!');
                       }
                     },
-              child: Text('Register Card'),
+              child: Text('로그인'),
             ),
           ],
         ),
@@ -141,7 +141,6 @@ class _RegisterCardPageState extends State<RegisterCardPage> {
         setState(
           () {
             for (int i = 0; i < _cardCodes.length; i++) {
-              print(_cardCodes[i]);
               if (_cards[i] == card) {
                 _selectedCardCode = _cardCodes[i];
               }
