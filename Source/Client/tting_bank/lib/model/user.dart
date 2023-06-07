@@ -2,7 +2,7 @@ class User {
   final int id;
   final String name;
   final String email;
-  final String connected_id;
+  final String? connected_id;
 
   User({required this.id, required this.name, required this.email, required this.connected_id});
 
