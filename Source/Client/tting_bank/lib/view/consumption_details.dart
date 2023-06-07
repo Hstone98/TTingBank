@@ -21,7 +21,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
   int month = DateTime.now().month;
   String monthString = ''; //쿼리 보낼 때 String 으로 주기 위해서 변환
   String yearString = ''; //쿼리 보낼 때 String 으로 주기 위해서 변환
-  List<int> years = List.generate(DateTime.now().year - 2019, (index) => 2020 + index);
+  List<int> years =
+      List.generate(DateTime.now().year - 2019, (index) => 2020 + index);
   List<int> months = List.generate(12, (index) => index + 1);
 
   @override
@@ -93,7 +94,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
   }
 
   Future<void> setPayData() async {
-    await sendDate(user.id, '0305', user.connected_id, yearString + monthString);
+    await sendDate(
+        user.id, '0301', user.connected_id, yearString + monthString);
     initConsumption();
   }
 
@@ -173,7 +175,8 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
   @override
   Widget build(BuildContext context) {
     bool canDecrease = year > 2020 || month > 1;
-    bool canIncrease = year < DateTime.now().year || month < DateTime.now().month;
+    bool canIncrease =
+        year < DateTime.now().year || month < DateTime.now().month;
 
     return Scaffold(
       appBar: AppBar(
@@ -207,7 +210,9 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
                 IconButton(
                   icon: Icon(
                     Icons.arrow_left,
-                    color: canDecrease ? Colors.black : Colors.grey, // 비활성화일 때 회색으로 변경
+                    color: canDecrease
+                        ? Colors.black
+                        : Colors.grey, // 비활성화일 때 회색으로 변경
                   ),
                   onPressed: canDecrease
                       ? () {
@@ -229,7 +234,9 @@ class _ConsumptionThisMonthState extends State<ConsumptionThisMonth> {
                 IconButton(
                   icon: Icon(
                     Icons.arrow_right,
-                    color: canIncrease ? Colors.black : Colors.grey, // 비활성화일 때 회색으로 변경
+                    color: canIncrease
+                        ? Colors.black
+                        : Colors.grey, // 비활성화일 때 회색으로 변경
                   ),
                   onPressed: canIncrease
                       ? () {
