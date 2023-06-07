@@ -607,21 +607,27 @@ function getPayment(organization, connectedId, date)
 {
   let codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
   
+  let year = '';
+  let month = '';
   let startDate = date + "01";
   let endDate = '';
   endDate = date + '0';
 
-  // for(var i = 0; i < 4; i++)
-  // {
-  //   startDate += date[i];
-  // }
-  // startDate += '01';
+  for(var i = 0; i < 4; i++)
+  {
+    year += date[i];
+  }
 
-  // for(var i = 4; i < 6; i++)
-  // {
-  //   endDate += date[i];
-  // }
-  
+  for(var i = 4; i < 6; i++)
+  {
+    month += date[i];
+  }
+  console.log(year);
+  console.log(month);
+
+  let lastDate = new Date(year, month, 0).getDate();
+  endDate = date+lastDate;
+
   console.log(startDate);
   console.log(endDate);
   
@@ -713,13 +719,16 @@ var getPaymentCallback = async function(response) {
     }
   });
 };
+//------------------------------------------------------------------------------------------------//
+// 
+//------------------------------------------------------------------------------------------------//
 async function DeletePaymentData(date) // TODO: date 형식 -> ex) 202306
 {
   return new Promise((resolve, reject) => {
     let sql_delete = 'DELETE FROM tbl_사용자_카드_거래내역 WHERE id_사용자 = ? AND SUBSTRING(사용일자, 1, 4) = ? AND SUBSTRING(사용일자, 5, 2) = ?';
     var params = [userId, date, date];
 
-    mysqlConnection.query(sql, params, function(error, result, fields) {
+    mysqlConnection.query(sql_delete, params, function(error, result, fields) {
       if (error) {
         console.log('Error occurred:', error);
         reject(error);
