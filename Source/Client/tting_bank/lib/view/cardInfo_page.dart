@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:tting_bank/conttoller/cardInfo_page_controller.dart' as ctrCardInfo;
+import 'package:tting_bank/conttoller/cardInfo_page_controller.dart'
+    as ctrCardInfo;
+import 'package:tting_bank/view/main_page.dart';
 
 //------------------------------------------------------------------------------------------------//
 //
@@ -124,7 +126,8 @@ class _CardInfoPageState extends State<CardInfoPage> {
                       if (!ctrCardInfo.checkCardNumLength(_cardNumber.length)) {
                         showToast("카드 16자리를 입력해주세요.");
                       }
-                      if (!ctrCardInfo.checkCardPasswordLength(_cardPassword.length)) {
+                      if (!ctrCardInfo
+                          .checkCardPasswordLength(_cardPassword.length)) {
                         showToast("카드 비밀번호 2자리를 입력해주세요.");
                       }
 
@@ -134,6 +137,7 @@ class _CardInfoPageState extends State<CardInfoPage> {
                         print("Success");
                         Navigator.of(context).pop();
                         showToast('등록 성공!!');
+                        Refresh.addCardInfoChangedEvent(true);
                       } else {
                         showToast('등록 실패!!');
                       }
