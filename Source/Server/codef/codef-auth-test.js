@@ -590,6 +590,7 @@ var getConnectedId = function(userId) {
 router.post('/getPayment', (req, res) => {
   // userId = '4';
   console.log("getPayment");
+  // console.log(req.body);
   // TODO : 기억하자 문법.
   let { organization, connectedId, date } = req.body;
 
@@ -606,18 +607,23 @@ function getPayment(organization, connectedId, date)
 {
   let codef_card_url = "https://development.codef.io/v1/kr/card/p/account/approval-list"; // 데모
   
-  let startDate;
-  let endDate;
-  for(var i = 0; i < 4; i++)
-  {
-    startDate += date[i];
-  }
+  let startDate = date + "01";
+  let endDate = '';
+  endDate = date + '0';
 
-  for(var i = 4; i < 6; i++)
-  {
-    endDate += date[i];
-  }
+  // for(var i = 0; i < 4; i++)
+  // {
+  //   startDate += date[i];
+  // }
+  // startDate += '01';
+
+  // for(var i = 4; i < 6; i++)
+  // {
+  //   endDate += date[i];
+  // }
   
+  console.log(startDate);
+  console.log(endDate);
   
   let body = createPaymentBody(organization, connectedId, startDate, endDate);
   
